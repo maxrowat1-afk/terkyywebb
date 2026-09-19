@@ -79,8 +79,8 @@ export default function Home() {
     <ReactLenis
       root
       options={{
-        lerp: reduceMotion ? 1 : 0.08,
-        duration: reduceMotion ? 0 : 1.2,
+        lerp: reduceMotion ? 1 : 0.12,
+        wheelMultiplier: 1,
         smoothWheel: !reduceMotion,
       }}
     >
