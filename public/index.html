@@ -123,50 +123,14 @@
   a, button, label { cursor: pointer; }
   input, textarea { cursor: text; }
 
-  /* ---------- navigace: inset lišta, nahoře nalepená, Apple sklo ---------- */
+  /* ---------- navigace: inset lišta, nahoře nalepená, plná bílá ---------- */
   #site-header { background: transparent; }
   #nav-pill {
-    position: relative;
-    overflow: hidden;
     border-radius: 0 0 1rem 1rem;
-    background: transparent;
-    transition: background-color .5s ease, -webkit-backdrop-filter .5s ease, backdrop-filter .5s ease;
-  }
-  #nav-pill::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: rgba(0, 0, 0, 0.16);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    opacity: 0;
-    pointer-events: none;
-    transition: transform .5s ease, opacity .5s ease;
-  }
-  html.nav-scrolled #nav-pill,
-  html.menu-open #nav-pill {
-    background: #fafafc;
-  }
-  @supports ((-webkit-backdrop-filter: saturate(180%) blur(20px)) or (backdrop-filter: saturate(180%) blur(20px))) {
-    html.nav-scrolled #nav-pill {
-      background: rgba(250, 250, 252, 0.8);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      backdrop-filter: saturate(180%) blur(20px);
-    }
-  }
-  html.nav-scrolled #nav-pill::after,
-  html.menu-open #nav-pill::after {
-    transform: scaleY(0.5);
-    opacity: 1;
-  }
-  html.cheap-gpu.nav-scrolled #nav-pill,
-  html.menu-open #nav-pill {
-    background: #fafafc;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+    background: #fff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-top-color: transparent;
+    box-shadow: 0 12px 40px -14px rgba(22, 24, 29, 0.14);
   }
   .nav-link { position: relative; }
   .nav-link::after {
