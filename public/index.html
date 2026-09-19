@@ -10,6 +10,21 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#9b1d30">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%239b1d30'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-style='italic' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    var d = document.documentElement;
+    var mm = window.matchMedia;
+    if (mm && mm('(prefers-reduced-motion: reduce)').matches) {
+      d.classList.add('cheap-gpu');
+      return;
+    }
+    var phone = mm && (
+      mm('(max-width: 767px)').matches ||
+      (mm('(max-width: 1023px)').matches && mm('(hover: none)').matches)
+    );
+    if (phone) { d.classList.add('js-anim', 'mobile-lite'); }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" type="image/webp" href="/terka-960.webp" imagesrcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" imagesizes="(min-width: 1024px) 40vw, 90vw">
@@ -131,6 +146,32 @@
   html.js-anim [data-reveal="left"] { transform: translateX(-34px); }
   html.js-anim [data-reveal="right"] { transform: translateX(34px); }
   html.js-anim [data-reveal].revealed { opacity: 1; transform: none; will-change: auto; }
+
+  html.mobile-lite .aura {
+    filter: none;
+    opacity: 0.4;
+  }
+  html.mobile-lite .marquee-track,
+  html.mobile-lite .text-gradient-crimson,
+  html.mobile-lite .text-gradient-champagne,
+  html.mobile-lite .scroll-line::after,
+  html.mobile-lite .animate-ping {
+    animation: none !important;
+  }
+  html.mobile-lite.js-anim [data-reveal],
+  html.mobile-lite.js-anim [data-reveal="scale"],
+  html.mobile-lite.js-anim [data-reveal="left"],
+  html.mobile-lite.js-anim [data-reveal="right"] {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+    transition-delay: 0ms;
+    will-change: transform, opacity;
+  }
+  html.mobile-lite.js-anim [data-reveal].revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 
   /* ---------- spotlight (glow sledující kurzor) ---------- */
   .spotlight { position: relative; }
@@ -678,7 +719,7 @@
           </div>
 
           <!-- text -->
-          <div class="lg:col-span-7" data-reveal="right">
+          <div class="lg:col-span-7" data-reveal="right" data-reveal-split=":scope > p, :scope > h2, :scope > .space-y-5 > p, :scope > .grid, :scope > blockquote">
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">O mně</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Ahoj, <span class="italic text-crimson-700">jsem Terka.</span></h2>
 
@@ -738,8 +779,8 @@
         <!-- velká reportážní fotografie -->
         <div class="group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
           <picture class="contents">
-            <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 100vw">
-            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na večeru Energie a vliv v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
+            <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 400px">
+            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 400px" alt="Terka přednáší na večeru Energie a vliv v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
           </picture>
           <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/70 via-transparent to-[#1a0b10]/20"></div>
           <div class="absolute right-5 top-5 z-10">
@@ -757,7 +798,7 @@
         </div>
 
         <!-- seznam akcí -->
-        <div class="mt-16" data-reveal>
+        <div class="mt-16" data-reveal data-reveal-split=":scope > div:first-child, :scope article">
           <div class="flex items-center justify-between">
             <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">nejbližší akce · podzim 2026</p>
             <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">rezervace nutná</p>
@@ -973,7 +1014,7 @@
         <div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 
           <!-- levý sloupec -->
-          <div data-reveal="left">
+          <div data-reveal="left" data-reveal-split=":scope > p, :scope > h2, :scope > ol, :scope > div">
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-400">První krok</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-white md:text-5xl lg:text-6xl">Rezervujte si <span class="italic text-gradient-champagne pb-[0.08em]">úvodní hovor.</span></h2>
             <p class="mt-7 max-w-md text-[15px] leading-relaxed text-zinc-400">Na první zprávu nic netlačím — a je to tak dobře. Napřed si sedneme na 20&nbsp;minut a poctivě zjistíme, jestli vám můžu pomoct. Nezávazná poptávka zabere dvě minuty. Napište mi, jak to u vás skutečně je.</p>
@@ -1029,7 +1070,7 @@
           </div>
 
           <!-- formulář -->
-          <div data-reveal="right">
+          <div data-reveal="right" data-reveal-split=":scope > *">
             <div class="relative rounded-[2rem] border border-white/10 bg-white/[0.04] p-7 shadow-2xl backdrop-blur-xl md:p-9">
               <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
 
@@ -1137,7 +1178,7 @@
             </div>
           </div>
 
-          <div class="lg:col-span-7" data-reveal="right">
+          <div class="lg:col-span-7" data-reveal="right" data-reveal-split=":scope > .faq-item">
             <div class="faq-item border-t border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Jsem už úspěšná. Je to pro mě?</span>
@@ -1299,8 +1340,9 @@
       function $$(s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); }
 
       var reduced = win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var mobileLite = doc.documentElement.classList.contains('mobile-lite');
       if (reduced) { doc.documentElement.classList.add('cheap-gpu'); }
-      else { doc.documentElement.classList.add('js-anim'); }
+      else if (!mobileLite) { doc.documentElement.classList.add('js-anim'); }
 
       /* ---------- preloader / stav načtení ---------- */
       var isLoaded = false;
@@ -1309,12 +1351,15 @@
         isLoaded = true;
         doc.body.classList.add('is-loaded');
       }
-      if (doc.readyState === 'complete') {
+      if (mobileLite) {
+        setTimeout(setLoaded, 100);
+        setTimeout(setLoaded, 1200);
+      } else if (doc.readyState === 'complete') {
         setTimeout(setLoaded, 350);
       } else {
         win.addEventListener('load', function () { setTimeout(setLoaded, 350); });
+        setTimeout(setLoaded, 3400);
       }
-      setTimeout(setLoaded, 3400);
 
       /* ---------- textový scramble ---------- */
       var SCR = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz0123456789#%&*';
@@ -1343,7 +1388,13 @@
           }
         }, 34);
       }
-      setTimeout(function () { $$('[data-scramble]').forEach(scrambleEl); }, 1000);
+      if (mobileLite) {
+        $$('[data-scramble]').forEach(function (el) {
+          el.textContent = el.getAttribute('data-text') || el.textContent;
+        });
+      } else {
+        setTimeout(function () { $$('[data-scramble]').forEach(scrambleEl); }, 1000);
+      }
 
       /* ---------- progress bar + stav navigace ---------- */
       var progressBar = $('#progress-bar');
@@ -1369,6 +1420,20 @@
       onScrollUI();
 
       /* ---------- scroll reveal ---------- */
+      if (mobileLite) {
+        $$('[data-reveal-split]').forEach(function (parent) {
+          var sel = parent.getAttribute('data-reveal-split');
+          var kids = [];
+          try { kids = $$(sel, parent); } catch (err) { kids = []; }
+          if (!kids.length) return;
+          parent.removeAttribute('data-reveal');
+          parent.removeAttribute('data-reveal-split');
+          kids.forEach(function (el) {
+            if (!el.hasAttribute('data-reveal')) { el.setAttribute('data-reveal', ''); }
+          });
+        });
+      }
+
       var revealEls = $$('[data-reveal]');
       if ('IntersectionObserver' in win && !reduced) {
         var rio = new IntersectionObserver(function (entries, obs) {
@@ -1378,7 +1443,9 @@
               obs.unobserve(en.target);
             }
           });
-        }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+        }, mobileLite
+          ? { threshold: 0, rootMargin: '0px 0px -8% 0px' }
+          : { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
         revealEls.forEach(function (el) { rio.observe(el); });
       } else {
         revealEls.forEach(function (el) { el.classList.add('revealed'); });
