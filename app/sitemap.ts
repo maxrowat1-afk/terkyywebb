@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const site = "https://dneskoucuju.cz";
+const site = "https://www.dneskoucuju.cz";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
