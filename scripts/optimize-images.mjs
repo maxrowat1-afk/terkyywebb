@@ -20,9 +20,18 @@ async function variants(srcName, destBase, widths) {
   }
 }
 
+async function ogShare(srcName, destName) {
+  await sharp(path.join(srcDir, srcName))
+    .rotate()
+    .resize(1200, 630, { fit: "cover", position: "north" })
+    .jpeg({ quality: 84, mozjpeg: true, progressive: true })
+    .toFile(path.join(pub, destName));
+}
+
 await variants("terka.jpg", "terka", [640, 960, 1280]);
 await variants("terka-kreslo.jpg", "terka-kreslo", [640, 960, 1280]);
 await variants("workshop-praha.jpg", "workshop-praha", [800, 1280, 1920]);
 await variants("prosecco-vecer.jpg", "prosecco-vecer", [640, 960]);
+await ogShare("terka.jpg", "og-terka-1200.jpg");
 
 console.log("Optimized image variants written to public/");
