@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://dneskoucuju.cz/sitemap.xml",
-    host: "https://dneskoucuju.cz",
+    sitemap: "https://www.dneskoucuju.cz/sitemap.xml",
+    host: "https://www.dneskoucuju.cz",
   };
 }
