@@ -12,6 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%239b1d30'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-style='italic' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" type="image/webp" href="/terka-960.webp" imagesrcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" imagesizes="(min-width: 1024px) 40vw, 90vw">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/app.css">
 <style>
@@ -70,6 +71,8 @@
     );
     filter: blur(56px);
     opacity: 0.85;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
   }
   html.cheap-gpu .aura {
     filter: none;
@@ -122,11 +125,12 @@
     opacity: 0; transform: translateY(30px);
     transition: opacity .95s cubic-bezier(.22,1,.36,1), transform .95s cubic-bezier(.22,1,.36,1);
     transition-delay: var(--rd, 0ms);
+    will-change: transform, opacity;
   }
   html.js-anim [data-reveal="scale"] { transform: translateY(22px) scale(.96); }
   html.js-anim [data-reveal="left"] { transform: translateX(-34px); }
   html.js-anim [data-reveal="right"] { transform: translateX(34px); }
-  html.js-anim [data-reveal].revealed { opacity: 1; transform: none; }
+  html.js-anim [data-reveal].revealed { opacity: 1; transform: none; will-change: auto; }
 
   /* ---------- spotlight (glow sledující kurzor) ---------- */
   .spotlight { position: relative; }
@@ -458,7 +462,7 @@
                   <div class="photo h-[420px] sm:h-[520px] lg:h-[600px] xl:h-[640px]">
                     <picture class="contents">
                       <source type="image/webp" srcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                      <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="object-[68%_14%]" fetchpriority="high" width="960" height="1439">
+                      <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="object-[68%_14%]" fetchpriority="high" decoding="async" width="960" height="1439">
                     </picture>
                   </div>
                 </div>
@@ -597,7 +601,7 @@
           <article class="tilt spotlight spotlight-light group relative min-h-[320px] overflow-hidden rounded-[1.75rem] border border-white/10 lg:col-span-2" data-tilt="4.5" data-tilt-z="24" data-reveal style="--rd:200ms">
             <picture class="contents">
               <source type="image/webp" srcset="/prosecco-vecer-640.webp 640w, /prosecco-vecer-960.webp 960w" sizes="(min-width: 1024px) 22vw, 90vw">
-              <img src="/prosecco-vecer-960.jpg" srcset="/prosecco-vecer-640.jpg 640w, /prosecco-vecer-960.jpg 960w" sizes="(min-width: 1024px) 22vw, 90vw" alt="Coaching a Prosecco večer v soukromém salónu" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" loading="lazy" width="960" height="640">
+              <img src="/prosecco-vecer-960.jpg" srcset="/prosecco-vecer-640.jpg 640w, /prosecco-vecer-960.jpg 960w" sizes="(min-width: 1024px) 22vw, 90vw" alt="Coaching a Prosecco večer v soukromém salónu" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" width="960" height="640">
             </picture>
             <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10] via-[#1a0b10]/85 to-[#1a0b10]/50"></div>
             <div class="relative z-10 flex h-full flex-col p-7 text-white">
@@ -656,7 +660,7 @@
                 <div class="photo h-[440px] sm:h-[520px] lg:h-[560px]">
                   <picture class="contents">
                     <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                    <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="object-[center_32%]" loading="lazy" width="960" height="1439">
+                    <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="object-[center_32%]" loading="lazy" decoding="async" width="960" height="1439">
                   </picture>
                 </div>
               </div>
@@ -732,7 +736,7 @@
         <div class="group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
           <picture class="contents">
             <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 100vw">
-            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" width="1280" height="853">
+            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
           </picture>
           <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/70 via-transparent to-[#1a0b10]/20"></div>
           <div class="absolute right-5 top-5 z-10">
@@ -1292,9 +1296,7 @@
       function $$(s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); }
 
       var reduced = win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var winOS = /Windows|Win32|Win64/i.test(navigator.userAgent || '');
-      var cheap = !!(reduced || winOS);
-      if (cheap) { doc.documentElement.classList.add('cheap-gpu'); }
+      if (reduced) { doc.documentElement.classList.add('cheap-gpu'); }
       else { doc.documentElement.classList.add('js-anim'); }
 
       /* ---------- preloader / stav načtení ---------- */
@@ -1319,7 +1321,7 @@
           finalText = el.textContent;
           el.setAttribute('data-text', finalText);
         }
-        if (reduced || cheap) { el.textContent = finalText; return; }
+        if (reduced) { el.textContent = finalText; return; }
         var frame = 0;
         var total = 26;
         var iv = setInterval(function () {
