@@ -141,6 +141,26 @@
   }
 
   /* ---------- fotografie ---------- */
+  .photo-frame {
+    --frame-pad: 5px;
+    --frame-r: 2.5rem;
+    --frame-cut: 8rem;
+    position: relative;
+    padding: var(--frame-pad);
+    background: #fff;
+    border: 1px solid rgba(155, 29, 48, 0.28);
+    border-radius: var(--frame-r);
+    box-shadow: 0 20px 60px -22px rgba(22, 24, 29, 0.16);
+  }
+  .photo-frame.is-tl { border-top-left-radius: var(--frame-cut); }
+  .photo-frame.is-br { border-bottom-right-radius: var(--frame-cut); }
+  .photo-frame .photo {
+    overflow: hidden;
+    border-radius: calc(var(--frame-r) - var(--frame-pad));
+  }
+  .photo-frame.is-tl .photo { border-top-left-radius: calc(var(--frame-cut) - var(--frame-pad)); }
+  .photo-frame.is-br .photo { border-bottom-right-radius: calc(var(--frame-cut) - var(--frame-pad)); }
+
   .photo { position: relative; }
   .photo::after {
     content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
@@ -433,13 +453,14 @@
           <div class="lg:col-span-5">
             <div class="relative mx-auto max-w-md lg:max-w-none">
               <div class="hero-fade relative" style="--hd:450ms">
-                <div class="absolute -bottom-5 -right-5 h-full w-full rounded-[2.5rem] rounded-tl-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
                 <div class="aura h-[380px] w-[380px] text-crimson-500/20" style="bottom:-22%; right:-20%;" aria-hidden="true"></div>
-                <div class="photo relative z-10 h-[420px] overflow-hidden rounded-[2.5rem] rounded-tl-[8rem] shadow-soft sm:h-[520px] lg:h-[600px] xl:h-[640px]">
-                  <picture class="contents">
-                    <source type="image/webp" srcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                    <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="object-[68%_14%]" fetchpriority="high" width="960" height="1439">
-                  </picture>
+                <div class="photo-frame is-tl relative z-10">
+                  <div class="photo h-[420px] sm:h-[520px] lg:h-[600px] xl:h-[640px]">
+                    <picture class="contents">
+                      <source type="image/webp" srcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
+                      <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="object-[68%_14%]" fetchpriority="high" width="960" height="1439">
+                    </picture>
+                  </div>
                 </div>
 
                 <div class="absolute -bottom-7 -left-3 z-20 lg:-left-10">
@@ -630,13 +651,14 @@
           <!-- fotografie -->
           <div class="relative lg:col-span-5" data-reveal="left">
             <div class="relative mx-auto max-w-md lg:max-w-none">
-              <div class="absolute -left-5 -top-5 h-full w-full rounded-[2.5rem] rounded-br-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
               <div class="aura h-[360px] w-[360px] text-crimson-400/20" style="top:-16%; left:-18%;" aria-hidden="true"></div>
-              <div class="photo relative z-10 h-[440px] overflow-hidden rounded-[2.5rem] rounded-br-[8rem] shadow-soft sm:h-[520px] lg:h-[560px]">
-                <picture class="contents">
-                  <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="object-[center_32%]" loading="lazy" width="960" height="1439">
-                </picture>
+              <div class="photo-frame is-br relative z-10">
+                <div class="photo h-[440px] sm:h-[520px] lg:h-[560px]">
+                  <picture class="contents">
+                    <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
+                    <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="object-[center_32%]" loading="lazy" width="960" height="1439">
+                  </picture>
+                </div>
               </div>
               <div class="absolute -bottom-8 -right-3 z-20 w-64 lg:-right-8">
                 <div class="rounded-2xl border border-white/80 bg-white/70 p-5 shadow-card backdrop-blur-xl" data-reveal style="--rd:350ms">
