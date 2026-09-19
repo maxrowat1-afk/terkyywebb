@@ -2,10 +2,11 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = path.resolve(import.meta.dirname, "..");
+const srcDir = path.join(root, "assets/source");
 const pub = path.join(root, "public");
 
 async function variants(srcName, destBase, widths) {
-  const src = path.join(pub, srcName);
+  const src = path.join(srcDir, srcName);
   for (const width of widths) {
     const img = sharp(src).rotate().resize({ width, withoutEnlargement: true });
     await img

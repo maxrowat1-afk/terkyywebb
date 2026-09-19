@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dneskoucuju.cz"),
   title: "Dneskoučuju.cz — High Value Woman Energy | Prémiový koučink pro ženy",
   description:
     "Osobní koučink, uzavřená dámská setkání a večery Koučink a prosecco pro ambiciózní ženy. Praha / online.",

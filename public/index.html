@@ -8,7 +8,15 @@
 <meta property="og:title" content="Dneskoučuju.cz — High Value Woman Energy">
 <meta property="og:description" content="Prémiový koučink pro ambiciózní ženy. Individuální programy, dámská setkání a večery Koučink a prosecco.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://dneskoucuju.cz/">
+<meta property="og:image" content="https://dneskoucuju.cz/terka-960.jpg">
+<meta property="og:locale" content="cs_CZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dneskoučuju.cz — High Value Woman Energy">
+<meta name="twitter:description" content="Prémiový koučink pro ambiciózní ženy. Individuální programy, dámská setkání a večery Koučink a prosecco.">
+<meta name="twitter:image" content="https://dneskoucuju.cz/terka-960.jpg">
 <meta name="theme-color" content="#9b1d30">
+<link rel="canonical" href="https://dneskoucuju.cz/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%239b1d30'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-style='italic' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
 <script>
   (function () {
@@ -16,19 +24,26 @@
     var mm = window.matchMedia;
     if (mm && mm('(prefers-reduced-motion: reduce)').matches) {
       d.classList.add('cheap-gpu');
-      return;
+    } else {
+      d.classList.add('js-anim');
+      var phone = mm && (
+        mm('(max-width: 767px)').matches ||
+        (mm('(max-width: 1023px)').matches && mm('(hover: none)').matches)
+      );
+      if (phone) { d.classList.add('mobile-lite'); }
     }
-    var phone = mm && (
-      mm('(max-width: 767px)').matches ||
-      (mm('(max-width: 1023px)').matches && mm('(hover: none)').matches)
-    );
-    if (phone) { d.classList.add('js-anim', 'mobile-lite'); }
+    setTimeout(function () {
+      if (document.body && !document.body.classList.contains('is-loaded')) {
+        d.classList.remove('js-anim');
+      }
+    }, 5000);
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" type="image/webp" href="/terka-960.webp" imagesrcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" imagesizes="(min-width: 1024px) 40vw, 90vw">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/app.css">
 <style>
   ::selection { background: rgba(155,29,48,.92); color: #fff; }
@@ -96,7 +111,6 @@
     filter: blur(56px);
     opacity: 0.85;
     transform: translate3d(0, 0, 0);
-    will-change: transform;
   }
   html.cheap-gpu .aura {
     filter: none;
@@ -373,9 +387,33 @@
   html.cheap-gpu .animate-ping {
     animation: none !important;
   }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    z-index: 10001;
+    transform: translateY(-160%);
+    border-radius: 9999px;
+    background: #9b1d30;
+    color: #fff;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .skip-link:focus { transform: none; }
 </style>
+<noscript>
+  <style>
+    html.js-anim [data-reveal],
+    html.js-anim .hero-word,
+    html.js-anim .hero-fade { opacity: 1 !important; transform: none !important; }
+    #preloader { display: none !important; }
+  </style>
+</noscript>
 </head>
 <body class="font-sans text-zinc-700 antialiased overflow-x-clip">
+  <a href="#main" class="skip-link">Přeskočit na obsah</a>
 
   <!-- preloader -->
   <div id="preloader" aria-hidden="true">
@@ -413,7 +451,7 @@
           <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-700 hover:shadow-crimson focus-visible:shadow-crimson lg:inline-flex" data-magnetic="0.10">
             <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
           </a>
-          <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false">
+          <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
             <span></span>
             <span></span>
           </button>
@@ -423,7 +461,7 @@
   </header>
 
   <!-- mobilní menu -->
-  <div id="mobile-menu" class="fixed inset-0 z-40 overflow-y-auto bg-white/85 backdrop-blur-2xl lg:hidden" aria-label="Mobilní menu">
+  <div id="mobile-menu" class="fixed inset-0 z-40 overflow-y-auto bg-white/85 backdrop-blur-2xl lg:hidden" role="dialog" aria-modal="true" aria-label="Mobilní menu" aria-hidden="true">
     <div class="flex min-h-full flex-col justify-between px-7 pb-10 pt-32">
       <nav class="flex flex-col gap-7" aria-label="Mobilní navigace">
         <a href="#metodika" class="mm-item group flex items-baseline gap-5">
@@ -454,15 +492,15 @@
         <p class="font-mono text-[10px] tracking-[0.3em] uppercase text-zinc-400">kontakt</p>
         <a href="mailto:dneskoucuju@gmail.com" class="mt-3 block font-serif text-xl text-zinc-900">dneskoucuju@gmail.com</a>
         <div class="mt-6 flex items-center gap-3">
-          <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
-          <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
+          <a href="https://instagram.com/dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+          <a href="https://linkedin.com/in/dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://youtube.com/@dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
         </div>
       </div>
     </div>
   </div>
 
-  <main>
+  <main id="main">
 
     <!-- ===================== HERO ===================== -->
     <section id="hero" class="relative overflow-hidden pb-16 pt-32 lg:pb-24 lg:pt-44">
@@ -788,8 +826,8 @@
         <!-- velká reportážní fotografie -->
         <div class="group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
           <picture class="contents">
-            <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 400px">
-            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 400px" alt="Terka přednáší na večeru Energie a vliv v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
+            <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 92vw">
+            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 92vw" alt="Terka přednáší na večeru Energie a vliv v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
           </picture>
           <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/70 via-transparent to-[#1a0b10]/20"></div>
           <div class="absolute right-5 top-5 z-10">
@@ -921,7 +959,7 @@
           <span class="pointer-events-none absolute left-8 top-6 select-none font-serif text-[5rem] leading-none text-crimson-600/[0.08]">„</span>
 
           <div class="relative grid">
-            <article class="testi-slide active">
+            <article class="testi-slide active" aria-hidden="false">
               <div class="flex text-champagne">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -939,7 +977,7 @@
               </div>
             </article>
 
-            <article class="testi-slide">
+            <article class="testi-slide" aria-hidden="true" inert>
               <div class="flex text-champagne">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -957,7 +995,7 @@
               </div>
             </article>
 
-            <article class="testi-slide">
+            <article class="testi-slide" aria-hidden="true" inert>
               <div class="flex text-champagne">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -975,7 +1013,7 @@
               </div>
             </article>
 
-            <article class="testi-slide">
+            <article class="testi-slide" aria-hidden="true" inert>
               <div class="flex text-champagne">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1124,8 +1162,8 @@
                     <textarea id="f-situace" name="situace" rows="4" class="terminal-input resize-none" placeholder="Kde jste teď — a kde chcete být za rok?" required></textarea>
                   </div>
 
-                  <div class="mt-6">
-                    <p class="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">Co vás zajímá</p>
+                  <fieldset class="mt-6">
+                    <legend class="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">Co vás zajímá</legend>
                     <div class="flex flex-wrap gap-2.5">
                       <input type="radio" id="z-ind" name="zajem" value="Individuální 1:1" class="peer sr-only" checked>
                       <label for="z-ind" class="pill">Individuální 1:1</label>
@@ -1138,7 +1176,7 @@
                       <input type="radio" id="z-nevim" name="zajem" value="Zatím nevím" class="peer sr-only">
                       <label for="z-nevim" class="pill">Zatím nevím</label>
                     </div>
-                  </div>
+                  </fieldset>
 
                   <button id="apply-submit" type="submit" class="magnetic btn-shine mt-8 inline-flex w-full items-center justify-center rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-500 hover:shadow-crimson focus-visible:shadow-crimson" data-magnetic="0.08">
                     <span class="magnetic-inner flex items-center gap-2.5"><span id="apply-label">Odeslat poptávku</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-arrow h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><span class="btn-spinner"></span></span>
@@ -1189,11 +1227,11 @@
 
           <div class="lg:col-span-7" data-reveal="right" data-reveal-split=":scope > .faq-item">
             <div class="faq-item border-t border-slate-200/80">
-              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
+              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false" aria-controls="faq-panel-uspech">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Jsem už úspěšná. Je to pro mě?</span>
                 <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
-              <div class="faq-content">
+              <div class="faq-content" id="faq-panel-uspech">
                 <div>
                   <p class="max-w-2xl pb-7 pr-4 text-[15px] leading-relaxed text-zinc-500">Právě proto. Moje klientky nejsou ženy, které potřebují zachraňovat — jsou ženy, které chtějí rovnocennou partnerku. Pracujeme na tom, jak působíte, na plánu i na energii, se kterou vstupujete do dne.</p>
                 </div>
@@ -1201,11 +1239,11 @@
             </div>
 
             <div class="faq-item border-t border-slate-200/80">
-              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
+              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false" aria-controls="faq-panel-kroky">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Jak první kroky probíhají?</span>
                 <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
-              <div class="faq-content">
+              <div class="faq-content" id="faq-panel-kroky">
                 <div>
                   <p class="max-w-2xl pb-7 pr-4 text-[15px] leading-relaxed text-zinc-500">Napíšete mi, já se ozvu do 48&nbsp;hodin. Pokud vidím prostor ke spolupráci, domluvíme si hovor na 20&nbsp;minut. Na něm se spolu rozhodneme, jestli si sedneme — z&nbsp;obou stran. Teprve potom začínáme.</p>
                 </div>
@@ -1213,11 +1251,11 @@
             </div>
 
             <div class="faq-item border-t border-slate-200/80">
-              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
+              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false" aria-controls="faq-panel-kapacita">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Proč omezujete kapacitu?</span>
                 <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
-              <div class="faq-content">
+              <div class="faq-content" id="faq-panel-kapacita">
                 <div>
                   <p class="max-w-2xl pb-7 pr-4 text-[15px] leading-relaxed text-zinc-500">Protože kvalita se nedá naředit. Individuální program: nejvýš 3 klientky najednou. Setkání: 12 žen. Večery: 20. Záměrně a pevně — jinak by to nebylo k&nbsp;ničemu.</p>
                 </div>
@@ -1225,11 +1263,11 @@
             </div>
 
             <div class="faq-item border-t border-slate-200/80">
-              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
+              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false" aria-controls="faq-panel-online">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Pracujete i online?</span>
                 <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
-              <div class="faq-content">
+              <div class="faq-content" id="faq-panel-online">
                 <div>
                   <p class="max-w-2xl pb-7 pr-4 text-[15px] leading-relaxed text-zinc-500">Ano. Individuální koučink vedu v&nbsp;Praze i online — klientky mám v&nbsp;osmi zemích. Setkání a večery jsou pražské, protože tu osobní energii nepřenese žádný přenos.</p>
                 </div>
@@ -1237,11 +1275,11 @@
             </div>
 
             <div class="faq-item border-y border-slate-200/80">
-              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
+              <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false" aria-controls="faq-panel-nesedne">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Co když zjistíme, že to pro mě není?</span>
                 <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
-              <div class="faq-content">
+              <div class="faq-content" id="faq-panel-nesedne">
                 <div>
                   <p class="max-w-2xl pb-7 pr-4 text-[15px] leading-relaxed text-zinc-500">Po Energetickém auditu to budeme obě vědět. Pokud si nesedneme, řeknu vám to na rovinu a doporučím jinou cestu. Žádný nátlak — nemělo by to smysl pro ani jednu z&nbsp;nás.</p>
                 </div>
@@ -1282,9 +1320,9 @@
           </a>
           <p class="mt-6 max-w-xs text-sm leading-relaxed text-zinc-500">Prémiový koučink pro ambiciózní ženy. Individuální programy, dámská setkání a večery Koučink a prosecco. Vše na základě přihlášky.</p>
           <div class="mt-7 flex items-center gap-3">
-            <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span></a>
-            <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></span></a>
-            <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></span></a>
+            <a href="https://instagram.com/dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span></a>
+            <a href="https://linkedin.com/in/dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></span></a>
+            <a href="https://youtube.com/@dneskoucuju" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></span></a>
           </div>
         </div>
 
@@ -1324,8 +1362,8 @@
       <div class="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-zinc-600 md:flex-row">
         <p>© 2026 Dneskoučuju.cz · Tereza Navrátilová. Všechna práva vyhrazena.</p>
         <div class="flex items-center gap-6">
-          <a href="#" class="transition-colors hover:text-zinc-300">Obchodní podmínky</a>
-          <a href="#" class="transition-colors hover:text-zinc-300">Ochrana soukromí</a>
+          <a href="/obchodni-podminky.html" class="transition-colors hover:text-zinc-300">Obchodní podmínky</a>
+          <a href="/ochrana-soukromi.html" class="transition-colors hover:text-zinc-300">Ochrana soukromí</a>
         </div>
         <p class="font-mono tracking-[0.25em] uppercase text-zinc-600">dnes koučuju</p>
       </div>
@@ -1581,6 +1619,10 @@
       }, { passive: true });
 
       win.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menuOpen) {
+          setMenu(false);
+          return;
+        }
         if (e.key === 'Escape' && scrollMode === 'anchor') { stopAnchor(); }
       });
 
@@ -1659,6 +1701,14 @@
           ? { threshold: 0, rootMargin: '0px 0px -8% 0px' }
           : { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
         revealEls.forEach(function (el) { rio.observe(el); });
+        setTimeout(function () {
+          var anyRevealed = revealEls.some(function (el) {
+            return el.classList.contains('revealed');
+          });
+          if (!anyRevealed) {
+            revealEls.forEach(function (el) { el.classList.add('revealed'); });
+          }
+        }, 4000);
       } else {
         revealEls.forEach(function (el) { el.classList.add('revealed'); });
       }
@@ -1667,7 +1717,10 @@
       function runCounter(el) {
         var target = parseFloat(el.getAttribute('data-count'));
         var suffix = el.getAttribute('data-suffix') || '';
-        if (reduced || isNaN(target)) {
+        if (isNaN(target)) {
+          return;
+        }
+        if (reduced) {
           el.textContent = target.toLocaleString('cs-CZ') + suffix;
           return;
         }
@@ -1720,12 +1773,23 @@
       var mobileMenu = $('#mobile-menu');
       var menuOpen = false;
 
-      function setMenu(v) {
+      function setMenu(v, opts) {
         menuOpen = v;
         doc.documentElement.classList.toggle('menu-open', v);
         doc.body.classList.toggle('overflow-hidden', v);
-        if (burger) { burger.setAttribute('aria-expanded', v ? 'true' : 'false'); }
+        if (burger) {
+          burger.setAttribute('aria-expanded', v ? 'true' : 'false');
+          burger.setAttribute('aria-label', v ? 'Zavřít menu' : 'Otevřít menu');
+        }
+        if (mobileMenu) { mobileMenu.setAttribute('aria-hidden', v ? 'false' : 'true'); }
         updateMobileCta();
+        if (opts && opts.silent) return;
+        if (v && mobileMenu) {
+          var first = mobileMenu.querySelector('a[href]');
+          if (first) { first.focus(); }
+        } else if (!v && burger) {
+          burger.focus();
+        }
       }
       if (burger && mobileMenu) {
         burger.addEventListener('click', function () { setMenu(!menuOpen); });
@@ -1733,7 +1797,7 @@
 
       function goToHash(hash, fromMenu) {
         if (anchorY(hash) == null) return false;
-        if (fromMenu) { setMenu(false); }
+        if (fromMenu) { setMenu(false, { silent: true }); }
         function run() {
           var y = anchorY(hash);
           if (y == null) return;
@@ -1807,7 +1871,13 @@
       function tGo(i, user) {
         if (!slides.length) return;
         tIdx = (i + slides.length) % slides.length;
-        slides.forEach(function (s, k) { s.classList.toggle('active', k === tIdx); });
+        slides.forEach(function (s, k) {
+          var on = k === tIdx;
+          s.classList.toggle('active', on);
+          s.setAttribute('aria-hidden', on ? 'false' : 'true');
+          if (on) { s.removeAttribute('inert'); }
+          else { s.setAttribute('inert', ''); }
+        });
         dots.forEach(function (d, k) { d.classList.toggle('active', k === tIdx); });
         if (counterEl) { counterEl.textContent = pad(tIdx + 1) + ' / ' + pad(slides.length); }
         if (user) { tRestart(); }
@@ -1854,6 +1924,48 @@
         });
       });
 
+      /* ---------- magnetic / tilt / spotlight ---------- */
+      if (!reduced && !mobileLite && win.matchMedia && win.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        $$('.spotlight').forEach(function (el) {
+          el.addEventListener('pointermove', function (e) {
+            var r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+          });
+        });
+
+        $$('[data-magnetic]').forEach(function (el) {
+          var strength = parseFloat(el.getAttribute('data-magnetic'));
+          if (isNaN(strength)) { strength = 0.1; }
+          var inner = el.querySelector('.magnetic-inner') || el;
+          el.addEventListener('pointermove', function (e) {
+            var r = el.getBoundingClientRect();
+            var x = (e.clientX - r.left - r.width / 2) * strength;
+            var y = (e.clientY - r.top - r.height / 2) * strength;
+            inner.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)';
+          });
+          el.addEventListener('pointerleave', function () {
+            inner.style.transform = '';
+          });
+        });
+
+        $$('[data-tilt]').forEach(function (el) {
+          var max = parseFloat(el.getAttribute('data-tilt'));
+          var z = parseFloat(el.getAttribute('data-tilt-z'));
+          if (isNaN(max)) { max = 4; }
+          if (isNaN(z)) { z = 12; }
+          el.addEventListener('pointermove', function (e) {
+            var r = el.getBoundingClientRect();
+            var px = (e.clientX - r.left) / r.width - 0.5;
+            var py = (e.clientY - r.top) / r.height - 0.5;
+            el.style.transform = 'perspective(900px) rotateY(' + (px * max).toFixed(2) + 'deg) rotateX(' + (-py * max).toFixed(2) + 'deg) translateZ(' + z + 'px)';
+          });
+          el.addEventListener('pointerleave', function () {
+            el.style.transform = '';
+          });
+        });
+      }
+
       /* ---------- aplikační formulář ---------- */
       var form = $('#apply-form');
       var formWrap = $('#form-wrap');
@@ -1871,6 +1983,30 @@
           f.addEventListener('change', function () { f.classList.remove('input-error'); });
         });
 
+        function resetSubmit() {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('is-sending');
+          }
+          if (submitLabel) { submitLabel.textContent = 'Odeslat poptávku'; }
+        }
+
+        function showSuccess(ref) {
+          if (formWrap) { formWrap.classList.add('form-done'); }
+          setTimeout(function () {
+            form.hidden = true;
+            if (successBox) {
+              if (refEl) { refEl.textContent = ref; }
+              successBox.hidden = false;
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  successBox.classList.add('success-in');
+                });
+              });
+            }
+          }, 380);
+        }
+
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           var firstBad = null;
@@ -1881,29 +2017,50 @@
           });
           if (firstBad) { firstBad.focus(); return; }
 
+          var jmenoEl = $('#f-jmeno', form);
+          var emailEl = $('#f-email', form);
+          var roleEl = $('#f-role', form);
+          var situaceEl = $('#f-situace', form);
+          var zajemEl = form.querySelector('input[name="zajem"]:checked');
+          var jmeno = jmenoEl ? jmenoEl.value.trim() : '';
+          var email = emailEl ? emailEl.value.trim() : '';
+          var roleText = roleEl && roleEl.options[roleEl.selectedIndex]
+            ? roleEl.options[roleEl.selectedIndex].text
+            : '';
+          var situace = situaceEl ? situaceEl.value.trim() : '';
+          if (situace.length > 1200) { situace = situace.slice(0, 1200) + '…'; }
+          var zajem = zajemEl ? zajemEl.value : '';
+          var ref = 'DK-2026-' + (Math.floor(Math.random() * 9000) + 1000);
+          var subject = 'Poptávka ' + ref + ' — ' + jmeno;
+          var body = [
+            'Ref: ' + ref,
+            'Jméno: ' + jmeno,
+            'E-mail: ' + email,
+            'Role: ' + roleText,
+            'Zájem: ' + zajem,
+            '',
+            'Situace:',
+            situace
+          ].join('\n');
+          var href = 'mailto:dneskoucuju@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
           if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.classList.add('is-sending');
           }
           if (submitLabel) { submitLabel.textContent = 'Odesílám…'; }
 
-          setTimeout(function () {
-            if (formWrap) { formWrap.classList.add('form-done'); }
-            setTimeout(function () {
-              form.hidden = true;
-              if (successBox) {
-                if (refEl) {
-                  refEl.textContent = 'DK-2026-' + (Math.floor(Math.random() * 9000) + 1000);
-                }
-                successBox.hidden = false;
-                requestAnimationFrame(function () {
-                  requestAnimationFrame(function () {
-                    successBox.classList.add('success-in');
-                  });
-                });
-              }
-            }, 380);
-          }, 1100);
+          try {
+            var mail = doc.createElement('a');
+            mail.href = href;
+            mail.setAttribute('hidden', '');
+            doc.body.appendChild(mail);
+            mail.click();
+            mail.remove();
+            showSuccess(ref);
+          } catch (err) {
+            resetSubmit();
+          }
         });
       }
 
