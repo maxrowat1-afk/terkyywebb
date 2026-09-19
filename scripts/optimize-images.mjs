@@ -22,5 +22,6 @@ async function variants(srcName, destBase, widths) {
 await variants("terka.jpg", "terka", [640, 960, 1280]);
 await variants("terka-kreslo.jpg", "terka-kreslo", [640, 960, 1280]);
 await variants("workshop-praha.jpg", "workshop-praha", [800, 1280, 1920]);
+await variants("prosecco-vecer.jpg", "prosecco-vecer", [640, 960]);
 
 console.log("Optimized image variants written to public/");
