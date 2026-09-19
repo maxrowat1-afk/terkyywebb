@@ -19,20 +19,8 @@ async function variants(srcName, destBase, widths) {
   }
 }
 
-async function noiseTile() {
-  const size = 128;
-  const buf = Buffer.alloc(size * size);
-  for (let i = 0; i < buf.length; i++) {
-    buf[i] = Math.floor(Math.random() * 256);
-  }
-  await sharp(buf, { raw: { width: size, height: size, channels: 1 } })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(pub, "noise.png"));
-}
-
 await variants("terka.jpg", "terka", [640, 960, 1280]);
 await variants("terka-kreslo.jpg", "terka-kreslo", [640, 960, 1280]);
 await variants("workshop-praha.jpg", "workshop-praha", [800, 1280, 1920]);
-await noiseTile();
 
 console.log("Optimized image variants written to public/");
