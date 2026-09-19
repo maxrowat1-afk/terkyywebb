@@ -411,7 +411,7 @@
   }
   @keyframes scrollLine { 0% { transform: translateY(-20px); } 70%, 100% { transform: translateY(72px); } }
 
-  :focus-visible { outline: 2px solid rgba(155,29,48,.7); outline-offset: 3px; }
+  :focus-visible:not(.field-input):not(.field-select) { outline: 2px solid rgba(155,29,48,.7); outline-offset: 3px; }
 
   h1, h2, h3 { text-wrap: balance; }
   p, li, blockquote { text-wrap: pretty; }
