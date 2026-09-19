@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs" class="scroll-smooth">
+<html lang="cs">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,17 +22,13 @@
   ::-webkit-scrollbar-thumb { background: #c7ccd4; border-radius: 8px; border: 2px solid #f1f2f4; }
   ::-webkit-scrollbar-thumb:hover { background: #9b1d30; }
 
-  html { scroll-padding-top: 7.5rem; }
+  html { scroll-padding-top: 7.5rem; scroll-behavior: auto; }
   body {
     background: linear-gradient(180deg, #f8fafc 0%, #f4f4f5 55%, #f6f6f7 100%);
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
   }
-
-  .noise {
-    position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .05;
-    background-image: url("/noise.png");
-    background-size: 128px 128px;
+  html.cheap-gpu body {
+    text-rendering: auto;
+    -webkit-font-smoothing: auto;
   }
 
   #progress-bar { transform: scaleX(0); transform-origin: left; }
@@ -63,34 +59,19 @@
   }
   html.js-anim body.is-loaded .hero-fade { opacity: 1; transform: none; }
 
-  /* ---------- aura (radial-gradient, no live blur) ---------- */
+  /* ---------- aura (static wash — no animation, no live blur) ---------- */
   .aura {
     position: absolute; border-radius: 9999px; pointer-events: none;
     background: radial-gradient(circle at 50% 50%, currentColor 0%, currentColor 28%, transparent 72%);
   }
-  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .aura {
-      animation: auraDrift var(--adur, 16s) ease-in-out infinite alternate;
-      animation-delay: var(--ad, 0s);
-    }
-  }
-  @keyframes auraDrift {
-    0% { transform: translate3d(0,0,0) scale(1); }
-    100% { transform: translate3d(18px,-14px,0) scale(1.06); }
-  }
 
-  /* ---------- kurzor: klasická šipka v karmínové ---------- */
-  body {
-    cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='28'%20height='28'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M4%202%20L4%2026%20L10.5%2019.8%20L14.8%2029.5%20L19%2027.6%20L14.7%2018.2%20L23.5%2017.6%20Z'%20fill='%239b1d30'%20stroke='white'%20stroke-opacity='0.9'%20stroke-width='1.5'%20stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, auto;
-  }
   a, button, label { cursor: pointer; }
   input, textarea { cursor: text; }
 
   /* ---------- navigace ---------- */
-  #nav-pill { transition: background-color .5s ease, border-color .5s ease, box-shadow .5s ease, backdrop-filter .5s ease; }
+  #nav-pill { transition: background-color .5s ease, border-color .5s ease, box-shadow .5s ease; }
   html.nav-scrolled #nav-pill {
-    background: rgba(255,255,255,.74);
-    -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+    background: #fff;
     border-color: rgba(226,232,240,.95);
     box-shadow: 0 12px 40px -14px rgba(22,24,29,.14);
   }
@@ -154,7 +135,7 @@
     content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), inset 0 -90px 140px -70px rgba(26,11,16,.38), inset 0 70px 110px -80px rgba(255,255,255,.5);
   }
-  .photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.94) contrast(1.03); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
 
   /* ---------- typografické efekty ---------- */
   .text-gradient-crimson {
@@ -282,15 +263,23 @@
     html.js-anim [data-reveal], html.js-anim .hero-word, html.js-anim .hero-fade { opacity: 1 !important; transform: none !important; filter: none !important; }
   }
 
-  @media (pointer: coarse) {
-    html { scroll-behavior: auto; }
-    #mobile-menu {
-      -webkit-backdrop-filter: none; backdrop-filter: none;
-      background: rgba(255,255,255,.96);
-    }
-    .backdrop-blur, .backdrop-blur-xl, .backdrop-blur-2xl {
-      -webkit-backdrop-filter: none; backdrop-filter: none;
-    }
+  /* Windows Chrome software-rasterizes backdrop-filter and stutters on scroll. */
+  .backdrop-blur,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .bg-white\/50 { background-color: rgba(255,255,255,.94); }
+  .bg-white\/60 { background-color: rgba(255,255,255,.96); }
+  .bg-white\/70 { background-color: rgba(255,255,255,.97); }
+  #mobile-menu { background: #fff; }
+  html.cheap-gpu .marquee-track,
+  html.cheap-gpu .text-gradient-crimson,
+  html.cheap-gpu .text-gradient-champagne,
+  html.cheap-gpu .scroll-line::after,
+  html.cheap-gpu .animate-ping {
+    animation: none !important;
   }
 </style>
 </head>
@@ -309,9 +298,6 @@
 
   <!-- scroll progress -->
   <div id="progress-bar" class="fixed inset-x-0 top-0 z-[70] h-[2px] bg-gradient-to-r from-crimson-600 via-crimson-400 to-champagne"></div>
-
-  <!-- noise / papír -->
-  <div class="noise" aria-hidden="true"></div>
 
   <!-- header -->
   <header id="site-header" class="fixed inset-x-0 top-0 z-50">
@@ -638,7 +624,7 @@
               <div class="photo relative z-10 h-[440px] overflow-hidden rounded-[2.5rem] rounded-br-[8rem] shadow-soft sm:h-[520px] lg:h-[560px]">
                 <picture class="contents">
                   <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="h-full w-full object-cover object-[center_18%]" data-parallax="0.07" data-scale="1.08" loading="lazy" width="960" height="1439">
+                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="h-full w-full object-cover object-[center_18%]" loading="lazy" width="960" height="1439">
                 </picture>
               </div>
               <div class="absolute -bottom-8 -right-3 z-20 w-64 lg:-right-8">
@@ -713,7 +699,7 @@
         <div class="group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
           <picture class="contents">
             <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 100vw">
-            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" data-parallax="0.12" data-scale="1.15" loading="lazy" width="1280" height="853">
+            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" loading="lazy" width="1280" height="853">
           </picture>
           <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/70 via-transparent to-[#1a0b10]/20"></div>
           <div class="absolute right-5 top-5 z-10">
@@ -1271,12 +1257,12 @@
 
       function $(s, c) { return (c || doc).querySelector(s); }
       function $$(s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); }
-      function lerp(a, b, t) { return a + (b - a) * t; }
 
       var reduced = win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var fine = win.matchMedia && win.matchMedia('(pointer: fine)').matches;
-
-      doc.documentElement.classList.add('js-anim');
+      var winOS = /Windows|Win32|Win64/i.test(navigator.userAgent || '');
+      var cheap = !!(reduced || winOS);
+      if (cheap) { doc.documentElement.classList.add('cheap-gpu'); }
+      else { doc.documentElement.classList.add('js-anim'); }
 
       /* ---------- preloader / stav načtení ---------- */
       var isLoaded = false;
@@ -1300,7 +1286,7 @@
           finalText = el.textContent;
           el.setAttribute('data-text', finalText);
         }
-        if (reduced) { el.textContent = finalText; return; }
+        if (reduced || cheap) { el.textContent = finalText; return; }
         var frame = 0;
         var total = 26;
         var iv = setInterval(function () {
@@ -1321,128 +1307,6 @@
       }
       setTimeout(function () { $$('[data-scramble]').forEach(scrambleEl); }, 1000);
 
-      /* ---------- registry efektů ---------- */
-      var tiltItems = [];
-      var magItems = [];
-      var rafOn = false;
-
-      function needFx() {
-        if (doc.hidden || reduced || !fine) return false;
-        var i;
-        for (i = 0; i < magItems.length; i++) {
-          var m = magItems[i];
-          if (m.active || Math.abs(m.x) > 0.05 || Math.abs(m.y) > 0.05 || Math.abs(m.sc - 1) > 0.01) return true;
-        }
-        for (i = 0; i < tiltItems.length; i++) {
-          var s = tiltItems[i];
-          if (s.hover || Math.abs(s.rx) > 0.02 || Math.abs(s.ry) > 0.02) return true;
-        }
-        return false;
-      }
-
-      function master() {
-        rafOn = false;
-        tiltItems.forEach(function (s) {
-          s.rx = lerp(s.rx, s.tx, 0.12);
-          s.ry = lerp(s.ry, s.ty, 0.12);
-          if (s.hover || Math.abs(s.rx) > 0.02 || Math.abs(s.ry) > 0.02) {
-            s.el.style.transform = 'perspective(1200px) rotateX(' + s.rx.toFixed(3) + 'deg) rotateY(' + s.ry.toFixed(3) + 'deg) translateZ(' + s.z + 'px)';
-          } else if (s.el.style.transform) {
-            s.el.style.transform = '';
-          }
-        });
-
-        magItems.forEach(function (m) {
-          m.x = lerp(m.x, m.tx, 0.14);
-          m.y = lerp(m.y, m.ty, 0.14);
-          m.sc = lerp(m.sc, m.tsc, 0.18);
-          if (m.active || Math.abs(m.x) > 0.05 || Math.abs(m.y) > 0.05 || Math.abs(m.sc - 1) > 0.01) {
-            m.el.style.transform = 'translate3d(' + m.x.toFixed(2) + 'px,' + m.y.toFixed(2) + 'px,0) scale(' + m.sc.toFixed(3) + ')';
-            if (m.inner) {
-              m.inner.style.transform = 'translate3d(' + (m.x * 0.15).toFixed(2) + 'px,' + (m.y * 0.15).toFixed(2) + 'px,0)';
-            }
-          } else if (m.el.style.transform) {
-            m.el.style.transform = '';
-            if (m.inner) { m.inner.style.transform = ''; }
-          }
-        });
-
-        if (needFx()) {
-          rafOn = true;
-          requestAnimationFrame(master);
-        }
-      }
-
-      function kickFx() {
-        if (!rafOn) {
-          rafOn = true;
-          requestAnimationFrame(master);
-        }
-      }
-
-      if (fine && !reduced) {
-        $$('.tilt').forEach(function (el) {
-          var s = {
-            el: el, rx: 0, ry: 0, tx: 0, ty: 0, hover: false,
-            z: parseFloat(el.getAttribute('data-tilt-z')) || 0,
-            max: parseFloat(el.getAttribute('data-tilt')) || 5
-          };
-          el.addEventListener('pointermove', function (e) {
-            var r = el.getBoundingClientRect();
-            var px = (e.clientX - r.left) / r.width - 0.5;
-            var py = (e.clientY - r.top) / r.height - 0.5;
-            s.tx = px * s.max;
-            s.ty = -py * s.max;
-            s.hover = true;
-            kickFx();
-          });
-          el.addEventListener('pointerleave', function () {
-            s.tx = 0; s.ty = 0; s.hover = false;
-            kickFx();
-          });
-          tiltItems.push(s);
-        });
-
-        $$('.magnetic').forEach(function (el) {
-          var raw = parseFloat(el.getAttribute('data-magnetic'));
-          var m = {
-            el: el,
-            inner: $('.magnetic-inner', el),
-            x: 0, y: 0, tx: 0, ty: 0, sc: 1, tsc: 1, active: false,
-            strength: Math.min(isNaN(raw) ? 0.1 : raw, 0.12)
-          };
-          el.addEventListener('pointermove', function (e) {
-            var r = el.getBoundingClientRect();
-            m.tx = (e.clientX - r.left - r.width / 2) * m.strength;
-            m.ty = (e.clientY - r.top - r.height / 2) * m.strength;
-            m.active = true;
-            kickFx();
-          });
-          el.addEventListener('pointerleave', function () {
-            m.tx = 0; m.ty = 0; m.tsc = 1; m.active = false;
-            kickFx();
-          });
-          el.addEventListener('pointerdown', function () { m.tsc = 0.97; kickFx(); });
-          el.addEventListener('pointerup', function () { m.tsc = 1; kickFx(); });
-          magItems.push(m);
-        });
-      }
-
-      doc.addEventListener('visibilitychange', function () {
-        if (!doc.hidden) { kickFx(); }
-      });
-
-      /* ---------- spotlight (glow sledující kurzor) ---------- */
-      if (fine && !reduced) {
-        $$('.spotlight').forEach(function (el) {
-          el.addEventListener('pointermove', function (e) {
-            var r = el.getBoundingClientRect();
-            el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-            el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-          }, { passive: true });
-        });
-      }
-
       /* ---------- progress bar + stav navigace ---------- */
       var progressBar = $('#progress-bar');
       var headerEl = $('#site-header');
@@ -1455,33 +1319,16 @@
         if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', h.scrollTop > 24); }
       }
 
-      /* ---------- scroll parallax (desktop only) ---------- */
-      var pxEls = (fine && !reduced) ? $$('[data-parallax]') : [];
-      function parallaxUpdate() {
-        if (!pxEls.length) return;
-        var vh = win.innerHeight;
-        pxEls.forEach(function (el) {
-          var r = el.getBoundingClientRect();
-          if (r.bottom < -80 || r.top > vh + 80) return;
-          var sp = parseFloat(el.getAttribute('data-parallax')) || 0.1;
-          var sc = el.getAttribute('data-scale') || '1.15';
-          var prog = (r.top + r.height / 2 - vh / 2) / vh;
-          el.style.transform = 'translate3d(0,' + (-prog * sp * 130).toFixed(1) + 'px,0) scale(' + sc + ')';
-        });
-      }
-
       var ticking = false;
       win.addEventListener('scroll', function () {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(function () {
           onScrollUI();
-          parallaxUpdate();
           ticking = false;
         });
       }, { passive: true });
       onScrollUI();
-      parallaxUpdate();
 
       /* ---------- scroll reveal ---------- */
       var revealEls = $$('[data-reveal]');
