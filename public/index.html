@@ -1470,17 +1470,7 @@
       }
 
       function anchorPos(start, end, t) {
-        var travel = end - start;
-        var sign = travel < 0 ? -1 : 1;
-        var extra = Math.max(48, Math.min(110, Math.abs(travel) * 0.11)) * sign;
-        var peak = end + extra;
-        if (t < 0.7) {
-          return start + (peak - start) * easeOutExpo(t / 0.7);
-        }
-        var u = (t - 0.7) / 0.3;
-        var ease = 1 - Math.pow(1 - u, 2.6);
-        var y = peak + (end - peak) * ease;
-        return y - Math.sin(u * Math.PI) * extra * 0.22;
+        return start + (end - start) * easeOutExpo(t);
       }
 
       function startRaf() {
@@ -1549,7 +1539,7 @@
           start: currentY,
           end: y,
           t0: performance.now(),
-          dur: Math.max(800, Math.min(1300, 800 + (dist / Math.max(win.innerHeight, 1)) * 280))
+          dur: Math.max(700, Math.min(1100, 700 + (dist / Math.max(win.innerHeight, 1)) * 220))
         };
         startRaf();
       }
