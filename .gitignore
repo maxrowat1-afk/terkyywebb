@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+/fotkz/
 
 # debug
 npm-debug.log*
