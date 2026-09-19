@@ -12,54 +12,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%239b1d30'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-style='italic' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  window.tailwind = window.tailwind || {};
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          crimson: {
-            50: '#fbf3f5',
-            100: '#f6e3e8',
-            200: '#edc8d1',
-            300: '#e0a2b1',
-            400: '#cd7089',
-            500: '#b04a63',
-            600: '#9b1d30',
-            700: '#831a2a',
-            800: '#6b1522',
-            900: '#53111a',
-            950: '#360a10'
-          },
-          champagne: '#c8a96a'
-        },
-        fontFamily: {
-          serif: ['"Playfair Display"', 'Georgia', 'serif'],
-          sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
-        },
-        boxShadow: {
-          softer: '0 8px 30px -12px rgba(22,24,29,.10)',
-          soft: '0 20px 60px -22px rgba(22,24,29,.16)',
-          card: '0 1px 2px rgba(22,24,29,.05), 0 16px 40px -18px rgba(22,24,29,.12), inset 0 1px 0 rgba(255,255,255,.9)',
-          'card-hover': '0 2px 4px rgba(22,24,29,.06), 0 28px 70px -22px rgba(22,24,29,.18), inset 0 1px 0 rgba(255,255,255,.9)',
-          crimson: '0 12px 34px -10px rgba(155,29,48,.5)',
-          'crimson-lg': '0 22px 60px -14px rgba(155,29,48,.6)'
-        },
-        animation: {
-          'float-slow': 'floatSlow 8s ease-in-out infinite',
-          'pulse-dot': 'pulseDot 2.4s ease-in-out infinite'
-        },
-        keyframes: {
-          floatSlow: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-14px)' } },
-          pulseDot: { '0%,100%': { opacity: '1', transform: 'scale(1)' }, '50%': { opacity: '.5', transform: 'scale(.75)' } }
-        }
-      }
-    }
-  };
-</script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css">
 <style>
   ::selection { background: rgba(155,29,48,.92); color: #fff; }
 
@@ -77,7 +31,8 @@
 
   .noise {
     position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("/noise.png");
+    background-size: 128px 128px;
   }
 
   #progress-bar { transform: scaleX(0); transform-origin: left; }
@@ -95,11 +50,11 @@
 
   /* ---------- hero entrance ---------- */
   html.js-anim .hero-word {
-    display: inline-block; opacity: 0; transform: translateY(44px) rotate(3deg); filter: blur(8px);
-    transition: transform 1.05s cubic-bezier(.22,1,.36,1), opacity .8s ease, filter .8s ease;
+    display: inline-block; opacity: 0; transform: translateY(44px) rotate(3deg);
+    transition: transform 1.05s cubic-bezier(.22,1,.36,1), opacity .8s ease;
     transition-delay: var(--wd, 0ms);
   }
-  html.js-anim body.is-loaded .hero-word { opacity: 1; transform: none; filter: blur(0); }
+  html.js-anim body.is-loaded .hero-word { opacity: 1; transform: none; }
 
   html.js-anim .hero-fade {
     opacity: 0; transform: translateY(26px);
@@ -108,9 +63,21 @@
   }
   html.js-anim body.is-loaded .hero-fade { opacity: 1; transform: none; }
 
-  /* ---------- aura ---------- */
-  .aura { position: absolute; border-radius: 9999px; filter: blur(90px); will-change: transform; pointer-events: none; }
-  @media (max-width: 767px) { .aura { filter: blur(55px); } }
+  /* ---------- aura (radial-gradient, no live blur) ---------- */
+  .aura {
+    position: absolute; border-radius: 9999px; pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, currentColor 0%, currentColor 28%, transparent 72%);
+  }
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .aura {
+      animation: auraDrift var(--adur, 16s) ease-in-out infinite alternate;
+      animation-delay: var(--ad, 0s);
+    }
+  }
+  @keyframes auraDrift {
+    0% { transform: translate3d(0,0,0) scale(1); }
+    100% { transform: translate3d(18px,-14px,0) scale(1.06); }
+  }
 
   /* ---------- kurzor: klasická šipka v karmínové ---------- */
   body {
@@ -160,7 +127,7 @@
 
   /* ---------- scroll reveal ---------- */
   html.js-anim [data-reveal] {
-    opacity: 0; transform: translateY(30px); will-change: transform, opacity;
+    opacity: 0; transform: translateY(30px);
     transition: opacity .95s cubic-bezier(.22,1,.36,1), transform .95s cubic-bezier(.22,1,.36,1);
     transition-delay: var(--rd, 0ms);
   }
@@ -187,7 +154,7 @@
     content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), inset 0 -90px 140px -70px rgba(26,11,16,.38), inset 0 70px 110px -80px rgba(255,255,255,.5);
   }
-  .photo img { filter: saturate(.94) contrast(1.03); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.94) contrast(1.03); }
 
   /* ---------- typografické efekty ---------- */
   .text-gradient-crimson {
@@ -314,6 +281,17 @@
     }
     html.js-anim [data-reveal], html.js-anim .hero-word, html.js-anim .hero-fade { opacity: 1 !important; transform: none !important; filter: none !important; }
   }
+
+  @media (pointer: coarse) {
+    html { scroll-behavior: auto; }
+    #mobile-menu {
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+      background: rgba(255,255,255,.96);
+    }
+    .backdrop-blur, .backdrop-blur-xl, .backdrop-blur-2xl {
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+    }
+  }
 </style>
 </head>
 <body class="font-sans text-zinc-700 antialiased overflow-x-clip">
@@ -354,8 +332,8 @@
           <a href="#faq" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">FAQ</a>
         </nav>
         <div class="flex items-center gap-3">
-          <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-crimson transition-colors hover:bg-crimson-700 lg:inline-flex" data-magnetic="0.3">
-            <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<i data-lucide="arrow-right" class="h-3.5 w-3.5"></i></span>
+          <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-crimson transition-colors hover:bg-crimson-700 lg:inline-flex" data-magnetic="0.10">
+            <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
           </a>
           <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false">
             <span></span>
@@ -391,16 +369,16 @@
           <span class="font-serif text-4xl text-zinc-900 transition-colors group-hover:text-crimson-700">FAQ</span>
         </a>
         <a href="#podani" class="mm-item mt-4 inline-flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson">
-          Rezervovat konzultaci<i data-lucide="arrow-right" class="h-4 w-4"></i>
+          Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </nav>
       <div class="mm-item mt-12 border-t border-slate-200 pt-7">
         <p class="font-mono text-[10px] tracking-[0.3em] uppercase text-zinc-400">kontakt</p>
         <a href="mailto:ahoj@deneskouciju.cz" class="mt-3 block font-serif text-xl text-zinc-900">ahoj@deneskouciju.cz</a>
         <div class="mt-6 flex items-center gap-3">
-          <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><i data-lucide="instagram" class="h-[18px] w-[18px]"></i></a>
-          <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><i data-lucide="linkedin" class="h-[18px] w-[18px]"></i></a>
-          <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><i data-lucide="youtube" class="h-[18px] w-[18px]"></i></a>
+          <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+          <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full border border-slate-200 text-zinc-500 transition-colors hover:border-crimson-300 hover:text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
         </div>
       </div>
     </div>
@@ -410,9 +388,9 @@
 
     <!-- ===================== HERO ===================== -->
     <section id="hero" class="relative overflow-hidden pb-16 pt-32 lg:pb-24 lg:pt-44">
-      <div class="aura h-[440px] w-[440px] bg-crimson-400/25" style="top:-10%; right:4%;" aria-hidden="true"></div>
-      <div class="aura h-[380px] w-[380px] bg-[#d8b98a]/30" style="bottom:-14%; left:26%;" aria-hidden="true"></div>
-      <div class="aura h-[300px] w-[300px] bg-slate-300/50" style="top:38%; left:-8%;" aria-hidden="true"></div>
+      <div class="aura h-[440px] w-[440px] text-crimson-400/45" style="top:-10%; right:4%; --ad:-2s; --adur:18s;" aria-hidden="true"></div>
+      <div class="aura h-[380px] w-[380px] text-[#d8b98a]/45" style="bottom:-14%; left:26%; --ad:-7s; --adur:22s;" aria-hidden="true"></div>
+      <div class="aura h-[300px] w-[300px] text-slate-300/60" style="top:38%; left:-8%; --ad:-4s; --adur:16s;" aria-hidden="true"></div>
 
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
@@ -442,28 +420,31 @@
             </p>
 
             <div class="hero-fade mt-10 flex flex-wrap items-center gap-4" style="--hd:660ms">
-              <a href="#podani" class="magnetic btn-shine inline-flex items-center rounded-full bg-crimson-600 px-7 py-4 text-sm font-semibold text-white shadow-crimson transition-shadow duration-300 hover:shadow-crimson-lg" data-magnetic="0.32">
-                <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<i data-lucide="arrow-right" class="h-4 w-4"></i></span>
+              <a href="#podani" class="magnetic btn-shine inline-flex items-center rounded-full bg-crimson-600 px-7 py-4 text-sm font-semibold text-white shadow-crimson transition-shadow duration-300 hover:shadow-crimson-lg" data-magnetic="0.10">
+                <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
               </a>
-              <a href="#metodika" class="magnetic group inline-flex items-center rounded-full border border-slate-300/90 bg-white/50 px-6 py-4 text-sm font-semibold text-zinc-700 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.22">
-                <span class="magnetic-inner flex items-center gap-2.5">Prozkoumat metodologii<i data-lucide="arrow-down" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"></i></span>
+              <a href="#metodika" class="magnetic group inline-flex items-center rounded-full border border-slate-300/90 bg-white/50 px-6 py-4 text-sm font-semibold text-zinc-700 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.08">
+                <span class="magnetic-inner flex items-center gap-2.5">Prozkoumat metodologii<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>
               </a>
             </div>
           </div>
 
           <!-- portrét -->
           <div class="lg:col-span-5">
-            <div class="relative mx-auto max-w-md lg:max-w-none" data-depth="0.5">
+            <div class="relative mx-auto max-w-md lg:max-w-none">
               <div class="hero-fade relative" style="--hd:450ms">
                 <div class="absolute -bottom-5 -right-5 h-full w-full rounded-[2.5rem] rounded-tl-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
-                <div class="aura h-[300px] w-[300px] bg-crimson-500/25" style="bottom:-12%; right:-14%;" aria-hidden="true"></div>
+                <div class="aura h-[300px] w-[300px] text-crimson-500/40" style="bottom:-12%; right:-14%; --ad:-5s; --adur:20s;" aria-hidden="true"></div>
                 <div class="photo relative z-10 h-[420px] overflow-hidden rounded-[2.5rem] rounded-tl-[8rem] shadow-soft sm:h-[520px] lg:h-[600px] xl:h-[640px]">
-                  <img src="/terka.jpg" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="h-full w-full object-cover object-[center_22%]" data-parallax="0.06" data-scale="1.08" fetchpriority="high">
+                  <picture class="contents">
+                    <source type="image/webp" srcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
+                    <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="h-full w-full object-cover object-[center_22%]" fetchpriority="high" width="960" height="1439">
+                  </picture>
                 </div>
 
                 <div class="absolute -bottom-7 -left-3 z-20 lg:-left-10">
                   <div class="flex items-center gap-4 rounded-2xl border border-white/80 bg-white/70 p-4 pr-6 shadow-card backdrop-blur-xl">
-                    <span class="grid h-11 w-11 place-items-center rounded-xl bg-crimson-600 text-white shadow-crimson"><i data-lucide="gem" class="h-5 w-5"></i></span>
+                    <span class="grid h-11 w-11 place-items-center rounded-xl bg-crimson-600 text-white shadow-crimson"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
                     <div>
                       <p class="font-serif text-lg leading-tight text-zinc-900">Tereza Navrátilová</p>
                       <p class="mt-1 font-mono text-[9px] uppercase tracking-[0.25em] text-crimson-600">High Value Coach · ICF</p>
@@ -530,7 +511,7 @@
 
     <!-- ===================== METODOLOGIE / BENTO ===================== -->
     <section id="metodika" class="relative py-24 lg:py-36">
-      <div class="aura h-[360px] w-[360px] bg-crimson-400/10" style="top:10%; right:-10%;" aria-hidden="true"></div>
+      <div class="aura h-[360px] w-[360px] text-crimson-400/22" style="top:10%; right:-10%; --ad:-6s; --adur:19s;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
@@ -549,16 +530,16 @@
             <div class="pointer-events-none absolute -right-8 -top-12 select-none font-serif text-[11rem] leading-none text-crimson-600/[0.05]">01</div>
             <div class="relative z-10 flex h-full flex-col">
               <div class="flex items-center justify-between">
-                <span class="grid h-12 w-12 place-items-center rounded-2xl bg-crimson-600 text-white shadow-crimson"><i data-lucide="gem" class="h-5 w-5"></i></span>
+                <span class="grid h-12 w-12 place-items-center rounded-2xl bg-crimson-600 text-white shadow-crimson"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">formát 01</span>
               </div>
               <h3 class="mt-8 font-serif text-3xl text-zinc-900 lg:text-4xl">Individuální koučink <span class="italic text-crimson-700">1:1</span></h3>
               <p class="mt-4 max-w-lg text-[15px] leading-relaxed text-zinc-500">Dvanáct týdnů intenzivní práce na vašem sebevědomí, standardech a prezenci. Hluboká diagnostika, jasná strategie a sparring, který vám nedovolí spokojit se s méně, než dokážete.</p>
               <ul class="mt-7 space-y-3.5">
-                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><i data-lucide="check" class="h-3 w-3"></i></span>Hluboká diagnostika Energy Audit</li>
-                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><i data-lucide="check" class="h-3 w-3"></i></span>Týdenní 90minutové session (Praha / online)</li>
-                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><i data-lucide="check" class="h-3 w-3"></i></span>Přímá linka na mě mezi session</li>
-                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><i data-lucide="check" class="h-3 w-3"></i></span>Osobní materiály a akční plány</li>
+                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Hluboká diagnostika Energy Audit</li>
+                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Týdenní 90minutové session (Praha / online)</li>
+                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Přímá linka na mě mezi session</li>
+                <li class="flex items-start gap-3 text-sm text-zinc-600"><span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Osobní materiály a akční plány</li>
               </ul>
               <div class="mt-5 flex flex-wrap gap-2">
                 <span class="rounded-full border border-slate-200 bg-white/60 px-3 py-1 text-[11px] text-zinc-500">12 týdnů</span>
@@ -572,7 +553,7 @@
                 </div>
                 <a href="#podani" class="group/link inline-flex items-center gap-2 text-sm font-semibold text-crimson-700 transition-colors hover:text-crimson-600">
                   <span class="border-b border-crimson-200 pb-0.5 transition-colors group-hover/link:border-crimson-600">Rezervovat konzultaci</span>
-                  <i data-lucide="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"></i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
               </div>
             </div>
@@ -582,7 +563,7 @@
           <article class="tilt spotlight group relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl lg:col-span-2" data-tilt="4.5" data-tilt-z="24" data-reveal style="--rd:100ms">
             <div class="relative z-10 flex h-full flex-col">
               <div class="flex items-center justify-between">
-                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><i data-lucide="users" class="h-5 w-5"></i></span>
+                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">formát 02</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl text-zinc-900">Dámská setkání</h3>
@@ -599,7 +580,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/95 via-[#1a0b10]/65 to-[#1a0b10]/25"></div>
             <div class="relative z-10 flex h-full flex-col p-7 text-white">
               <div class="flex items-center justify-between">
-                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-white/20 bg-white/10 text-champagne backdrop-blur"><i data-lucide="wine" class="h-5 w-5"></i></span>
+                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-white/20 bg-white/10 text-champagne backdrop-blur"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg></span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">formát 03</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl">Coaching &amp; Prosecco večery</h3>
@@ -614,7 +595,7 @@
           <article class="tilt spotlight group relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl lg:col-span-3" data-tilt="4" data-tilt-z="10" data-reveal style="--rd:100ms">
             <div class="relative z-10 flex h-full flex-col">
               <div class="flex items-center justify-between">
-                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><i data-lucide="gauge" class="h-5 w-5"></i></span>
+                <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-crimson-600">vstupní bod</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl text-zinc-900">Energy Audit — 90 minut</h3>
@@ -623,7 +604,7 @@
                 <p class="font-serif text-xl text-zinc-900">3&nbsp;900&nbsp;Kč <span class="text-sm text-zinc-400">/ jednorázově</span></p>
                 <a href="#podani" class="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-crimson-700 transition-colors hover:text-crimson-600">
                   <span class="border-b border-crimson-200 pb-0.5 transition-colors group-hover/link:border-crimson-600">Rezervovat audit</span>
-                  <i data-lucide="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-1"></i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-1" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
               </div>
             </div>
@@ -653,13 +634,16 @@
           <div class="relative lg:col-span-5" data-reveal="left">
             <div class="relative mx-auto max-w-md lg:max-w-none">
               <div class="absolute -left-5 -top-5 h-full w-full rounded-[2.5rem] rounded-br-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
-              <div class="aura h-[280px] w-[280px] bg-crimson-400/20" style="top:-10%; left:-12%;" aria-hidden="true"></div>
+              <div class="aura h-[280px] w-[280px] text-crimson-400/35" style="top:-10%; left:-12%; --ad:-3s; --adur:17s;" aria-hidden="true"></div>
               <div class="photo relative z-10 h-[440px] overflow-hidden rounded-[2.5rem] rounded-br-[8rem] shadow-soft sm:h-[520px] lg:h-[560px]">
-                <img src="/terka-kreslo.jpg" alt="Tereza Navrátilová v interiéru — analytická autorita" class="h-full w-full object-cover object-[center_18%]" data-parallax="0.07" data-scale="1.08" loading="lazy">
+                <picture class="contents">
+                  <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
+                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="h-full w-full object-cover object-[center_18%]" data-parallax="0.07" data-scale="1.08" loading="lazy" width="960" height="1439">
+                </picture>
               </div>
               <div class="absolute -bottom-8 -right-3 z-20 w-64 lg:-right-8">
                 <div class="rounded-2xl border border-white/80 bg-white/70 p-5 shadow-card backdrop-blur-xl" data-reveal style="--rd:350ms">
-                  <i data-lucide="quote" class="h-5 w-5 text-crimson-600"></i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-crimson-600" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
                   <p class="mt-3 font-serif text-lg leading-snug text-zinc-800">Řeknu vám to, co se ostatním nechce.</p>
                   <p class="mt-2 font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-400">— terka</p>
                 </div>
@@ -682,22 +666,22 @@
 
             <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
               <div class="rounded-2xl border border-white/70 bg-white/50 p-4 shadow-softer backdrop-blur">
-                <i data-lucide="badge-check" class="h-5 w-5 text-crimson-600"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-crimson-600" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
                 <p class="mt-3 text-sm font-semibold text-zinc-900">ICF certifikace</p>
                 <p class="mt-1 text-xs leading-relaxed text-zinc-400">mezinárodní standard koučingu</p>
               </div>
               <div class="rounded-2xl border border-white/70 bg-white/50 p-4 shadow-softer backdrop-blur">
-                <i data-lucide="hourglass" class="h-5 w-5 text-crimson-600"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-crimson-600" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
                 <p class="mt-3 text-sm font-semibold text-zinc-900">1&nbsp;200+ hodin</p>
                 <p class="mt-1 text-xs leading-relaxed text-zinc-400">individuální praxe s klientkami</p>
               </div>
               <div class="rounded-2xl border border-white/70 bg-white/50 p-4 shadow-softer backdrop-blur">
-                <i data-lucide="globe" class="h-5 w-5 text-crimson-600"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                 <p class="mt-3 text-sm font-semibold text-zinc-900">500+ žen</p>
                 <p class="mt-1 text-xs leading-relaxed text-zinc-400">ze 14 zemí a 3 kontinentů</p>
               </div>
               <div class="rounded-2xl border border-white/70 bg-white/50 p-4 shadow-softer backdrop-blur">
-                <i data-lucide="presentation" class="h-5 w-5 text-crimson-600"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-crimson-600" aria-hidden="true"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>
                 <p class="mt-3 text-sm font-semibold text-zinc-900">40+ akcí</p>
                 <p class="mt-1 text-xs leading-relaxed text-zinc-400">vyprodaných v Praze</p>
               </div>
@@ -713,7 +697,7 @@
 
     <!-- ===================== WORKSHOPY ===================== -->
     <section id="workshopy" class="relative py-24 lg:py-36">
-      <div class="aura h-[400px] w-[400px] bg-champagne/15" style="bottom:5%; left:-12%;" aria-hidden="true"></div>
+      <div class="aura h-[400px] w-[400px] text-champagne/30" style="bottom:5%; left:-12%; --ad:-9s; --adur:21s;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
@@ -727,11 +711,14 @@
 
         <!-- velká reportážní fotografie -->
         <div class="group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
-          <img src="/workshop-praha.jpg" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" data-parallax="0.12" data-scale="1.15" loading="lazy">
+          <picture class="contents">
+            <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 100vw">
+            <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 100vw" alt="Terka přednáší na workshopu Energy &amp; Influence v Praze" class="h-full w-full object-cover object-[center_55%]" data-parallax="0.12" data-scale="1.15" loading="lazy" width="1280" height="853">
+          </picture>
           <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/70 via-transparent to-[#1a0b10]/20"></div>
           <div class="absolute right-5 top-5 z-10">
             <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-xl">
-              <i data-lucide="flame" class="h-3.5 w-3.5 text-champagne"></i>vyprodáno za 72 h
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-champagne" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>vyprodáno za 72 h
             </span>
           </div>
           <div class="absolute bottom-5 left-5 z-10 right-5 flex flex-wrap items-end justify-between gap-4">
@@ -764,9 +751,9 @@
                 </div>
                 <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-zinc-500">Odkud se bere vaše prezence a jak ji ovládat. Přednáška, privátní Q&amp;A a prosecco v salónu.</p>
                 <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="map-pin" class="h-3.5 w-3.5 text-crimson-600"></i>Salon Aurelia, Praha 2</span>
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="users" class="h-3.5 w-3.5 text-crimson-600"></i>20 žen</span>
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="clock" class="h-3.5 w-3.5 text-crimson-600"></i>18:30–21:30</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Salon Aurelia, Praha 2</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>20 žen</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>18:30–21:30</span>
                 </div>
               </div>
               <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
@@ -774,7 +761,7 @@
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">od 1&nbsp;900&nbsp;Kč</p>
                 </div>
-                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.4" aria-label="Rezervovat místo —Energie High Value Woman"><span class="magnetic-inner"><i data-lucide="arrow-up-right" class="h-5 w-5"></i></span></a>
+                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.12" aria-label="Rezervovat místo —Energie High Value Woman"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></a>
               </div>
             </article>
 
@@ -790,9 +777,9 @@
                 </div>
                 <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-zinc-500">Interaktivní workshop o tom, jak říct „ne“ tak, aby vás svět bral vážně — a ještě vám byl vděčný.</p>
                 <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="map-pin" class="h-3.5 w-3.5 text-crimson-600"></i>Workshop studio, Karlín</span>
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="users" class="h-3.5 w-3.5 text-crimson-600"></i>12 žen</span>
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="clock" class="h-3.5 w-3.5 text-crimson-600"></i>9:00–13:00</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Workshop studio, Karlín</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>12 žen</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>9:00–13:00</span>
                 </div>
               </div>
               <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
@@ -800,7 +787,7 @@
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">od 2&nbsp;900&nbsp;Kč</p>
                 </div>
-                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.4" aria-label="Rezervovat místo —Hranice bez omluv"><span class="magnetic-inner"><i data-lucide="arrow-up-right" class="h-5 w-5"></i></span></a>
+                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.12" aria-label="Rezervovat místo —Hranice bez omluv"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></a>
               </div>
             </article>
 
@@ -816,8 +803,8 @@
                 </div>
                 <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-zinc-500">Online masterclass o prezenci pro mezinárodní publikum. Záznam a materiály v ceně.</p>
                 <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="globe" class="h-3.5 w-3.5 text-crimson-600"></i>online · celý svět</span>
-                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><i data-lucide="clock" class="h-3.5 w-3.5 text-crimson-600"></i>19:00–20:30 CET</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>online · celý svět</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>19:00–20:30 CET</span>
                 </div>
               </div>
               <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
@@ -825,7 +812,7 @@
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">od 1&nbsp;200&nbsp;Kč</p>
                 </div>
-                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.4" aria-label="Rezervovat místo —Prezence: jak vstoupit do místnosti"><span class="magnetic-inner"><i data-lucide="arrow-up-right" class="h-5 w-5"></i></span></a>
+                <a href="#podani" class="magnetic grid h-12 w-12 place-items-center rounded-full bg-crimson-600 text-white shadow-crimson transition-colors hover:bg-crimson-700" data-magnetic="0.12" aria-label="Rezervovat místo —Prezence: jak vstoupit do místnosti"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></a>
               </div>
             </article>
 
@@ -834,7 +821,7 @@
           <div class="mt-10 flex justify-center" data-reveal>
             <a href="#podani" class="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-600 transition-colors hover:text-crimson-700">
               <span class="border-b border-slate-300 pb-0.5 transition-colors group-hover:border-crimson-600">Kompletní nabídka a rezervace</span>
-              <i data-lucide="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
         </div>
@@ -860,11 +847,11 @@
           <div class="relative grid">
             <article class="testi-slide active">
               <div class="flex text-champagne">
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <blockquote class="mt-6 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Po třech měsících mě na jednáních začali brát vážně byznys partneři. Ne proto, že bych se změnila — ale proto, že jsem přestala omlouvat to, kdo jsem."</blockquote>
               <div class="mt-8 flex items-center gap-4">
@@ -878,11 +865,11 @@
 
             <article class="testi-slide">
               <div class="flex text-champagne">
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <blockquote class="mt-6 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Terka vás nehladí po hlavě. Postaví vám zrcadlo a nedovolí vám od něj uhnout. Je to nepříjemné — a zároveň nejlepší, co jsem za posledních deset let pro sebe udělala."</blockquote>
               <div class="mt-8 flex items-center gap-4">
@@ -896,11 +883,11 @@
 
             <article class="testi-slide">
               <div class="flex text-champagne">
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <blockquote class="mt-6 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Přišla jsem za sebevědomím, odešla jsem se strategií. Za rok jsem si zdvojnásobila sazby a dostala povýšení. Energy Audit sám o sobě stál za to."</blockquote>
               <div class="mt-8 flex items-center gap-4">
@@ -914,11 +901,11 @@
 
             <article class="testi-slide">
               <div class="flex text-champagne">
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
-                <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 fill-current" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <blockquote class="mt-6 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Myslela jsem, že koučink je luxus pro ztracené. Po jednom večeru s Terkou jsem zjistila, že je to nástroj pro ambiciózní. Za tři měsíce jsem našla víc než za pět let sebereflexe."</blockquote>
               <div class="mt-8 flex items-center gap-4">
@@ -941,8 +928,8 @@
                 <button class="testi-dot" aria-label="Reference 4"></button>
               </div>
               <div class="flex items-center gap-3">
-                <button id="testi-prev" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.4" aria-label="Předchozí reference"><span class="magnetic-inner"><i data-lucide="arrow-left" class="h-4 w-4"></i></span></button>
-                <button id="testi-next" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.4" aria-label="Další reference"><span class="magnetic-inner"><i data-lucide="arrow-right" class="h-4 w-4"></i></span></button>
+                <button id="testi-prev" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.12" aria-label="Předchozí reference"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg></span></button>
+                <button id="testi-next" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.12" aria-label="Další reference"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
               </div>
             </div>
           </div>
@@ -952,8 +939,8 @@
 
     <!-- ===================== APLIKAČNÍ TERMINÁL ===================== -->
     <section id="podani" class="relative z-10 -mt-8 overflow-hidden rounded-t-[2.5rem] bg-[#150a0e] py-24 text-zinc-100 lg:py-36">
-      <div class="aura h-[480px] w-[480px] bg-crimson-600/25" style="top:-15%; left:-10%;" aria-hidden="true"></div>
-      <div class="aura h-[420px] w-[420px] bg-crimson-800/40" style="bottom:-12%; right:-8%;" aria-hidden="true"></div>
+      <div class="aura h-[480px] w-[480px] text-crimson-600/40" style="top:-15%; left:-10%; --ad:-1s; --adur:18s;" aria-hidden="true"></div>
+      <div class="aura h-[420px] w-[420px] text-crimson-800/55" style="bottom:-12%; right:-8%; --ad:-8s; --adur:23s;" aria-hidden="true"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-crimson-600/10 to-transparent" aria-hidden="true"></div>
 
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
@@ -1007,9 +994,9 @@
             </div>
 
             <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-zinc-500">
-              <span class="inline-flex items-center gap-2"><i data-lucide="shield-check" class="h-4 w-4 text-crimson-400"></i>ICF kodex etiky</span>
-              <span class="inline-flex items-center gap-2"><i data-lucide="lock" class="h-4 w-4 text-crimson-400"></i>diskrétnost jako standard</span>
-              <span class="inline-flex items-center gap-2"><i data-lucide="file-check" class="h-4 w-4 text-crimson-400"></i>data pod GDPR</span>
+              <span class="inline-flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-crimson-400" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>ICF kodex etiky</span>
+              <span class="inline-flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-crimson-400" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>diskrétnost jako standard</span>
+              <span class="inline-flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-crimson-400" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>data pod GDPR</span>
             </div>
 
             <p class="mt-10 text-sm text-zinc-500">Radši e-mail? <a href="mailto:ahoj@deneskouciju.cz" class="font-medium text-crimson-300 underline decoration-crimson-800 underline-offset-4 transition-colors hover:text-crimson-200">ahoj@deneskouciju.cz</a></p>
@@ -1052,7 +1039,7 @@
                         <option value="expertka">Expertka / freelance</option>
                         <option value="jina">Jiná — vše vysvětlím níže</option>
                       </select>
-                      <i data-lucide="chevron-down" class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500"></i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
                     </div>
                   </div>
 
@@ -1077,19 +1064,19 @@
                     </div>
                   </div>
 
-                  <button id="apply-submit" type="submit" class="magnetic btn-shine mt-8 inline-flex w-full items-center justify-center rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson transition-all hover:bg-crimson-500" data-magnetic="0.15">
-                    <span class="magnetic-inner flex items-center gap-2.5"><span id="apply-label">Odeslat poptávku</span><i data-lucide="arrow-right" class="btn-arrow h-4 w-4"></i><span class="btn-spinner"></span></span>
+                  <button id="apply-submit" type="submit" class="magnetic btn-shine mt-8 inline-flex w-full items-center justify-center rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson transition-all hover:bg-crimson-500" data-magnetic="0.08">
+                    <span class="magnetic-inner flex items-center gap-2.5"><span id="apply-label">Odeslat poptávku</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-arrow h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><span class="btn-spinner"></span></span>
                   </button>
 
                   <p class="mt-5 flex items-center justify-center gap-2 text-center text-xs text-zinc-500">
-                    <i data-lucide="lock" class="h-3.5 w-3.5 shrink-0 text-crimson-400/70"></i>Odpovídám do 48 hodin. Vaše data zůstávají mezi námi.
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 shrink-0 text-crimson-400/70" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Odpovídám do 48 hodin. Vaše data zůstávají mezi námi.
                   </p>
                 </form>
               </div>
 
               <div id="apply-success" hidden>
                 <div class="py-8 text-center">
-                  <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-crimson-600/20 text-crimson-300 shadow-crimson"><i data-lucide="check" class="h-7 w-7"></i></div>
+                  <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-crimson-600/20 text-crimson-300 shadow-crimson"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
                   <h3 class="mt-7 font-serif text-3xl text-white">Poptávka odeslána.</h3>
                   <p class="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-zinc-400">Díky za upřímnost. Ozvu se osobně do 48 hodin — a pokud si sedneme, domluvíme si call.</p>
                   <p class="mt-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 font-mono text-xs tracking-[0.2em] text-zinc-500">ref: <span id="ref-number" class="text-crimson-300">DK-2026-0000</span></p>
@@ -1118,7 +1105,7 @@
                 <p class="mt-2 text-sm leading-relaxed text-zinc-500">Napište mi přímo — odpovídám sama, ne asistentka.</p>
                 <a href="mailto:ahoj@deneskouciju.cz" class="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-crimson-700 transition-colors hover:text-crimson-600">
                   <span class="border-b border-crimson-200 pb-0.5 transition-colors group-hover:border-crimson-600">ahoj@deneskouciju.cz</span>
-                  <i data-lucide="arrow-up-right" class="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"></i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
                 </a>
               </div>
             </div>
@@ -1128,7 +1115,7 @@
             <div class="faq-item border-t border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Jsem už úspěšná. Je to pro mě?</span>
-                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><i data-lucide="plus" class="h-4 w-4"></i></span>
+                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
               <div class="faq-content">
                 <div>
@@ -1140,7 +1127,7 @@
             <div class="faq-item border-t border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Jak první kroky probíhají?</span>
-                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><i data-lucide="plus" class="h-4 w-4"></i></span>
+                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
               <div class="faq-content">
                 <div>
@@ -1152,7 +1139,7 @@
             <div class="faq-item border-t border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Proč omezujete kapacitu?</span>
-                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><i data-lucide="plus" class="h-4 w-4"></i></span>
+                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
               <div class="faq-content">
                 <div>
@@ -1164,7 +1151,7 @@
             <div class="faq-item border-t border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Pracujete i online?</span>
-                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><i data-lucide="plus" class="h-4 w-4"></i></span>
+                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
               <div class="faq-content">
                 <div>
@@ -1176,7 +1163,7 @@
             <div class="faq-item border-y border-slate-200/80">
               <button type="button" class="faq-toggle flex w-full items-center justify-between gap-6 py-7 text-left" aria-expanded="false">
                 <span class="font-serif text-xl text-zinc-900 md:text-2xl">Co když zjistíme, že to pro mě není?</span>
-                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><i data-lucide="plus" class="h-4 w-4"></i></span>
+                <span class="faq-icon grid h-10 w-10 shrink-0 place-items-center rounded-full border border-slate-200 text-zinc-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
               </button>
               <div class="faq-content">
                 <div>
@@ -1201,8 +1188,8 @@
       <div class="flex flex-col items-center text-center" data-reveal>
         <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-400">poslední krok</p>
         <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl">Zítra<br><span class="italic text-gradient-champagne pb-[0.08em]">budete hrát jinak.</span></h2>
-        <a href="#podani" class="magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-2xl transition-shadow hover:shadow-crimson-lg" data-magnetic="0.3">
-          <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<i data-lucide="arrow-right" class="h-4 w-4"></i></span>
+        <a href="#podani" class="magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-2xl transition-shadow hover:shadow-crimson-lg" data-magnetic="0.10">
+          <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </a>
       </div>
 
@@ -1219,9 +1206,9 @@
           </a>
           <p class="mt-6 max-w-xs text-sm leading-relaxed text-zinc-500">Prémiový koučink pro ambiciózní ženy. Individuální programy, dámská setkání a Coaching &amp; Prosecco večery. Vše na základě přihlášky.</p>
           <div class="mt-7 flex items-center gap-3">
-            <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.45"><span class="magnetic-inner"><i data-lucide="instagram" class="h-[18px] w-[18px]"></i></span></a>
-            <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.45"><span class="magnetic-inner"><i data-lucide="linkedin" class="h-[18px] w-[18px]"></i></span></a>
-            <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.45"><span class="magnetic-inner"><i data-lucide="youtube" class="h-[18px] w-[18px]"></i></span></a>
+            <a href="https://instagram.com/deneskouciju" target="_blank" rel="noopener" aria-label="Instagram" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span></a>
+            <a href="https://linkedin.com/in/deneskouciju" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></span></a>
+            <a href="https://youtube.com/@deneskouciju" target="_blank" rel="noopener" aria-label="YouTube" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-crimson-500/50 hover:text-crimson-300" data-magnetic="0.12"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[18px] w-[18px]" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></span></a>
           </div>
         </div>
 
@@ -1250,9 +1237,9 @@
           <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">kontakt</p>
           <ul class="mt-5 space-y-3.5 text-sm">
             <li>
-              <a href="mailto:ahoj@deneskouciju.cz" class="inline-flex items-center gap-2.5 transition-colors hover:text-white"><i data-lucide="mail" class="h-4 w-4 text-crimson-400"></i>ahoj@deneskouciju.cz</a>
+              <a href="mailto:ahoj@deneskouciju.cz" class="inline-flex items-center gap-2.5 transition-colors hover:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-crimson-400" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>ahoj@deneskouciju.cz</a>
             </li>
-            <li class="inline-flex items-center gap-2.5"><i data-lucide="map-pin" class="h-4 w-4 text-crimson-400"></i>Praha 2 · online · celý svět</li>
+            <li class="inline-flex items-center gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-crimson-400" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Praha 2 · online · celý svět</li>
           </ul>
           <p class="mt-8 max-w-[240px] font-serif text-lg italic leading-snug text-zinc-500">„Dnes koučuju. Zítra budete hrát jinak."</p>
         </div>
@@ -1272,11 +1259,9 @@
   <!-- mobilní plovoucí CTA -->
   <div id="mobile-cta">
     <a href="#podani" class="flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson-lg">
-      Rezervovat konzultaci<i data-lucide="arrow-right" class="h-4 w-4"></i>
+      Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
   </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     (function () {
       'use strict';
@@ -1292,8 +1277,6 @@
       var fine = win.matchMedia && win.matchMedia('(pointer: fine)').matches;
 
       doc.documentElement.classList.add('js-anim');
-
-      if (win.lucide) { win.lucide.createIcons(); }
 
       /* ---------- preloader / stav načtení ---------- */
       var isLoaded = false;
@@ -1338,20 +1321,64 @@
       }
       setTimeout(function () { $$('[data-scramble]').forEach(scrambleEl); }, 1000);
 
-      /* ---------- souřadnice kurzoru (aura, spotlight, hloubka) ---------- */
-      var mouse = { x: win.innerWidth / 2, y: win.innerHeight / 2 };
-      if (fine && !reduced) {
-        win.addEventListener('pointermove', function (e) {
-          mouse.x = e.clientX;
-          mouse.y = e.clientY;
-        }, { passive: true });
-      }
-
       /* ---------- registry efektů ---------- */
-      var auroraEls = $$('.aura');
-      var depthEls = (fine && !reduced) ? $$('[data-depth]') : [];
       var tiltItems = [];
       var magItems = [];
+      var rafOn = false;
+
+      function needFx() {
+        if (doc.hidden || reduced || !fine) return false;
+        var i;
+        for (i = 0; i < magItems.length; i++) {
+          var m = magItems[i];
+          if (m.active || Math.abs(m.x) > 0.05 || Math.abs(m.y) > 0.05 || Math.abs(m.sc - 1) > 0.01) return true;
+        }
+        for (i = 0; i < tiltItems.length; i++) {
+          var s = tiltItems[i];
+          if (s.hover || Math.abs(s.rx) > 0.02 || Math.abs(s.ry) > 0.02) return true;
+        }
+        return false;
+      }
+
+      function master() {
+        rafOn = false;
+        tiltItems.forEach(function (s) {
+          s.rx = lerp(s.rx, s.tx, 0.12);
+          s.ry = lerp(s.ry, s.ty, 0.12);
+          if (s.hover || Math.abs(s.rx) > 0.02 || Math.abs(s.ry) > 0.02) {
+            s.el.style.transform = 'perspective(1200px) rotateX(' + s.rx.toFixed(3) + 'deg) rotateY(' + s.ry.toFixed(3) + 'deg) translateZ(' + s.z + 'px)';
+          } else if (s.el.style.transform) {
+            s.el.style.transform = '';
+          }
+        });
+
+        magItems.forEach(function (m) {
+          m.x = lerp(m.x, m.tx, 0.14);
+          m.y = lerp(m.y, m.ty, 0.14);
+          m.sc = lerp(m.sc, m.tsc, 0.18);
+          if (m.active || Math.abs(m.x) > 0.05 || Math.abs(m.y) > 0.05 || Math.abs(m.sc - 1) > 0.01) {
+            m.el.style.transform = 'translate3d(' + m.x.toFixed(2) + 'px,' + m.y.toFixed(2) + 'px,0) scale(' + m.sc.toFixed(3) + ')';
+            if (m.inner) {
+              m.inner.style.transform = 'translate3d(' + (m.x * 0.15).toFixed(2) + 'px,' + (m.y * 0.15).toFixed(2) + 'px,0)';
+            }
+          } else if (m.el.style.transform) {
+            m.el.style.transform = '';
+            if (m.inner) { m.inner.style.transform = ''; }
+          }
+        });
+
+        if (needFx()) {
+          rafOn = true;
+          requestAnimationFrame(master);
+        }
+      }
+
+      function kickFx() {
+        if (!rafOn) {
+          rafOn = true;
+          requestAnimationFrame(master);
+        }
+      }
 
       if (fine && !reduced) {
         $$('.tilt').forEach(function (el) {
@@ -1367,98 +1394,54 @@
             s.tx = px * s.max;
             s.ty = -py * s.max;
             s.hover = true;
+            kickFx();
           });
           el.addEventListener('pointerleave', function () {
             s.tx = 0; s.ty = 0; s.hover = false;
+            kickFx();
           });
           tiltItems.push(s);
         });
 
         $$('.magnetic').forEach(function (el) {
+          var raw = parseFloat(el.getAttribute('data-magnetic'));
           var m = {
             el: el,
             inner: $('.magnetic-inner', el),
             x: 0, y: 0, tx: 0, ty: 0, sc: 1, tsc: 1, active: false,
-            strength: parseFloat(el.getAttribute('data-magnetic')) || 0.32
+            strength: Math.min(isNaN(raw) ? 0.1 : raw, 0.12)
           };
           el.addEventListener('pointermove', function (e) {
             var r = el.getBoundingClientRect();
             m.tx = (e.clientX - r.left - r.width / 2) * m.strength;
-            m.ty = (e.clientY - r.top - r.height / 2) * m.strength * 1.15;
+            m.ty = (e.clientY - r.top - r.height / 2) * m.strength;
             m.active = true;
+            kickFx();
           });
           el.addEventListener('pointerleave', function () {
             m.tx = 0; m.ty = 0; m.tsc = 1; m.active = false;
+            kickFx();
           });
-          el.addEventListener('pointerdown', function () { m.tsc = 0.95; });
-          el.addEventListener('pointerup', function () { m.tsc = 1; });
+          el.addEventListener('pointerdown', function () { m.tsc = 0.97; kickFx(); });
+          el.addEventListener('pointerup', function () { m.tsc = 1; kickFx(); });
           magItems.push(m);
         });
       }
 
-      /* ---------- master animační smyčka ---------- */
-      function master() {
-        if (!reduced) {
-          var t = performance.now() * 0.001;
-          var mx = mouse.x - win.innerWidth / 2;
-          var my = mouse.y - win.innerHeight / 2;
-
-          auroraEls.forEach(function (el, i) {
-            var ph = i * 2.3;
-            var sp = 0.5 + i * 0.22;
-            var amp = 26 + i * 10;
-            var par = 0.02 + i * 0.012;
-            var x = Math.sin(t * sp + ph) * amp + mx * par;
-            var y = Math.cos(t * sp * 0.85 + ph * 1.4) * amp + my * par;
-            var sc = 1 + Math.sin(t * 0.45 + i * 1.7) * 0.07;
-            el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ')';
-          });
-
-          depthEls.forEach(function (el) {
-            var d = parseFloat(el.getAttribute('data-depth')) || 0;
-            var x = -mx * d * 0.045;
-            var y = -my * d * 0.045;
-            el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
-          });
-        }
-
-        tiltItems.forEach(function (s) {
-          s.rx = lerp(s.rx, s.tx, 0.12);
-          s.ry = lerp(s.ry, s.ty, 0.12);
-          if (s.hover || Math.abs(s.rx) > 0.02 || Math.abs(s.ry) > 0.02) {
-            s.el.style.transform = 'perspective(1200px) rotateX(' + s.rx.toFixed(3) + 'deg) rotateY(' + s.ry.toFixed(3) + 'deg) translateZ(' + s.z + 'px)';
-          } else if (s.el.style.transform) {
-            s.el.style.transform = '';
-          }
-        });
-
-        magItems.forEach(function (m) {
-          m.x = lerp(m.x, m.tx, 0.22);
-          m.y = lerp(m.y, m.ty, 0.22);
-          m.sc = lerp(m.sc, m.tsc, 0.2);
-          if (m.active || Math.abs(m.x) > 0.05 || Math.abs(m.y) > 0.05 || Math.abs(m.sc - 1) > 0.01) {
-            m.el.style.transform = 'translate3d(' + m.x.toFixed(2) + 'px,' + m.y.toFixed(2) + 'px,0) scale(' + m.sc.toFixed(3) + ')';
-            if (m.inner) {
-              m.inner.style.transform = 'translate3d(' + (m.x * 0.35).toFixed(2) + 'px,' + (m.y * 0.35).toFixed(2) + 'px,0)';
-            }
-          } else if (m.el.style.transform) {
-            m.el.style.transform = '';
-            if (m.inner) { m.inner.style.transform = ''; }
-          }
-        });
-
-        requestAnimationFrame(master);
-      }
-      requestAnimationFrame(master);
+      doc.addEventListener('visibilitychange', function () {
+        if (!doc.hidden) { kickFx(); }
+      });
 
       /* ---------- spotlight (glow sledující kurzor) ---------- */
-      $$('.spotlight').forEach(function (el) {
-        el.addEventListener('pointermove', function (e) {
-          var r = el.getBoundingClientRect();
-          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-        }, { passive: true });
-      });
+      if (fine && !reduced) {
+        $$('.spotlight').forEach(function (el) {
+          el.addEventListener('pointermove', function (e) {
+            var r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+          }, { passive: true });
+        });
+      }
 
       /* ---------- progress bar + stav navigace ---------- */
       var progressBar = $('#progress-bar');
@@ -1472,9 +1455,10 @@
         if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', h.scrollTop > 24); }
       }
 
-      /* ---------- scroll parallax ---------- */
-      var pxEls = $$('[data-parallax]');
+      /* ---------- scroll parallax (desktop only) ---------- */
+      var pxEls = (fine && !reduced) ? $$('[data-parallax]') : [];
       function parallaxUpdate() {
+        if (!pxEls.length) return;
         var vh = win.innerHeight;
         pxEls.forEach(function (el) {
           var r = el.getBoundingClientRect();

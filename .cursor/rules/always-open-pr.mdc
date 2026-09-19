@@ -1,0 +1,15 @@
+---
+description: After every completed task, open a new GitHub PR
+alwaysApply: true
+---
+
+# Always open a new PR when a task is done
+
+When you finish a user task that produced code, config, or other repo changes:
+
+1. Create a **new git branch** for that task. Never dump the work onto an existing feature branch or an already-open PR.
+2. Commit the task work (follow the repo git safety protocol; no secrets, no unused junk).
+3. Push the new branch with `-u`.
+4. Open a **new** GitHub PR with `gh pr create` (Summary + Test plan). Do not wait to be asked.
+
+This is standing policy for this repo. "Create a PR" is part of completing the task, not an optional follow-up. One task → one new branch → one new PR.
