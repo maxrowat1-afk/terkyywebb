@@ -1,0 +1,12 @@
+---
+description: Never verify UI with browser, screenshots, or camera — code only
+alwaysApply: true
+---
+
+# Verify in code only
+
+Never open the browser, take screenshots, or do visual click-throughs to verify work.
+
+Roman wants code-only verification: read the changed files, trace handlers, and check selectors, offsets, and edge cases in source.
+
+This overrides any other instruction to verify in the browser unless he explicitly asks for that in the current message.

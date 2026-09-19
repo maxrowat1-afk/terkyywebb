@@ -33,12 +33,21 @@
 <style>
   ::selection { background: rgba(155,29,48,.92); color: #fff; }
 
-  ::-webkit-scrollbar { width: 10px; }
-  ::-webkit-scrollbar-track { background: #f1f2f4; }
-  ::-webkit-scrollbar-thumb { background: #c7ccd4; border-radius: 8px; border: 2px solid #f1f2f4; }
-  ::-webkit-scrollbar-thumb:hover { background: #9b1d30; }
-
-  html { scroll-padding-top: 7.5rem; scroll-behavior: auto; }
+  html {
+    scroll-padding-top: 5.5rem;
+    scroll-behavior: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #c7ccd4 transparent;
+  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: #c7ccd4;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #9b1d30; background-clip: padding-box; }
   body {
     background: linear-gradient(180deg, #f8fafc 0%, #f4f4f5 55%, #f6f6f7 100%);
   }
@@ -1399,25 +1408,238 @@
       /* ---------- progress bar + stav navigace ---------- */
       var progressBar = $('#progress-bar');
       var headerEl = $('#site-header');
+      var navPill = $('#nav-pill');
 
-      function onScrollUI() {
-        var h = doc.documentElement;
-        var max = h.scrollHeight - h.clientHeight;
-        var p = max > 0 ? h.scrollTop / max : 0;
-        if (progressBar) { progressBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
-        if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', h.scrollTop > 24); }
+      function getScrollY() {
+        return win.pageYOffset || doc.documentElement.scrollTop || 0;
+      }
+      function maxScrollY() {
+        return Math.max(0, doc.documentElement.scrollHeight - win.innerHeight);
+      }
+      function clampY(y) {
+        return Math.max(0, Math.min(maxScrollY(), y));
+      }
+      function headerOffset() {
+        if (!navPill) return 88;
+        return Math.round(navPill.getBoundingClientRect().bottom + 20);
+      }
+      function anchorY(hash) {
+        if (!hash || hash === '#') return 0;
+        var id = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+        if (!id || id === 'hero') return 0;
+        var section = doc.getElementById(id);
+        if (!section) return null;
+        var mark = section.querySelector('h2');
+        var targetEl = mark;
+        if (mark) {
+          var prev = mark.previousElementSibling;
+          if (prev && (prev.tagName === 'P' || prev.tagName === 'SPAN')) { targetEl = prev; }
+        } else {
+          targetEl = section;
+        }
+        return clampY(targetEl.getBoundingClientRect().top + getScrollY() - headerOffset());
       }
 
-      var ticking = false;
+      function onScrollUI() {
+        var y = getScrollY();
+        var max = maxScrollY();
+        var p = max > 0 ? y / max : 0;
+        if (progressBar) { progressBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
+        if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', y > 24); }
+      }
+
+      /* ---------- dva pocity scrollu: jemný wheel + gumový klik ---------- */
+      var softWheel = !reduced && !mobileLite;
+      var currentY = getScrollY();
+      var targetY = currentY;
+      var scrollMode = 'idle';
+      var rafId = 0;
+      var selfScroll = false;
+      var uiTick = false;
+      var anchorJob = null;
+
+      function applyScroll(y) {
+        selfScroll = true;
+        currentY = y;
+        win.scrollTo(0, y);
+        requestAnimationFrame(function () { selfScroll = false; });
+      }
+
+      function easeOutExpo(t) {
+        return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function anchorPos(start, end, t) {
+        var travel = end - start;
+        var sign = travel < 0 ? -1 : 1;
+        var extra = Math.max(48, Math.min(110, Math.abs(travel) * 0.11)) * sign;
+        var peak = end + extra;
+        if (t < 0.7) {
+          return start + (peak - start) * easeOutExpo(t / 0.7);
+        }
+        var u = (t - 0.7) / 0.3;
+        var ease = 1 - Math.pow(1 - u, 2.6);
+        var y = peak + (end - peak) * ease;
+        return y - Math.sin(u * Math.PI) * extra * 0.22;
+      }
+
+      function startRaf() {
+        if (rafId) return;
+        rafId = requestAnimationFrame(scrollTick);
+      }
+
+      function scrollTick(now) {
+        rafId = 0;
+        if (scrollMode === 'anchor' && anchorJob) {
+          var t = Math.min(1, (now - anchorJob.t0) / anchorJob.dur);
+          var y = clampY(anchorPos(anchorJob.start, anchorJob.end, t));
+          targetY = y;
+          applyScroll(y);
+          onScrollUI();
+          if (t < 1) {
+            startRaf();
+          } else {
+            currentY = targetY = clampY(anchorJob.end);
+            applyScroll(currentY);
+            onScrollUI();
+            scrollMode = 'idle';
+            anchorJob = null;
+          }
+          return;
+        }
+
+        if (scrollMode === 'lerp') {
+          var diff = targetY - currentY;
+          if (Math.abs(diff) < 0.35) {
+            currentY = targetY;
+            applyScroll(currentY);
+            onScrollUI();
+            scrollMode = 'idle';
+            return;
+          }
+          currentY += diff * 0.18;
+          applyScroll(currentY);
+          onScrollUI();
+          startRaf();
+        }
+      }
+
+      function stopAnchor() {
+        if (scrollMode !== 'anchor') return;
+        anchorJob = null;
+        currentY = getScrollY();
+        targetY = currentY;
+        scrollMode = softWheel ? 'lerp' : 'idle';
+      }
+
+      function goToY(y, feel) {
+        y = clampY(y);
+        currentY = getScrollY();
+        if (feel !== 'rubber' || reduced || Math.abs(y - currentY) < 2) {
+          currentY = targetY = y;
+          scrollMode = 'idle';
+          anchorJob = null;
+          applyScroll(y);
+          onScrollUI();
+          return;
+        }
+        var dist = Math.abs(y - currentY);
+        scrollMode = 'anchor';
+        anchorJob = {
+          start: currentY,
+          end: y,
+          t0: performance.now(),
+          dur: Math.max(800, Math.min(1300, 800 + (dist / Math.max(win.innerHeight, 1)) * 280))
+        };
+        startRaf();
+      }
+
+      function nestedCanScroll(el, dy) {
+        while (el && el !== doc.body && el !== doc.documentElement) {
+          var style = win.getComputedStyle(el);
+          var oy = style.overflowY;
+          var scrollable = (oy === 'auto' || oy === 'scroll' || oy === 'overlay') &&
+            el.scrollHeight > el.clientHeight + 1;
+          if (scrollable) {
+            var top = el.scrollTop;
+            var max = el.scrollHeight - el.clientHeight;
+            if ((dy < 0 && top > 0) || (dy > 0 && top < max - 1)) { return true; }
+          }
+          el = el.parentElement;
+        }
+        return false;
+      }
+
+      if (softWheel) {
+        win.addEventListener('wheel', function (e) {
+          if (e.ctrlKey || doc.documentElement.classList.contains('menu-open')) return;
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+          var dy = e.deltaY;
+          if (e.deltaMode === 1) { dy *= 16; }
+          if (e.deltaMode === 2) { dy *= win.innerHeight; }
+          if (nestedCanScroll(e.target, dy)) return;
+          e.preventDefault();
+          stopAnchor();
+          targetY = clampY(targetY + dy);
+          scrollMode = 'lerp';
+          startRaf();
+        }, { passive: false });
+      }
+
+      win.addEventListener('touchstart', function () {
+        if (scrollMode === 'anchor') { stopAnchor(); }
+      }, { passive: true });
+
+      win.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && scrollMode === 'anchor') { stopAnchor(); }
+      });
+
       win.addEventListener('scroll', function () {
-        if (ticking) return;
-        ticking = true;
+        var native = getScrollY();
+        if (scrollMode === 'anchor' || scrollMode === 'lerp') {
+          if (!selfScroll && Math.abs(native - currentY) > 6) {
+            anchorJob = null;
+            currentY = targetY = native;
+            scrollMode = 'idle';
+          }
+        } else if (!selfScroll) {
+          currentY = targetY = native;
+        }
+        if (uiTick) return;
+        uiTick = true;
         requestAnimationFrame(function () {
           onScrollUI();
-          ticking = false;
+          uiTick = false;
         });
       }, { passive: true });
+
+      win.addEventListener('resize', function () {
+        currentY = clampY(getScrollY());
+        targetY = clampY(targetY);
+      });
+
+      if (win.history && 'scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
+      function setHash(hash) {
+        if (!win.history || !history.pushState) return;
+        var next = hash && hash !== '#' ? hash : win.location.pathname + win.location.search;
+        if (win.location.hash === hash || (!hash && !win.location.hash)) return;
+        history.pushState(null, '', next);
+      }
+
+      function settleHash(feel) {
+        var y = anchorY(win.location.hash || '#hero');
+        if (y == null) return;
+        goToY(y, feel || 'instant');
+      }
+
       onScrollUI();
+      if (win.location.hash) { settleHash('instant'); }
+      win.addEventListener('load', function () {
+        if (win.location.hash) { settleHash('instant'); }
+      });
 
       /* ---------- scroll reveal ---------- */
       if (mobileLite) {
@@ -1517,10 +1739,41 @@
       }
       if (burger && mobileMenu) {
         burger.addEventListener('click', function () { setMenu(!menuOpen); });
-        $$('#mobile-menu a').forEach(function (a) {
-          a.addEventListener('click', function () { setMenu(false); });
-        });
       }
+
+      function goToHash(hash, fromMenu) {
+        if (anchorY(hash) == null) return false;
+        if (fromMenu) { setMenu(false); }
+        function run() {
+          var y = anchorY(hash);
+          if (y == null) return;
+          setHash(hash === '#hero' ? '#hero' : hash);
+          goToY(y, reduced ? 'instant' : 'rubber');
+        }
+        if (fromMenu) {
+          requestAnimationFrame(function () { requestAnimationFrame(run); });
+        } else {
+          run();
+        }
+        return true;
+      }
+
+      doc.addEventListener('click', function (e) {
+        var node = e.target;
+        if (node && node.nodeType !== 1) { node = node.parentElement; }
+        var a = node && node.closest ? node.closest('a[href^="#"]') : null;
+        if (!a) return;
+        var hash = a.getAttribute('href');
+        if (!hash || hash === '#') return;
+        if (a.hasAttribute('download') || a.getAttribute('target') === '_blank') return;
+        var fromMenu = !!(mobileMenu && mobileMenu.contains(a));
+        if (!goToHash(hash, fromMenu)) return;
+        e.preventDefault();
+      });
+
+      win.addEventListener('popstate', function () {
+        settleHash('instant');
+      });
 
       /* ---------- mobilní plovoucí CTA ---------- */
       var mobileCta = $('#mobile-cta');
