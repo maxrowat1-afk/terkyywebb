@@ -59,10 +59,21 @@
   }
   html.js-anim body.is-loaded .hero-fade { opacity: 1; transform: none; }
 
-  /* ---------- aura (static wash — no animation, no live blur) ---------- */
+  /* ---------- aura (soft wash — static blur, no hard core) ---------- */
   .aura {
     position: absolute; border-radius: 9999px; pointer-events: none;
-    background: radial-gradient(circle at 50% 50%, currentColor 0%, currentColor 28%, transparent 72%);
+    background: radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      color-mix(in srgb, currentColor 70%, transparent) 0%,
+      color-mix(in srgb, currentColor 28%, transparent) 32%,
+      transparent 68%
+    );
+    filter: blur(56px);
+    opacity: 0.85;
+  }
+  html.cheap-gpu .aura {
+    filter: none;
+    opacity: 0.4;
   }
 
   a, button, label { cursor: pointer; }
@@ -132,10 +143,14 @@
   /* ---------- fotografie ---------- */
   .photo { position: relative; }
   .photo::after {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), inset 0 -90px 140px -70px rgba(26,11,16,.38), inset 0 70px 110px -80px rgba(255,255,255,.5);
   }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo img {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; max-width: none;
+    object-fit: cover;
+  }
 
   /* ---------- typografické efekty ---------- */
   .text-gradient-crimson {
@@ -318,7 +333,7 @@
           <a href="#faq" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">FAQ</a>
         </nav>
         <div class="flex items-center gap-3">
-          <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-crimson transition-colors hover:bg-crimson-700 lg:inline-flex" data-magnetic="0.10">
+          <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-700 hover:shadow-crimson focus-visible:shadow-crimson lg:inline-flex" data-magnetic="0.10">
             <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
           </a>
           <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false">
@@ -354,7 +369,7 @@
           <span class="font-mono text-xs text-crimson-600">05</span>
           <span class="font-serif text-4xl text-zinc-900 transition-colors group-hover:text-crimson-700">FAQ</span>
         </a>
-        <a href="#podani" class="mm-item mt-4 inline-flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson">
+        <a href="#podani" class="mm-item mt-4 inline-flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-soft transition-shadow duration-300 hover:shadow-crimson focus-visible:shadow-crimson">
           Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </nav>
@@ -374,9 +389,8 @@
 
     <!-- ===================== HERO ===================== -->
     <section id="hero" class="relative overflow-hidden pb-16 pt-32 lg:pb-24 lg:pt-44">
-      <div class="aura h-[440px] w-[440px] text-crimson-400/45" style="top:-10%; right:4%; --ad:-2s; --adur:18s;" aria-hidden="true"></div>
-      <div class="aura h-[380px] w-[380px] text-[#d8b98a]/45" style="bottom:-14%; left:26%; --ad:-7s; --adur:22s;" aria-hidden="true"></div>
-      <div class="aura h-[300px] w-[300px] text-slate-300/60" style="top:38%; left:-8%; --ad:-4s; --adur:16s;" aria-hidden="true"></div>
+      <div class="aura h-[560px] w-[560px] text-crimson-400/20" style="top:-22%; right:-8%;" aria-hidden="true"></div>
+      <div class="aura h-[480px] w-[520px] text-[#d8b98a]/30" style="bottom:-20%; left:18%;" aria-hidden="true"></div>
 
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
@@ -406,7 +420,7 @@
             </p>
 
             <div class="hero-fade mt-10 flex flex-wrap items-center gap-4" style="--hd:660ms">
-              <a href="#podani" class="magnetic btn-shine inline-flex items-center rounded-full bg-crimson-600 px-7 py-4 text-sm font-semibold text-white shadow-crimson transition-shadow duration-300 hover:shadow-crimson-lg" data-magnetic="0.10">
+              <a href="#podani" class="magnetic btn-shine inline-flex items-center rounded-full bg-crimson-600 px-7 py-4 text-sm font-semibold text-white shadow-soft transition-shadow duration-300 hover:shadow-crimson focus-visible:shadow-crimson" data-magnetic="0.10">
                 <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
               </a>
               <a href="#metodika" class="magnetic group inline-flex items-center rounded-full border border-slate-300/90 bg-white/50 px-6 py-4 text-sm font-semibold text-zinc-700 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.08">
@@ -420,11 +434,11 @@
             <div class="relative mx-auto max-w-md lg:max-w-none">
               <div class="hero-fade relative" style="--hd:450ms">
                 <div class="absolute -bottom-5 -right-5 h-full w-full rounded-[2.5rem] rounded-tl-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
-                <div class="aura h-[300px] w-[300px] text-crimson-500/40" style="bottom:-12%; right:-14%; --ad:-5s; --adur:20s;" aria-hidden="true"></div>
+                <div class="aura h-[380px] w-[380px] text-crimson-500/20" style="bottom:-22%; right:-20%;" aria-hidden="true"></div>
                 <div class="photo relative z-10 h-[420px] overflow-hidden rounded-[2.5rem] rounded-tl-[8rem] shadow-soft sm:h-[520px] lg:h-[600px] xl:h-[640px]">
                   <picture class="contents">
                     <source type="image/webp" srcset="/terka-640.webp 640w, /terka-960.webp 960w, /terka-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                    <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="h-full w-full object-cover object-[center_22%]" fetchpriority="high" width="960" height="1439">
+                    <img src="/terka-960.jpg" srcset="/terka-640.jpg 640w, /terka-960.jpg 960w, /terka-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová — zakladatelka Dneskoučuju.cz" class="object-[68%_14%]" fetchpriority="high" width="960" height="1439">
                   </picture>
                 </div>
 
@@ -497,13 +511,14 @@
 
     <!-- ===================== METODOLOGIE / BENTO ===================== -->
     <section id="metodika" class="relative py-24 lg:py-36">
-      <div class="aura h-[360px] w-[360px] text-crimson-400/22" style="top:10%; right:-10%; --ad:-6s; --adur:19s;" aria-hidden="true"></div>
+      <div class="aura h-[520px] w-[520px] text-crimson-400/20" style="top:4%; right:-16%;" aria-hidden="true"></div>
+      <div class="aura h-[420px] w-[460px] text-[#d8b98a]/30" style="bottom:8%; left:-14%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
         <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">01 · Metodologie</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Metodologie</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl lg:text-6xl">Systém, <span class="italic text-crimson-700">ne nálada.</span></h2>
           </div>
           <p class="max-w-sm text-sm leading-relaxed text-zinc-500 md:text-right">Žádné univerzální rady, žádné prázdné fráze, žádný ezoterický slovník. Tři formáty, jeden cíl: vy jako nejsilnější verze sebe — se strategií, ne s afirmacemi.</p>
@@ -513,11 +528,9 @@
 
           <!-- 01 individuální koučink -->
           <article class="tilt spotlight group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:col-span-2 md:p-8 lg:col-span-4 lg:row-span-2 lg:p-9" data-tilt="3.5" data-tilt-z="14" data-reveal>
-            <div class="pointer-events-none absolute -right-8 -top-12 select-none font-serif text-[11rem] leading-none text-crimson-600/[0.05]">01</div>
             <div class="relative z-10 flex h-full flex-col">
-              <div class="flex items-center justify-between">
+              <div>
                 <span class="grid h-12 w-12 place-items-center rounded-2xl bg-crimson-600 text-white shadow-crimson"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">formát 01</span>
               </div>
               <h3 class="mt-8 font-serif text-3xl text-zinc-900 lg:text-4xl">Individuální koučink <span class="italic text-crimson-700">1:1</span></h3>
               <p class="mt-4 max-w-lg text-[15px] leading-relaxed text-zinc-500">Dvanáct týdnů intenzivní práce na vašem sebevědomí, standardech a prezenci. Hluboká diagnostika, jasná strategie a sparring, který vám nedovolí spokojit se s méně, než dokážete.</p>
@@ -548,9 +561,8 @@
           <!-- 02 dámská setkání -->
           <article class="tilt spotlight group relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl lg:col-span-2" data-tilt="4.5" data-tilt-z="24" data-reveal style="--rd:100ms">
             <div class="relative z-10 flex h-full flex-col">
-              <div class="flex items-center justify-between">
+              <div>
                 <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400">formát 02</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl text-zinc-900">Dámská setkání</h3>
               <p class="mt-3 text-sm leading-relaxed text-zinc-500">Uzavřená měsíční setkání v Praze pro maximálně 12 žen. Témata od hranic po vyjednávání — a peer skupina, která vás táhne nahoru, ne dolů.</p>
@@ -561,13 +573,15 @@
           </article>
 
           <!-- 03 prosecco večery (foto) -->
-          <article class="tilt spotlight spotlight-light group relative overflow-hidden rounded-[1.75rem] border border-white/10 lg:col-span-2" data-tilt="4.5" data-tilt-z="24" data-reveal style="--rd:200ms">
-            <img src="https://placehold.co/800x600/2a070d/c8a96a?text=Prosecco+vecer" alt="Coaching a Prosecco večer v soukromém salónu" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10]/95 via-[#1a0b10]/65 to-[#1a0b10]/25"></div>
+          <article class="tilt spotlight spotlight-light group relative min-h-[320px] overflow-hidden rounded-[1.75rem] border border-white/10 lg:col-span-2" data-tilt="4.5" data-tilt-z="24" data-reveal style="--rd:200ms">
+            <picture class="contents">
+              <source type="image/webp" srcset="/prosecco-vecer-640.webp 640w, /prosecco-vecer-960.webp 960w" sizes="(min-width: 1024px) 22vw, 90vw">
+              <img src="/prosecco-vecer-960.jpg" srcset="/prosecco-vecer-640.jpg 640w, /prosecco-vecer-960.jpg 960w" sizes="(min-width: 1024px) 22vw, 90vw" alt="Coaching a Prosecco večer v soukromém salónu" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" loading="lazy" width="960" height="640">
+            </picture>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1a0b10] via-[#1a0b10]/85 to-[#1a0b10]/50"></div>
             <div class="relative z-10 flex h-full flex-col p-7 text-white">
-              <div class="flex items-center justify-between">
+              <div>
                 <span class="grid h-11 w-11 place-items-center rounded-2xl border border-white/20 bg-white/10 text-champagne backdrop-blur"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">formát 03</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl">Coaching &amp; Prosecco večery</h3>
               <p class="mt-3 text-sm leading-relaxed text-white/70">Přednáška, živé Q&amp;A a prosecco v soukromém salónu. Večer, kde se strategie potkává se stylem.</p>
@@ -580,9 +594,8 @@
           <!-- energy audit -->
           <article class="tilt spotlight group relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl lg:col-span-3" data-tilt="4" data-tilt-z="10" data-reveal style="--rd:100ms">
             <div class="relative z-10 flex h-full flex-col">
-              <div class="flex items-center justify-between">
+              <div>
                 <span class="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-100 bg-crimson-50 text-crimson-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-crimson-600">vstupní bod</span>
               </div>
               <h3 class="mt-6 font-serif text-2xl text-zinc-900">Energy Audit — 90 minut</h3>
               <p class="mt-3 text-sm leading-relaxed text-zinc-500">Hluboká analýza toho, kde vám únik energie vzniká a co vás stojí — v kariéře, vztazích i ve vlastní hlavě. Za 90 minut máte mapu dalších kroků.</p>
@@ -598,10 +611,8 @@
 
           <!-- manifest -->
           <article class="tilt spotlight spotlight-light group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] border border-crimson-800/40 bg-gradient-to-br from-crimson-600 via-crimson-700 to-[#3d0e18] p-8 text-white shadow-crimson lg:col-span-3" data-tilt="4" data-tilt-z="18" data-reveal style="--rd:200ms">
-            <div class="pointer-events-none absolute -right-10 -top-14 select-none font-serif text-[10rem] leading-none text-white/10">„</div>
             <div class="relative z-10">
-              <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">manifest · dk</p>
-              <p class="mt-6 font-serif text-2xl italic leading-snug md:text-[1.7rem]">Jste nejlukrativnější investice, jakou kdy uděláte. Všechno ostatní je vyjednatelné.</p>
+              <p class="font-serif text-2xl italic leading-snug md:text-[1.7rem]">Jste nejlukrativnější investice, jakou kdy uděláte. Všechno ostatní je vyjednatelné.</p>
             </div>
             <p class="relative z-10 mt-8 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">— základ všeho, co dělám</p>
           </article>
@@ -620,11 +631,11 @@
           <div class="relative lg:col-span-5" data-reveal="left">
             <div class="relative mx-auto max-w-md lg:max-w-none">
               <div class="absolute -left-5 -top-5 h-full w-full rounded-[2.5rem] rounded-br-[8rem] border border-crimson-200/60" aria-hidden="true"></div>
-              <div class="aura h-[280px] w-[280px] text-crimson-400/35" style="top:-10%; left:-12%; --ad:-3s; --adur:17s;" aria-hidden="true"></div>
+              <div class="aura h-[360px] w-[360px] text-crimson-400/20" style="top:-16%; left:-18%;" aria-hidden="true"></div>
               <div class="photo relative z-10 h-[440px] overflow-hidden rounded-[2.5rem] rounded-br-[8rem] shadow-soft sm:h-[520px] lg:h-[560px]">
                 <picture class="contents">
                   <source type="image/webp" srcset="/terka-kreslo-640.webp 640w, /terka-kreslo-960.webp 960w, /terka-kreslo-1280.webp 1280w" sizes="(min-width: 1024px) 40vw, 90vw">
-                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="h-full w-full object-cover object-[center_18%]" loading="lazy" width="960" height="1439">
+                  <img src="/terka-kreslo-960.jpg" srcset="/terka-kreslo-640.jpg 640w, /terka-kreslo-960.jpg 960w, /terka-kreslo-1280.jpg 1280w" sizes="(min-width: 1024px) 40vw, 90vw" alt="Tereza Navrátilová v interiéru — analytická autorita" class="object-[center_32%]" loading="lazy" width="960" height="1439">
                 </picture>
               </div>
               <div class="absolute -bottom-8 -right-3 z-20 w-64 lg:-right-8">
@@ -639,7 +650,7 @@
 
           <!-- text -->
           <div class="lg:col-span-7" data-reveal="right">
-            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">02 · O mně</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">O mně</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Terka. Strategie, <span class="italic text-crimson-700">ne guru.</span></h2>
 
             <p class="mt-8 font-serif text-xl leading-relaxed text-zinc-700 md:text-[1.35rem]">Jmenuji se Tereza Navrátilová — všichni mi říkají Terka. Osm let dělám jedinou věc: učím ambiciózní ženy myslet, cítit a jednat jako nejvyšší standard v místnosti.</p>
@@ -683,13 +694,13 @@
 
     <!-- ===================== WORKSHOPY ===================== -->
     <section id="workshopy" class="relative py-24 lg:py-36">
-      <div class="aura h-[400px] w-[400px] text-champagne/30" style="bottom:5%; left:-12%; --ad:-9s; --adur:21s;" aria-hidden="true"></div>
+      <div class="aura h-[480px] w-[480px] text-champagne/20" style="bottom:-8%; left:-16%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
         <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">03 · Workshopy &amp; Prosecco večery</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Workshopy</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl lg:text-6xl">Večery, které mění <span class="italic text-crimson-700">trajektorii.</span></h2>
           </div>
           <p class="max-w-sm text-sm leading-relaxed text-zinc-500 md:text-right">Jeden večer vám život neotočí. Ale může ukázat směr — a propojit vás se ženami, které přemýšlejí jako vy.</p>
@@ -821,14 +832,14 @@
 
         <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">04 · Reference</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Reference</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Ženy, které už hrají <span class="italic text-crimson-700">jinak.</span></h2>
           </div>
           <p class="max-w-sm text-sm leading-relaxed text-zinc-500 md:text-right">Původní znění, skutečné klientky. Jména zkrácená z důvodu diskrétnosti — některé z nich byste možná znaly.</p>
         </div>
 
         <div id="testi-wrap" class="relative mt-12 overflow-hidden rounded-[2rem] border border-white/70 bg-white/50 px-7 py-10 shadow-card backdrop-blur-xl md:p-12" data-reveal="scale">
-          <span class="pointer-events-none absolute -top-8 left-8 select-none font-serif text-[10rem] leading-none text-crimson-600/[0.07]">„</span>
+          <span class="pointer-events-none absolute left-8 top-6 select-none font-serif text-[5rem] leading-none text-crimson-600/[0.08]">„</span>
 
           <div class="relative grid">
             <article class="testi-slide active">
@@ -925,8 +936,8 @@
 
     <!-- ===================== APLIKAČNÍ TERMINÁL ===================== -->
     <section id="podani" class="relative z-10 -mt-8 overflow-hidden rounded-t-[2.5rem] bg-[#150a0e] py-24 text-zinc-100 lg:py-36">
-      <div class="aura h-[480px] w-[480px] text-crimson-600/40" style="top:-15%; left:-10%; --ad:-1s; --adur:18s;" aria-hidden="true"></div>
-      <div class="aura h-[420px] w-[420px] text-crimson-800/55" style="bottom:-12%; right:-8%; --ad:-8s; --adur:23s;" aria-hidden="true"></div>
+      <div class="aura h-[560px] w-[560px] text-crimson-600/20" style="top:-20%; left:-14%;" aria-hidden="true"></div>
+      <div class="aura h-[500px] w-[500px] text-crimson-800/30" style="bottom:-16%; right:-12%;" aria-hidden="true"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-crimson-600/10 to-transparent" aria-hidden="true"></div>
 
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
@@ -934,7 +945,7 @@
 
           <!-- levý sloupec -->
           <div data-reveal="left">
-            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-400">05 · První krok</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-400">První krok</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-white md:text-5xl lg:text-6xl">Rezervujte si <span class="italic text-gradient-champagne pb-[0.08em]">úvodní call.</span></h2>
             <p class="mt-7 max-w-md text-[15px] leading-relaxed text-zinc-400">Neprodávám na první dotyk — a je to tak dobře. Napřed si sedneme na 20 minut a poctivě zjistíme, jestli vám můžu pomoct. Nezávazná poptávka zabere dvě minuty. Napište mi, jak to u vás skutečně je.</p>
 
@@ -1050,7 +1061,7 @@
                     </div>
                   </div>
 
-                  <button id="apply-submit" type="submit" class="magnetic btn-shine mt-8 inline-flex w-full items-center justify-center rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson transition-all hover:bg-crimson-500" data-magnetic="0.08">
+                  <button id="apply-submit" type="submit" class="magnetic btn-shine mt-8 inline-flex w-full items-center justify-center rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-500 hover:shadow-crimson focus-visible:shadow-crimson" data-magnetic="0.08">
                     <span class="magnetic-inner flex items-center gap-2.5"><span id="apply-label">Odeslat poptávku</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-arrow h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><span class="btn-spinner"></span></span>
                   </button>
 
@@ -1083,7 +1094,7 @@
         <div class="mt-16 grid gap-14 lg:grid-cols-12 lg:gap-20">
           <div class="lg:col-span-5">
             <div class="lg:sticky lg:top-32" data-reveal="left">
-              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">06 · FAQ</p>
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">FAQ</p>
               <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Poctivé <span class="italic text-crimson-700">odpovědi.</span></h2>
               <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-zinc-500">Na otázky, které dostávám nejčastěji. Včetně těch nepohodlných.</p>
               <div class="mt-10 rounded-2xl border border-white/70 bg-white/50 p-6 shadow-softer backdrop-blur">
@@ -1244,7 +1255,7 @@
 
   <!-- mobilní plovoucí CTA -->
   <div id="mobile-cta">
-    <a href="#podani" class="flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-crimson-lg">
+    <a href="#podani" class="flex items-center justify-center gap-2.5 rounded-full bg-crimson-600 px-8 py-4 text-sm font-semibold text-white shadow-soft transition-shadow duration-300 hover:shadow-crimson focus-visible:shadow-crimson">
       Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
   </div>
