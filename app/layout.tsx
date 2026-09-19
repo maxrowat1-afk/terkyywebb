@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dneskoučuju.cz — High Value Women Energy | Prémiový koučink pro ženy",
+  title: "Dneskoučuju.cz — High Value Woman Energy | Prémiový koučink pro ženy",
   description:
-    "Elitní individuální koučink, uzavřená dámská setkání a exkluzivní Coaching & Prosecco večery pro ambiciózní ženy. Praha / online.",
+    "Osobní koučink, uzavřená dámská setkání a večery Koučink a prosecco pro ambiciózní ženy. Praha / online.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
