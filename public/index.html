@@ -54,6 +54,7 @@
     --bg-footer: #120709;
     --bg-photo: #1a0b10;
     --accent-on-dark: #c8a96a;
+    --accent-placeholder: color-mix(in srgb, var(--accent-on-dark) 42%, #3a2a14);
   }
   .accent-on-dark { color: var(--accent-on-dark); }
   a.accent-on-dark:hover { color: #fff; }
@@ -140,18 +141,27 @@
   a, button, label { cursor: pointer; }
   input, textarea { cursor: text; }
 
-  /* ---------- navigace: nahoře zaniklá, po scrollu vyjde bílá ---------- */
-  #site-header { background: transparent; }
+  /* ---------- navigace: nahoře zaniklá, po scrollu plná bílá lišta ---------- */
+  #site-header {
+    background: transparent;
+    transition: background-color .45s ease, box-shadow .45s ease;
+  }
   #nav-pill {
     border-radius: 0 0 1rem 1rem;
     background: transparent;
-    transition: background-color .5s ease, border-color .5s ease, box-shadow .5s ease;
+    transition: background-color .45s ease, border-color .45s ease, box-shadow .45s ease, border-radius .45s ease;
+  }
+  html.nav-scrolled #site-header,
+  html.menu-open #site-header {
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(226,232,240,.95);
   }
   html.nav-scrolled #nav-pill,
   html.menu-open #nav-pill {
-    background: #fff;
-    border-color: rgba(226,232,240,.95);
-    box-shadow: 0 1px 2px rgba(22,24,29,.05);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
   }
   .nav-link { position: relative; }
   .nav-link::after {
@@ -178,14 +188,14 @@
   html.menu-open .mm-item:nth-child(6) { transition-delay: .4s; }
   html.menu-open .mm-item:nth-child(7) { transition-delay: .48s; }
 
-  /* ---------- scroll reveal ---------- */
+  /* ---------- scroll reveal (obsah vždy čitelný — jen jemný posun) ---------- */
   html.js-anim [data-reveal] {
     --tilt-rx: 0deg;
     --tilt-ry: 0deg;
     --tilt-z: 0px;
-    opacity: 0;
+    opacity: 1;
     transform: perspective(900px) rotateX(var(--tilt-rx)) rotateY(var(--tilt-ry)) translate3d(0, 12px, var(--tilt-z));
-    transition: opacity .55s cubic-bezier(0.22, 0.61, 0.36, 1), transform .7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: transform .7s cubic-bezier(0.22, 0.61, 0.36, 1);
     transition-delay: var(--rd, 0ms);
   }
   html.js-anim [data-reveal="scale"],
@@ -197,10 +207,10 @@
     opacity: 1;
     transform: perspective(900px) rotateX(var(--tilt-rx)) rotateY(var(--tilt-ry)) translate3d(0, 0, var(--tilt-z));
   }
-  html.js-anim [data-reveal].revealing { will-change: transform, opacity; }
+  html.js-anim [data-reveal].revealing { will-change: transform; }
   html.js-anim [data-reveal].reveal-done {
     will-change: auto;
-    transition: opacity .16s ease-out, transform .16s ease-out;
+    transition: transform .16s ease-out;
     transition-delay: 0ms;
   }
 
@@ -218,9 +228,9 @@
   html.mobile-lite.js-anim [data-reveal="scale"],
   html.mobile-lite.js-anim [data-reveal="left"],
   html.mobile-lite.js-anim [data-reveal="right"] {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 10px, 0);
-    transition: opacity .45s cubic-bezier(0.22, 0.61, 0.36, 1), transform .45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: transform .45s cubic-bezier(0.22, 0.61, 0.36, 1);
     transition-delay: 0ms;
   }
   html.mobile-lite.js-anim [data-reveal].revealed {
@@ -229,7 +239,7 @@
   }
   html.mobile-lite.js-anim [data-reveal].reveal-done {
     will-change: auto;
-    transition: opacity .45s cubic-bezier(0.22, 0.61, 0.36, 1), transform .45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: transform .45s cubic-bezier(0.22, 0.61, 0.36, 1);
     transition-delay: 0ms;
   }
 
@@ -298,8 +308,9 @@
   }
   .footer-wordmark svg {
     display: block;
-    width: 100%;
+    width: 33%;
     height: auto;
+    margin-inline: auto;
   }
 
   /* ---------- tlačítka ---------- */
@@ -328,7 +339,7 @@
     border-radius: 14px; padding: 14px 16px; color: #fafafa; font-size: 14.5px; font-family: inherit; outline: none;
     transition: border-color .3s ease, background-color .3s ease, box-shadow .45s ease;
   }
-  .field-input::placeholder { color: var(--accent-on-dark); }
+  .field-input::placeholder { color: var(--accent-placeholder); }
   .field-input:hover, .field-select:hover { border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.07); }
   .field-input:focus, .field-select:focus {
     border-color: var(--accent-on-dark); background: rgba(255,255,255,.08);
@@ -356,8 +367,10 @@
   }
   .pill:hover { border-color: var(--accent-on-dark); color: #f4e8c4; }
   input:checked + .pill {
-    background: var(--accent-on-dark); border-color: var(--accent-on-dark); color: var(--bg-podani);
-    box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--accent-on-dark) 55%, transparent);
+    background: transparent;
+    border-color: var(--accent-on-dark);
+    color: var(--accent-on-dark);
+    box-shadow: none;
   }
 
   #form-wrap { transition: opacity .38s ease, transform .38s ease; }
@@ -443,6 +456,11 @@
     font-weight: 600;
   }
   .skip-link:focus { transform: none; }
+
+  .self-start { align-self: flex-start; }
+  @media (min-width: 1024px) {
+    .lg\:pb-14 { padding-bottom: 3.5rem; }
+  }
 </style>
 <noscript>
   <style>
@@ -544,7 +562,7 @@
   <main id="main">
 
     <!-- ===================== HERO ===================== -->
-    <section id="hero" class="relative overflow-hidden pb-16 pt-24 lg:pb-24 lg:pt-32">
+    <section id="hero" class="relative overflow-hidden pb-10 pt-24 lg:pb-14 lg:pt-32">
       <div class="aura h-[560px] w-[560px] text-crimson-400/20" style="top:-22%; right:-8%;" aria-hidden="true"></div>
       <div class="aura h-[480px] w-[520px] text-crimson-400/20" style="bottom:-20%; left:18%;" aria-hidden="true"></div>
 
@@ -640,13 +658,13 @@
     </section>
 
     <!-- ===================== METODOLOGIE / BENTO ===================== -->
-    <section id="metodika" class="relative py-24 lg:py-36">
+    <section id="metodika" class="relative py-16 lg:py-24">
       <div class="aura h-[520px] w-[520px] text-crimson-400/20" style="top:4%; right:-16%;" aria-hidden="true"></div>
       <div class="aura h-[420px] w-[460px] text-crimson-400/20" style="bottom:8%; left:-14%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
-        <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
+        <div class="mt-10 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Jak pracuji</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl lg:text-6xl">Tři formáty. <span class="italic text-crimson-700">Jeden směr.</span></h2>
@@ -740,18 +758,18 @@
           </article>
 
           <!-- manifest -->
-          <article class="tilt spotlight spotlight-light group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] border border-crimson-800/40 bg-gradient-to-br from-crimson-600 via-crimson-700 to-[#3d0e18] p-8 text-white shadow-crimson lg:col-span-3" data-tilt="4" data-tilt-z="18" data-reveal style="--rd:200ms">
+          <article class="tilt spotlight spotlight-light group relative flex flex-col self-start overflow-hidden rounded-[1.75rem] border border-crimson-800/40 bg-gradient-to-br from-crimson-600 via-crimson-700 to-[#3d0e18] p-8 text-white shadow-crimson lg:col-span-3" data-tilt="4" data-tilt-z="18" data-reveal style="--rd:200ms">
             <div class="relative z-10">
               <p class="font-serif text-2xl italic leading-snug md:text-[1.7rem]">Jste ta nejlepší investice, kterou kdy uděláte.</p>
             </div>
-            <p class="relative z-10 mt-8 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">— základ všeho, co dělám</p>
+            <p class="relative z-10 mt-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">— základ všeho, co dělám</p>
           </article>
         </div>
       </div>
     </section>
 
     <!-- ===================== O MNĚ ===================== -->
-    <section id="o-mne" class="relative py-24 lg:py-36">
+    <section id="o-mne" class="relative py-16 lg:py-24">
       <p class="absolute left-4 top-1/2 hidden -translate-y-1/2 rotate-90 font-mono text-[9px] uppercase tracking-[0.5em] text-zinc-300 xl:block" aria-hidden="true">Tereza Navrátilová · zakladatelka</p>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
@@ -824,7 +842,7 @@
     </section>
 
     <!-- ===================== WORKSHOPY ===================== -->
-    <section id="workshopy" class="relative py-24 lg:py-36">
+    <section id="workshopy" class="relative py-16 lg:py-24">
       <div class="aura h-[480px] w-[480px] text-crimson-400/20" style="bottom:-8%; left:-16%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
@@ -957,7 +975,7 @@
     </section>
 
     <!-- ===================== REFERENCE ===================== -->
-    <section id="reference" class="relative py-24 lg:py-32">
+    <section id="reference" class="relative py-16 lg:py-24">
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
@@ -1038,7 +1056,7 @@
     </section>
 
     <!-- ===================== POPTÁVKA ===================== -->
-    <section id="podani" class="relative z-10 -mt-8 overflow-hidden rounded-t-[2.5rem] bg-[#150a0e] py-24 text-zinc-100 lg:py-36">
+    <section id="podani" class="relative z-10 -mt-8 overflow-hidden rounded-t-[2.5rem] bg-[#150a0e] py-16 text-zinc-100 lg:py-24">
       <div class="aura h-[560px] w-[560px] text-crimson-600/20" style="top:-20%; left:-14%;" aria-hidden="true"></div>
       <div class="aura h-[500px] w-[500px] text-crimson-800/30" style="bottom:-16%; right:-12%;" aria-hidden="true"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-crimson-600/10 to-transparent" aria-hidden="true"></div>
@@ -1182,7 +1200,7 @@
     </section>
 
     <!-- ===================== FAQ ===================== -->
-    <section id="faq" class="relative py-24 lg:py-36">
+    <section id="faq" class="relative py-16 lg:py-24">
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
@@ -1333,29 +1351,29 @@
         </div>
       </div>
 
-      <div class="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-zinc-600 md:flex-row">
+      <div class="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs accent-on-dark md:flex-row">
         <p>© 2026 Dneskoučuju.cz · Tereza Navrátilová. Všechna práva vyhrazena.</p>
         <div class="flex items-center gap-6">
-          <a href="/obchodni-podminky.html" class="transition-colors hover:text-zinc-300">Obchodní podmínky</a>
-          <a href="/ochrana-soukromi.html" class="transition-colors hover:text-zinc-300">Ochrana soukromí</a>
+          <a href="/obchodni-podminky.html" class="accent-on-dark transition-colors">Obchodní podmínky</a>
+          <a href="/ochrana-soukromi.html" class="accent-on-dark transition-colors">Ochrana soukromí</a>
         </div>
-        <p class="font-mono tracking-[0.25em] uppercase text-zinc-600">dneskoučuju</p>
+        <p class="font-mono tracking-[0.25em] uppercase">dneskoučuju</p>
       </div>
     </div>
 
     <div class="footer-wordmark pointer-events-none select-none" aria-hidden="true">
-      <svg viewBox="0 0 1100 200" role="presentation" focusable="false">
+      <svg viewBox="0 0 1100 70" role="presentation" focusable="false">
         <text
           x="550"
-          y="158"
+          y="52"
           text-anchor="middle"
           textLength="1060"
           lengthAdjust="spacingAndGlyphs"
           fill="none"
           stroke="rgba(255,255,255,0.11)"
-          stroke-width="1.3"
+          stroke-width="0.43"
           font-family="Playfair Display, Georgia, serif"
-          font-size="140"
+          font-size="47"
         >DNESKOUČUJU</text>
       </svg>
     </div>
@@ -1695,7 +1713,7 @@
       function revealEl(el) {
         if (el.classList.contains('revealed')) return;
         el.classList.add('revealing');
-        el.style.willChange = 'transform, opacity';
+        el.style.willChange = 'transform';
         el.classList.add('revealed');
         var settled = false;
         function settle() {
@@ -1732,13 +1750,16 @@
           ? { threshold: 0, rootMargin: '0px 0px 10% 0px' }
           : { threshold: 0, rootMargin: '0px 0px 18% 0px' });
         revealEls.forEach(function (el) { rio.observe(el); });
+        revealEls.forEach(function (el) {
+          if (inViewport(el)) { revealEl(el); }
+        });
         setTimeout(function () {
           revealEls.forEach(function (el) {
             if (!el.classList.contains('revealed') && inViewport(el)) {
               revealEl(el);
             }
           });
-        }, 4000);
+        }, 300);
       } else {
         revealEls.forEach(function (el) { revealEl(el); });
       }
