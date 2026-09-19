@@ -123,12 +123,16 @@
   a, button, label { cursor: pointer; }
   input, textarea { cursor: text; }
 
-  /* ---------- navigace (Apple globalnav materiál) ---------- */
-  #site-header {
+  /* ---------- navigace: inset lišta, nahoře nalepená, Apple sklo ---------- */
+  #site-header { background: transparent; }
+  #nav-pill {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 1rem 1rem;
     background: transparent;
     transition: background-color .5s ease, -webkit-backdrop-filter .5s ease, backdrop-filter .5s ease;
   }
-  #site-header::after {
+  #nav-pill::after {
     content: "";
     position: absolute;
     left: 0;
@@ -142,24 +146,24 @@
     pointer-events: none;
     transition: transform .5s ease, opacity .5s ease;
   }
-  html.nav-scrolled #site-header,
-  html.menu-open #site-header {
+  html.nav-scrolled #nav-pill,
+  html.menu-open #nav-pill {
     background: #fafafc;
   }
   @supports ((-webkit-backdrop-filter: saturate(180%) blur(20px)) or (backdrop-filter: saturate(180%) blur(20px))) {
-    html.nav-scrolled #site-header {
+    html.nav-scrolled #nav-pill {
       background: rgba(250, 250, 252, 0.8);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
       backdrop-filter: saturate(180%) blur(20px);
     }
   }
-  html.nav-scrolled #site-header::after,
-  html.menu-open #site-header::after {
+  html.nav-scrolled #nav-pill::after,
+  html.menu-open #nav-pill::after {
     transform: scaleY(0.5);
     opacity: 1;
   }
-  html.cheap-gpu.nav-scrolled #site-header,
-  html.menu-open #site-header {
+  html.cheap-gpu.nav-scrolled #nav-pill,
+  html.menu-open #nav-pill {
     background: #fafafc;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -494,29 +498,31 @@
 
   <!-- header -->
   <header id="site-header" class="fixed inset-x-0 top-0 z-50">
-    <div class="mx-auto flex max-w-[80rem] items-center justify-between px-5 py-3 lg:px-10">
-      <a href="#hero" class="group flex items-center gap-3" aria-label="Dneskoučuju.cz — domů">
-        <span class="grid h-10 w-10 place-items-center rounded-xl bg-crimson-600 font-serif text-xl italic text-white shadow-crimson transition-transform duration-500 group-hover:-rotate-6">D</span>
-        <span class="leading-none">
-          <span class="block font-serif text-lg font-semibold tracking-tight text-zinc-900">Dneskoučuju</span>
-          <span class="mt-1 block font-mono text-[10px] tracking-[0.35em] uppercase text-zinc-500">osobní koučink</span>
-        </span>
-      </a>
-      <nav class="hidden items-center gap-8 lg:flex" aria-label="Hlavní navigace">
-        <a href="#metodika" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Jak pracuji</a>
-        <a href="#o-mne" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">O mně</a>
-        <a href="#workshopy" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Akce</a>
-        <a href="#reference" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Reference</a>
-        <a href="#faq" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Otázky</a>
-      </nav>
-      <div class="flex items-center gap-3">
-        <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-700 hover:shadow-crimson focus-visible:shadow-crimson lg:inline-flex" data-magnetic="0.10">
-          <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+    <div class="mx-auto max-w-[80rem] px-5 lg:px-10">
+      <div id="nav-pill" class="flex items-center justify-between px-4 py-3 lg:px-6">
+        <a href="#hero" class="group flex items-center gap-3" aria-label="Dneskoučuju.cz — domů">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-crimson-600 font-serif text-xl italic text-white shadow-crimson transition-transform duration-500 group-hover:-rotate-6">D</span>
+          <span class="leading-none">
+            <span class="block font-serif text-lg font-semibold tracking-tight text-zinc-900">Dneskoučuju</span>
+            <span class="mt-1 block font-mono text-[10px] tracking-[0.35em] uppercase text-zinc-500">osobní koučink</span>
+          </span>
         </a>
-        <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
-          <span></span>
-          <span></span>
-        </button>
+        <nav class="hidden items-center gap-8 lg:flex" aria-label="Hlavní navigace">
+          <a href="#metodika" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Jak pracuji</a>
+          <a href="#o-mne" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">O mně</a>
+          <a href="#workshopy" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Akce</a>
+          <a href="#reference" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Reference</a>
+          <a href="#faq" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Otázky</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="#podani" class="magnetic btn-shine hidden items-center gap-2 rounded-full bg-crimson-600 px-5 py-2.5 text-xs font-semibold text-white shadow-soft transition-shadow duration-300 hover:bg-crimson-700 hover:shadow-crimson focus-visible:shadow-crimson lg:inline-flex" data-magnetic="0.10">
+            <span class="magnetic-inner flex items-center gap-2">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+          </a>
+          <button id="burger" class="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/70 backdrop-blur lg:hidden" aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -1516,6 +1522,7 @@
       /* ---------- progress bar + stav navigace ---------- */
       var progressBar = $('#progress-bar');
       var headerEl = $('#site-header');
+      var navPill = $('#nav-pill');
 
       function getScrollY() {
         return win.pageYOffset || doc.documentElement.scrollTop || 0;
@@ -1527,8 +1534,9 @@
         return Math.max(0, Math.min(maxScrollY(), y));
       }
       function headerOffset() {
-        if (!headerEl) return 76;
-        return Math.round(headerEl.getBoundingClientRect().height + 12);
+        var bar = navPill || headerEl;
+        if (!bar) return 76;
+        return Math.round(bar.getBoundingClientRect().bottom + 12);
       }
       function anchorY(hash) {
         if (!hash || hash === '#') return 0;
