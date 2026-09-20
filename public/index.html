@@ -2322,12 +2322,17 @@
         setTimeout(settle, 1300 + revealDelayMs(el));
       }
 
+      function isEarlyReveal(el) {
+        return !!(el.closest && el.closest('#o-mne'));
+      }
+
       function inViewport(el) {
         var r = el.getBoundingClientRect();
         var vh = win.innerHeight || doc.documentElement.clientHeight;
         var h = r.height || 1;
         var visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-        return visible / h >= 0.12;
+        var min = isEarlyReveal(el) ? (mobileLite ? 0.02 : 0.04) : 0.12;
+        return visible / h >= min;
       }
 
       function revealPack(pack) {
@@ -2363,21 +2368,29 @@
       }
 
       if ('IntersectionObserver' in win && !reduced) {
+        function onRevealEntry(en, obs) {
+          if (!en.isIntersecting) return;
+          if (packTogether && en.target.hasAttribute('data-reveal-pack')) {
+            revealPack(en.target);
+          } else {
+            revealEl(en.target);
+          }
+          obs.unobserve(en.target);
+        }
         var rio = new IntersectionObserver(function (entries, obs) {
-          entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            if (packTogether && en.target.hasAttribute('data-reveal-pack')) {
-              revealPack(en.target);
-            } else {
-              revealEl(en.target);
-            }
-            obs.unobserve(en.target);
-          });
+          entries.forEach(function (en) { onRevealEntry(en, obs); });
         }, mobileLite
           ? { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
           : { threshold: 0.14, rootMargin: '0px 0px -12% 0px' });
+        var rioEarly = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (en) { onRevealEntry(en, obs); });
+        }, mobileLite
+          ? { threshold: 0.02, rootMargin: '0px 0px 0px 0px' }
+          : { threshold: 0.04, rootMargin: '0px 0px -4% 0px' });
         revealEls.forEach(function (el) {
-          if (!isPacked(el)) { rio.observe(el); }
+          if (isPacked(el)) return;
+          if (isEarlyReveal(el)) { rioEarly.observe(el); }
+          else { rio.observe(el); }
         });
         if (packTogether) {
           revealPacks.forEach(function (pack) { rio.observe(pack); });
