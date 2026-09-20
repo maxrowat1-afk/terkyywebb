@@ -120,6 +120,113 @@
   }
   html.js-anim body.is-loaded .hero-fade { opacity: 1; transform: none; }
 
+  /* ---------- footer closer title-card ---------- */
+  .closer-title { position: relative; }
+  .closer-line {
+    position: absolute;
+    left: 50%;
+    top: 1.85rem;
+    width: 5.75rem;
+    height: 1px;
+    margin-left: -2.875rem;
+    background: linear-gradient(90deg, transparent, #c8a96a 22%, #e9d7a9 50%, #c8a96a 78%, transparent);
+    transform-origin: center;
+    pointer-events: none;
+  }
+  .closer-hit {
+    display: inline-block;
+    transform-origin: 50% 60%;
+  }
+  .closer-write {
+    position: relative;
+    display: inline-block;
+  }
+  .closer-write::after {
+    content: "";
+    position: absolute;
+    top: 0.12em;
+    bottom: 0.22em;
+    left: 0;
+    width: 12px;
+    background: linear-gradient(90deg, transparent, rgba(233, 215, 169, 0.95));
+    box-shadow: 0 0 14px 2px rgba(200, 169, 106, 0.45);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  html.js-anim .closer-kicker { opacity: 0; }
+  html.js-anim .closer-line { transform: scaleX(0); }
+  html.js-anim .closer-hit {
+    opacity: 0;
+    transform: scale(1.18);
+    filter: blur(10px);
+    letter-spacing: 0.035em;
+  }
+  html.js-anim .closer-write { clip-path: inset(0 100% 0 -2px); }
+  html.js-anim .closer-cta { opacity: 0; visibility: hidden; }
+
+  html.js-anim .closer-title.is-on .closer-kicker {
+    animation: closerKicker .42s ease forwards;
+  }
+  html.js-anim .closer-title.is-on .closer-line {
+    animation: closerLine .52s cubic-bezier(.22,1,.36,1) .16s forwards;
+  }
+  html.js-anim .closer-title.is-on .closer-hit {
+    animation: closerHit .28s cubic-bezier(.16,1,.3,1) .52s forwards;
+  }
+  html.js-anim .closer-title.is-on .closer-write {
+    animation: closerWrite .9s cubic-bezier(.22,1,.36,1) .8s forwards;
+  }
+  html.js-anim .closer-title.is-on .closer-write::after {
+    animation: closerSheen .9s linear .8s forwards;
+  }
+  html.js-anim .closer-title.is-on .closer-cta {
+    animation: closerCta .55s ease 1.72s forwards;
+  }
+
+  @keyframes closerKicker { to { opacity: 1; } }
+  @keyframes closerLine { to { transform: scaleX(1); } }
+  @keyframes closerHit {
+    0% {
+      opacity: 0;
+      transform: scale(1.18);
+      filter: blur(10px);
+      letter-spacing: 0.035em;
+      text-shadow: 0 0 0 transparent;
+    }
+    14% {
+      opacity: 1;
+      filter: blur(5px);
+      text-shadow: 0 0 26px rgba(233, 215, 169, 0.55);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+      letter-spacing: 0;
+      text-shadow: none;
+    }
+  }
+  @keyframes closerHitLite {
+    0% { opacity: 0; transform: scale(1.1); letter-spacing: 0.02em; }
+    12% { opacity: 1; }
+    100% { opacity: 1; transform: scale(1); letter-spacing: 0; }
+  }
+  @keyframes closerWrite {
+    from { clip-path: inset(0 100% 0 -2px); }
+    to { clip-path: inset(0 0 0 -2px); }
+  }
+  @keyframes closerSheen {
+    0% { opacity: 0; left: 0; }
+    8% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { opacity: 0; left: 100%; }
+  }
+  @keyframes closerCta {
+    from { opacity: 0; visibility: visible; }
+    to { opacity: 1; visibility: visible; }
+  }
+
   /* ---------- aura (soft wash — static blur, no hard core) ---------- */
   .aura {
     position: absolute; border-radius: 9999px; pointer-events: none;
@@ -315,17 +422,58 @@
     filter: none;
   }
   html.cheap-gpu.js-anim .reveal-media { transform: none; }
+  html.cheap-gpu.js-anim .closer-kicker,
+  html.cheap-gpu.js-anim .closer-hit,
+  html.cheap-gpu.js-anim .closer-write,
+  html.cheap-gpu.js-anim .closer-cta {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+    letter-spacing: normal !important;
+    animation: none !important;
+    text-shadow: none !important;
+  }
+  html.cheap-gpu.js-anim .closer-line {
+    transform: none !important;
+    animation: none !important;
+  }
+  html.cheap-gpu.js-anim .closer-write::after { content: none !important; }
 
   html.reveal-safe.js-anim [data-reveal],
   html.reveal-safe.js-anim .assemble .assemble-item,
   html.reveal-safe.js-anim [data-reveal] .event-date,
   html.reveal-safe.js-anim .event-row .event-piece,
-  html.reveal-safe.js-anim .reveal-media {
+  html.reveal-safe.js-anim .reveal-media,
+  html.reveal-safe.js-anim .closer-kicker,
+  html.reveal-safe.js-anim .closer-hit,
+  html.reveal-safe.js-anim .closer-write,
+  html.reveal-safe.js-anim .closer-cta {
     opacity: 1 !important;
+    visibility: visible !important;
     transform: none !important;
     filter: none !important;
   }
   html.reveal-safe.js-anim .event-row::before { transform: none !important; }
+  html.reveal-safe.js-anim .closer-write {
+    clip-path: none !important;
+    letter-spacing: normal !important;
+    animation: none !important;
+    text-shadow: none !important;
+  }
+  html.reveal-safe.js-anim .closer-kicker,
+  html.reveal-safe.js-anim .closer-hit,
+  html.reveal-safe.js-anim .closer-cta {
+    animation: none !important;
+    letter-spacing: normal !important;
+    text-shadow: none !important;
+  }
+  html.reveal-safe.js-anim .closer-line {
+    transform: none !important;
+    animation: none !important;
+  }
+  html.reveal-safe.js-anim .closer-write::after { content: none !important; }
 
   html.mobile-lite .aura {
     filter: none;
@@ -376,6 +524,29 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  html.mobile-lite.js-anim .closer-hit {
+    filter: none;
+    transform: scale(1.1);
+  }
+  html.mobile-lite.js-anim .closer-title.is-on .closer-kicker { animation-duration: .28s; }
+  html.mobile-lite.js-anim .closer-title.is-on .closer-line {
+    animation-duration: .36s;
+    animation-delay: .1s;
+  }
+  html.mobile-lite.js-anim .closer-title.is-on .closer-hit {
+    animation-name: closerHitLite;
+    animation-duration: .18s;
+    animation-delay: .36s;
+  }
+  html.mobile-lite.js-anim .closer-title.is-on .closer-write {
+    animation-duration: .6s;
+    animation-delay: .56s;
+  }
+  html.mobile-lite.js-anim .closer-write::after { content: none; }
+  html.mobile-lite.js-anim .closer-title.is-on .closer-cta {
+    animation-duration: .4s;
+    animation-delay: 1.16s;
   }
 
   /* ---------- spotlight (glow sledující kurzor) ---------- */
@@ -626,8 +797,23 @@
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
     html.js-anim .event-row .event-piece,
-    html.js-anim .reveal-media { opacity: 1 !important; transform: none !important; filter: none !important; }
+    html.js-anim .reveal-media,
+    html.js-anim .closer-kicker,
+    html.js-anim .closer-hit,
+    html.js-anim .closer-write,
+    html.js-anim .closer-cta { opacity: 1 !important; visibility: visible !important; transform: none !important; filter: none !important; }
     html.js-anim .event-row::before { transform: none !important; }
+    html.js-anim .closer-line { transform: none !important; animation: none !important; }
+    html.js-anim .closer-write {
+      clip-path: none !important;
+      letter-spacing: normal !important;
+      animation: none !important;
+      text-shadow: none !important;
+    }
+    html.js-anim .closer-kicker,
+    html.js-anim .closer-hit,
+    html.js-anim .closer-cta { animation: none !important; letter-spacing: normal !important; text-shadow: none !important; }
+    html.js-anim .closer-write::after { content: none !important; }
     html.js-anim .pq-ch,
     html.js-anim .pq-space { --write: 1; }
     .pq-ch,
@@ -682,8 +868,15 @@
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
     html.js-anim .event-row .event-piece,
-    html.js-anim .reveal-media { opacity: 1 !important; transform: none !important; filter: none !important; }
+    html.js-anim .reveal-media,
+    html.js-anim .closer-kicker,
+    html.js-anim .closer-hit,
+    html.js-anim .closer-write,
+    html.js-anim .closer-cta { opacity: 1 !important; visibility: visible !important; transform: none !important; filter: none !important; }
     html.js-anim .event-row::before { transform: none !important; }
+    html.js-anim .closer-line { transform: none !important; }
+    html.js-anim .closer-write { clip-path: none !important; }
+    html.js-anim .closer-write::after { content: none !important; }
     #preloader { display: none !important; }
   </style>
 </noscript>
@@ -1478,10 +1671,14 @@
   <!-- ===================== FOOTER ===================== -->
   <footer class="relative z-10 -mt-8 overflow-hidden rounded-t-[2.5rem] bg-[#120709] text-zinc-400">
     <div class="relative mx-auto max-w-[80rem] px-6 pb-10 pt-20 lg:px-10 lg:pt-28">
-      <div class="flex flex-col items-center text-center">
-        <p class="font-mono text-[11px] uppercase tracking-[0.3em] accent-on-dark">poslední krok</p>
-        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl">Zítra<br><span class="italic text-gradient-champagne pb-[0.08em]">už stojíš jinak.</span></h2>
-        <a href="#podani" class="magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-crimson-lg transition-shadow hover:shadow-crimson-lg" data-magnetic="0.10">
+      <div class="closer-title flex flex-col items-center text-center" data-closer>
+        <p class="closer-kicker font-mono text-[11px] uppercase tracking-[0.3em] accent-on-dark">poslední krok</p>
+        <span class="closer-line" aria-hidden="true"></span>
+        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl" aria-label="Zítra už stojíš jinak.">
+          <span class="closer-hit">Zítra</span><br>
+          <span class="closer-write"><span class="italic text-gradient-champagne pb-[0.08em]">už stojíš jinak.</span></span>
+        </h2>
+        <a href="#podani" class="closer-cta magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-crimson-lg transition-shadow hover:shadow-crimson-lg" data-magnetic="0.10">
           <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </a>
       </div>
@@ -2101,6 +2298,43 @@
           }
         });
       }, 6000);
+
+      /* ---------- footer closer title-card ---------- */
+      var closerEl = $('[data-closer]');
+      function playCloser() {
+        if (!closerEl || closerEl.classList.contains('is-on')) return;
+        closerEl.classList.add('is-on');
+      }
+      if (closerEl) {
+        if (reduced || doc.documentElement.classList.contains('reveal-safe')) {
+          playCloser();
+        } else if ('IntersectionObserver' in win) {
+          var cio = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                playCloser();
+                obs.unobserve(en.target);
+              }
+            });
+          }, mobileLite
+            ? { threshold: 0.28, rootMargin: '0px 0px -8% 0px' }
+            : { threshold: 0.4, rootMargin: '0px 0px -15% 0px' });
+          cio.observe(closerEl);
+          if (inViewport(closerEl)) { playCloser(); }
+          setTimeout(function () {
+            if (!closerEl.classList.contains('is-on') && inViewport(closerEl)) {
+              playCloser();
+            }
+          }, 300);
+        } else {
+          playCloser();
+        }
+        setTimeout(function () {
+          if (closerEl && !closerEl.classList.contains('is-on') && inViewport(closerEl)) {
+            playCloser();
+          }
+        }, 6000);
+      }
 
       /* ---------- animované čítače ---------- */
       function runCounter(el) {
