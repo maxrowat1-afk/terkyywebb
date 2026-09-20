@@ -141,11 +141,12 @@
   a, button, label { cursor: pointer; }
   input, textarea { cursor: text; }
 
-  /* ---------- navigace: Apple frosted glass, vždy, ~48px ---------- */
+  /* ---------- navigace: nahoře slitá s pozadím, po scrollu Apple sklo ---------- */
   #site-header {
-    background-color: rgba(255, 255, 255, 0.72);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: background-color .45s ease;
   }
   #nav-pill {
     background: transparent;
@@ -153,13 +154,21 @@
     box-shadow: none;
     border-radius: 0;
   }
-  html.cheap-gpu #site-header {
+  html.nav-scrolled #site-header,
+  html.menu-open #site-header {
+    background-color: rgba(255, 255, 255, 0.72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  html.cheap-gpu.nav-scrolled #site-header,
+  html.cheap-gpu.menu-open #site-header {
     background-color: rgba(255, 255, 255, 0.94);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
   @supports not ((-webkit-backdrop-filter: blur(20px)) or (backdrop-filter: blur(20px))) {
-    #site-header { background-color: rgba(255, 255, 255, 0.94); }
+    html.nav-scrolled #site-header,
+    html.menu-open #site-header { background-color: rgba(255, 255, 255, 0.94); }
   }
   .nav-link { position: relative; }
   .nav-link::after {
