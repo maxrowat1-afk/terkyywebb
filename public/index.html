@@ -1723,7 +1723,7 @@
         var vh = win.innerHeight || 1;
         var r = penRoot.getBoundingClientRect();
         var start = vh * 0.92;
-        var end = vh * 0.08;
+        var end = vh * 0.50;
         var span = start - end;
         if (span <= 1) return 1;
         return Math.max(0, Math.min(1, (start - r.top) / span));
@@ -1798,7 +1798,7 @@
       function updateEventRows() {
         if (!eventScrub.length) return;
         var vh = win.innerHeight || 1;
-        var span = vh * 0.62;
+        var span = vh * 0.43;
         if (span < 1) span = 1;
         var i;
         for (i = 0; i < eventScrub.length; i++) {
@@ -1806,7 +1806,7 @@
           var p = clamp01((vh * 0.98 - item.el.getBoundingClientRect().top) / span);
           var k;
           for (k = 0; k < item.pieces.length; k++) {
-            var t = clamp01((p - k * 0.18) / 0.5);
+            var t = clamp01((p - k * 0.13) / 0.35);
             var e = t <= 0 ? 0 : t >= 1 ? 1 : easeOutBack(t);
             var from = -110 - k * 90;
             item.pieces[k].style.setProperty('--ep-x', (from * (1 - e)).toFixed(1) + 'px');
