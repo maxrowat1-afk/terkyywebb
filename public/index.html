@@ -884,8 +884,8 @@
             </div>
 
             <figure class="pen-quote" aria-label="Sebevědomí není pocit. Je to dovednost, kterou trénujete.">
-              <p class="pen-quote-sizer" aria-hidden="true">Sebevědomí není pocit. Je to dovednost, kterou trénujete.</p>
-              <p class="pen-quote-text" data-pen="Sebevědomí není pocit. Je to dovednost, kterou trénujete.">Sebevědomí není pocit. Je to dovednost, kterou trénujete.</p>
+              <p class="pen-quote-sizer" aria-hidden="true">Sebevědomí není pocit. Je to dovednost,<br>kterou trénujete.</p>
+              <p class="pen-quote-text" data-pen="Sebevědomí není pocit. Je to dovednost,|kterou trénujete.">Sebevědomí není pocit. Je to dovednost,<br>kterou trénujete.</p>
               <span class="pq-nib" aria-hidden="true"></span>
             </figure>
           </div>
@@ -1547,24 +1547,31 @@
 
       function setupPenChars() {
         if (!penText) return;
-        var raw = (penText.getAttribute('data-pen') || penText.textContent || '').replace(/\s+/g, ' ').trim();
+        var raw = (penText.getAttribute('data-pen') || '').trim();
+        if (!raw) raw = (penText.textContent || '').replace(/\s+/g, ' ').trim();
         penText.setAttribute('data-pen', raw);
         penText.setAttribute('aria-hidden', 'true');
         penText.textContent = '';
         penChars = [];
-        var i;
-        for (i = 0; i < raw.length; i++) {
-          var ch = raw.charAt(i);
-          var span = doc.createElement('span');
-          if (ch === ' ') {
-            span.className = 'pq-space';
-            span.textContent = '\u00a0';
-          } else {
-            span.className = 'pq-ch';
-            span.textContent = ch;
+        var lines = raw.split('|');
+        var li;
+        for (li = 0; li < lines.length; li++) {
+          if (li) penText.appendChild(doc.createElement('br'));
+          var line = lines[li].replace(/\s+/g, ' ').trim();
+          var i;
+          for (i = 0; i < line.length; i++) {
+            var ch = line.charAt(i);
+            var span = doc.createElement('span');
+            if (ch === ' ') {
+              span.className = 'pq-space';
+              span.textContent = '\u00a0';
+            } else {
+              span.className = 'pq-ch';
+              span.textContent = ch;
+            }
+            penText.appendChild(span);
+            penChars.push(span);
           }
-          penText.appendChild(span);
-          penChars.push(span);
         }
       }
 
