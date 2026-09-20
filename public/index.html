@@ -456,13 +456,12 @@
   }
   .pq-space { width: 0.28em; }
   html.js-anim .pq-ch,
-  html.js-anim .pq-space {
-    --write: 0;
-    display: none;
-  }
+  html.js-anim .pq-space { --write: 0; }
   .pq-ch {
-    clip-path: inset(-0.22em calc((1 - var(--write)) * 100%) -0.18em -0.14em);
+    opacity: var(--write);
+    color: color-mix(in srgb, #9b1d30 calc((1 - var(--write)) * 38%), #27272a);
   }
+  .pq-space { opacity: var(--write); }
   .pq-nib {
     position: absolute;
     left: 0;
@@ -494,7 +493,9 @@
     html.js-anim [data-reveal], html.js-anim .hero-word, html.js-anim .hero-fade { opacity: 1 !important; transform: none !important; filter: none !important; }
     html.js-anim .pq-ch,
     html.js-anim .pq-space { --write: 1; }
-    .pq-ch { clip-path: none; }
+    .pq-ch,
+    .pq-space { opacity: 1; }
+    .pq-ch { color: #27272a; }
     .pq-nib { display: none !important; }
   }
 
@@ -1582,21 +1583,20 @@
         if (!penRoot || !penChars.length) return;
         var progress = reduced ? 1 : penSectionProgress();
         var n = penChars.length;
-        var x = progress * n;
+        var fade = 1.7;
+        var x = progress * (n + fade - 1);
         var i;
         var active = 0;
         var activeW = 1;
         for (i = 0; i < n; i++) {
-          var w = Math.max(0, Math.min(1, x - i));
+          var t = Math.max(0, Math.min(1, (x - i) / fade));
+          var w = t * t * (3 - 2 * t);
           var el = penChars[i];
-          if (w <= 0) {
-            el.style.display = 'none';
-            el.style.setProperty('--write', '0');
-          } else {
-            el.style.display = 'inline-block';
-            el.style.setProperty('--write', w.toFixed(4));
+          el.style.display = 'inline-block';
+          el.style.setProperty('--write', w.toFixed(4));
+          if (w > 0) {
             active = i;
-            activeW = w;
+            activeW = t;
           }
         }
         if (!penShowNib || !penNib) {
