@@ -1082,7 +1082,7 @@
           <p class="max-w-md text-sm leading-relaxed text-zinc-500 md:text-right">Tři formáty, jeden cíl: plán, opora a energie, která zůstane i po posledním sezení.</p>
         </div>
 
-        <div class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-6">
+        <div class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-6" data-reveal-pack>
 
           <!-- 01 individuální koučink -->
           <article id="program-1-1" class="assemble tilt spotlight group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:col-span-2 md:p-8 lg:col-span-3 lg:p-9" data-tilt="3.5" data-tilt-z="14" data-reveal="left">
@@ -1131,7 +1131,7 @@
           </article>
 
           <!-- 03 prosecco večery (foto) -->
-          <article id="program-prosecco" class="assemble tilt spotlight spotlight-light group relative min-h-[320px] overflow-hidden rounded-[1.75rem] border border-white/10" data-tilt="4.5" data-tilt-z="24" data-reveal="right" style="--rd:220ms">
+          <article id="program-prosecco" class="assemble tilt spotlight spotlight-light group relative min-h-[320px] overflow-hidden rounded-[1.75rem] border border-white/10" data-tilt="4.5" data-tilt-z="24" data-reveal="right" style="--rd:160ms">
             <picture class="contents">
               <source type="image/webp" srcset="/prosecco-vecer-640.webp 640w, /prosecco-vecer-960.webp 960w" sizes="(min-width: 1024px) 22vw, 90vw">
               <img src="/prosecco-vecer-960.jpg" srcset="/prosecco-vecer-640.jpg 640w, /prosecco-vecer-960.jpg 960w" sizes="(min-width: 1024px) 22vw, 90vw" alt="Večer Koučink a prosecco v soukromém salónu" class="reveal-media absolute inset-0 h-full w-full object-cover object-center" loading="lazy" decoding="async" width="960" height="640">
@@ -2265,39 +2265,64 @@
         return visible / h >= 0.12;
       }
 
-      var revealEls = $$('[data-reveal]');
-      if ('IntersectionObserver' in win && !reduced) {
-        var rio = new IntersectionObserver(function (entries, obs) {
-          entries.forEach(function (en) {
-            if (en.isIntersecting) {
-              revealEl(en.target);
-              obs.unobserve(en.target);
-            }
-          });
-        }, mobileLite
-          ? { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
-          : { threshold: 0.14, rootMargin: '0px 0px -12% 0px' });
-        revealEls.forEach(function (el) { rio.observe(el); });
-        revealEls.forEach(function (el) {
-          if (inViewport(el)) { revealEl(el); }
-        });
-        setTimeout(function () {
-          revealEls.forEach(function (el) {
-            if (!el.classList.contains('revealed') && inViewport(el)) {
-              revealEl(el);
-            }
-          });
-        }, 300);
-      } else {
-        revealEls.forEach(function (el) { revealEl(el); });
+      function revealPack(pack) {
+        $$('[data-reveal]', pack).forEach(revealEl);
       }
-      setTimeout(function () {
-        $$('[data-reveal]').forEach(function (el) {
+
+      var revealEls = $$('[data-reveal]');
+      var revealPacks = $$('[data-reveal-pack]');
+      var packed = [];
+      var packTogether = !mobileLite && win.matchMedia && win.matchMedia('(min-width: 1024px)').matches;
+      if (packTogether) {
+        revealPacks.forEach(function (pack) {
+          $$('[data-reveal]', pack).forEach(function (el) { packed.push(el); });
+        });
+      }
+
+      function isPacked(el) {
+        return packed.indexOf(el) !== -1;
+      }
+
+      function revealVisible() {
+        if (packTogether) {
+          revealPacks.forEach(function (pack) {
+            if (inViewport(pack)) { revealPack(pack); }
+          });
+        }
+        revealEls.forEach(function (el) {
+          if (isPacked(el)) return;
           if (!el.classList.contains('revealed') && inViewport(el)) {
             revealEl(el);
           }
         });
-      }, 6000);
+      }
+
+      if ('IntersectionObserver' in win && !reduced) {
+        var rio = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            if (packTogether && en.target.hasAttribute('data-reveal-pack')) {
+              revealPack(en.target);
+            } else {
+              revealEl(en.target);
+            }
+            obs.unobserve(en.target);
+          });
+        }, mobileLite
+          ? { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
+          : { threshold: 0.14, rootMargin: '0px 0px -12% 0px' });
+        revealEls.forEach(function (el) {
+          if (!isPacked(el)) { rio.observe(el); }
+        });
+        if (packTogether) {
+          revealPacks.forEach(function (pack) { rio.observe(pack); });
+        }
+        revealVisible();
+        setTimeout(revealVisible, 300);
+      } else {
+        revealEls.forEach(function (el) { revealEl(el); });
+      }
+      setTimeout(revealVisible, 6000);
 
       /* ---------- footer closer title-card ---------- */
       var closerEl = $('[data-closer]');
