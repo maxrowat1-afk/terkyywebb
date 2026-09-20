@@ -257,6 +257,14 @@
   }
   html.js-anim [data-reveal].revealed .reveal-media { transform: scale(1); }
   html.js-anim [data-reveal].revealed:hover .reveal-media { transform: scale(1.05); transition-duration: .7s; }
+  html.js-anim [data-reveal].revealed.workshop-hero .reveal-media {
+    transition: transform 2.6s cubic-bezier(0.25, 0.1, 0.2, 1);
+  }
+  html.js-anim [data-reveal].revealed.workshop-hero:hover .reveal-media {
+    transform: scale(1.04);
+    transition-duration: 2.6s;
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.2, 1);
+  }
 
   html.js-anim [data-reveal] .event-date {
     opacity: 0;
@@ -269,9 +277,48 @@
     transform: none;
   }
 
+  .event-row { position: relative; }
+  html.js-anim .event-row[data-reveal="left"] {
+    transform: perspective(900px) rotateX(var(--tilt-rx)) rotateY(var(--tilt-ry)) translate3d(-28px, 8px, var(--tilt-z));
+  }
+  html.js-anim .event-row {
+    border-top-color: transparent;
+  }
+  html.js-anim .event-row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: rgba(226, 232, 240, 0.8);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .95s cubic-bezier(0.22, 1.25, 0.36, 1);
+    transition-delay: 40ms;
+    pointer-events: none;
+  }
+  html.js-anim .event-row.revealed::before { transform: scaleX(1); }
+  html.js-anim .event-row .event-piece {
+    opacity: 0;
+    transform: translate3d(-48px, 0, 0);
+    transition:
+      transform .95s cubic-bezier(0.22, 1.25, 0.36, 1),
+      opacity .65s ease;
+    transition-delay: 0ms;
+  }
+  html.js-anim .event-row.revealed .event-piece {
+    opacity: 1;
+    transform: none;
+  }
+  html.js-anim .event-row.revealed .event-piece:nth-child(1) { transition-delay: 90ms; }
+  html.js-anim .event-row.revealed .event-piece:nth-child(2) { transition-delay: 200ms; }
+  html.js-anim .event-row.revealed .event-piece:nth-child(3) { transition-delay: 320ms; }
+
   html.cheap-gpu.js-anim [data-reveal],
   html.cheap-gpu.js-anim .assemble .assemble-item,
-  html.cheap-gpu.js-anim [data-reveal] .event-date {
+  html.cheap-gpu.js-anim [data-reveal] .event-date,
+  html.cheap-gpu.js-anim .event-row .event-piece {
     filter: none;
   }
   html.cheap-gpu.js-anim .reveal-media { transform: none; }
@@ -279,11 +326,13 @@
   html.reveal-safe.js-anim [data-reveal],
   html.reveal-safe.js-anim .assemble .assemble-item,
   html.reveal-safe.js-anim [data-reveal] .event-date,
+  html.reveal-safe.js-anim .event-row .event-piece,
   html.reveal-safe.js-anim .reveal-media {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
   }
+  html.reveal-safe.js-anim .event-row::before { transform: none !important; }
 
   html.mobile-lite .aura {
     filter: none;
@@ -325,6 +374,15 @@
   html.mobile-lite.js-anim [data-reveal] .event-date {
     transform: translate3d(0, 8px, 0);
     transition-delay: 0ms;
+  }
+  html.mobile-lite.js-anim .event-row {
+    border-top-color: rgba(226, 232, 240, 0.8);
+  }
+  html.mobile-lite.js-anim .event-row::before { content: none; }
+  html.mobile-lite.js-anim .event-row .event-piece {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   /* ---------- spotlight (glow sledující kurzor) ---------- */
@@ -508,13 +566,13 @@
     font-family: "Playfair Display", Georgia, serif;
     font-style: italic;
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     line-height: 1.375;
     color: #27272a;
   }
   @media (min-width: 768px) {
     .pen-quote-sizer,
-    .pen-quote-text { font-size: 1.875rem; }
+    .pen-quote-text { font-size: 2.25rem; }
   }
   .pen-quote-sizer {
     visibility: hidden;
@@ -572,7 +630,9 @@
     html.js-anim .hero-fade,
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
+    html.js-anim .event-row .event-piece,
     html.js-anim .reveal-media { opacity: 1 !important; transform: none !important; filter: none !important; }
+    html.js-anim .event-row::before { transform: none !important; }
     html.js-anim .pq-ch,
     html.js-anim .pq-space { --write: 1; }
     .pq-ch,
@@ -626,7 +686,9 @@
     html.js-anim .hero-fade,
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
+    html.js-anim .event-row .event-piece,
     html.js-anim .reveal-media { opacity: 1 !important; transform: none !important; filter: none !important; }
+    html.js-anim .event-row::before { transform: none !important; }
     #preloader { display: none !important; }
   </style>
 </noscript>
@@ -993,7 +1055,7 @@
         </div>
 
         <!-- velká reportážní fotografie -->
-        <div class="assemble group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
+        <div class="workshop-hero assemble group relative mt-14 h-[400px] overflow-hidden rounded-[2rem] shadow-soft md:h-[480px] lg:h-[540px]" data-reveal="scale">
           <picture class="contents">
             <source type="image/webp" srcset="/workshop-praha-800.webp 800w, /workshop-praha-1280.webp 1280w, /workshop-praha-1920.webp 1920w" sizes="(min-width: 1280px) 80rem, 92vw">
             <img src="/workshop-praha-1280.jpg" srcset="/workshop-praha-800.jpg 800w, /workshop-praha-1280.jpg 1280w, /workshop-praha-1920.jpg 1920w" sizes="(min-width: 1280px) 80rem, 92vw" alt="Terka přednáší na večeru Energie a vliv v Praze" class="reveal-media h-full w-full object-cover object-[center_55%]" loading="lazy" decoding="async" width="1280" height="853">
@@ -1014,7 +1076,7 @@
         </div>
 
         <!-- seznam akcí -->
-        <div class="mt-16" data-reveal data-reveal-split=":scope > div:first-child, :scope article">
+        <div class="mt-16" data-reveal data-reveal-split=":scope > div:first-child">
           <div class="flex items-center justify-between">
             <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">nejbližší akce · podzim 2026</p>
             <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">rezervace nutná</p>
@@ -1022,12 +1084,12 @@
 
           <div class="mt-4">
 
-            <article class="grid grid-cols-1 items-center gap-6 border-t border-slate-200/80 py-9 md:grid-cols-12 md:gap-8">
-              <div class="flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
+            <article class="event-row grid grid-cols-1 items-center gap-6 border-t border-slate-200/80 py-9 md:grid-cols-12 md:gap-8" data-reveal="left">
+              <div class="event-piece flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
                 <span class="event-date font-serif text-5xl leading-none text-zinc-900 md:text-6xl">14.</span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">října 2026</span>
               </div>
-              <div class="md:col-span-6">
+              <div class="event-piece md:col-span-6">
                 <div class="flex flex-wrap items-center gap-3">
                   <h3 class="font-serif text-2xl text-zinc-900 md:text-[1.7rem]">Energie, která se pozná</h3>
                   <span class="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-medium text-amber-700"><span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>zbývá 6 míst</span>
@@ -1039,7 +1101,7 @@
                   <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>18:30–21:30</span>
                 </div>
               </div>
-              <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
+              <div class="event-piece flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
                 <div class="text-left md:text-right">
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">1&nbsp;900&nbsp;Kč</p>
@@ -1048,12 +1110,12 @@
               </div>
             </article>
 
-            <article class="grid grid-cols-1 items-center gap-6 border-t border-slate-200/80 py-9 md:grid-cols-12 md:gap-8">
-              <div class="flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
+            <article class="event-row grid grid-cols-1 items-center gap-6 border-t border-slate-200/80 py-9 md:grid-cols-12 md:gap-8" data-reveal="left">
+              <div class="event-piece flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
                 <span class="event-date font-serif text-5xl leading-none text-zinc-900 md:text-6xl">4.</span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">listopadu 2026</span>
               </div>
-              <div class="md:col-span-6">
+              <div class="event-piece md:col-span-6">
                 <div class="flex flex-wrap items-center gap-3">
                   <h3 class="font-serif text-2xl text-zinc-900 md:text-[1.7rem]">Hranice bez omluv</h3>
                   <span class="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-medium text-amber-700"><span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>poslední 3&nbsp;místa</span>
@@ -1065,7 +1127,7 @@
                   <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>9:00–13:00</span>
                 </div>
               </div>
-              <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
+              <div class="event-piece flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
                 <div class="text-left md:text-right">
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">2&nbsp;900&nbsp;Kč</p>
@@ -1074,12 +1136,12 @@
               </div>
             </article>
 
-            <article class="grid grid-cols-1 items-center gap-6 border-y border-slate-200/80 py-9 md:grid-cols-12 md:gap-8">
-              <div class="flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
+            <article class="event-row grid grid-cols-1 items-center gap-6 border-y border-slate-200/80 py-9 md:grid-cols-12 md:gap-8" data-reveal="left">
+              <div class="event-piece flex items-baseline gap-3 md:col-span-2 md:flex-col md:items-start md:gap-1">
                 <span class="event-date font-serif text-5xl leading-none text-zinc-900 md:text-6xl">19.</span>
                 <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">listopadu 2026</span>
               </div>
-              <div class="md:col-span-6">
+              <div class="event-piece md:col-span-6">
                 <div class="flex flex-wrap items-center gap-3">
                   <h3 class="font-serif text-2xl text-zinc-900 md:text-[1.7rem]">Jak vstoupit do místnosti</h3>
                   <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-medium text-emerald-700"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>vstupenky k dispozici</span>
@@ -1090,7 +1152,7 @@
                   <span class="inline-flex items-center gap-1.5 text-xs text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-crimson-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>19:00–20:30 SEČ</span>
                 </div>
               </div>
-              <div class="flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
+              <div class="event-piece flex items-center justify-between gap-6 md:col-span-4 md:justify-end">
                 <div class="text-left md:text-right">
                   <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">vstupné</p>
                   <p class="mt-1 font-serif text-2xl text-zinc-900">1&nbsp;200&nbsp;Kč</p>
@@ -1664,8 +1726,8 @@
         if (!penRoot) return 1;
         var vh = win.innerHeight || 1;
         var r = penRoot.getBoundingClientRect();
-        var start = vh * 0.9;
-        var end = vh * 0.42;
+        var start = vh * 0.92;
+        var end = vh * 0.08;
         var span = start - end;
         if (span <= 1) return 1;
         return Math.max(0, Math.min(1, (start - r.top) / span));
@@ -1675,7 +1737,7 @@
         if (!penRoot || !penChars.length) return;
         var progress = reduced ? 1 : penSectionProgress();
         var n = penChars.length;
-        var fade = 1.7;
+        var fade = 3.2;
         var x = progress * (n + fade - 1);
         var i;
         var active = 0;
@@ -2230,14 +2292,60 @@
           var strength = parseFloat(el.getAttribute('data-magnetic'));
           if (isNaN(strength)) { strength = 0.1; }
           var inner = el.querySelector('.magnetic-inner') || el;
+          var tx = 0;
+          var ty = 0;
+          var x = 0;
+          var y = 0;
+          var vx = 0;
+          var vy = 0;
+          var raf = 0;
+          var stiffness = 0.045;
+          var damping = 0.78;
+
+          function settle() {
+            x = tx;
+            y = ty;
+            vx = 0;
+            vy = 0;
+            inner.style.willChange = '';
+            inner.style.transform = (tx === 0 && ty === 0)
+              ? ''
+              : 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)';
+          }
+
+          function tick() {
+            raf = 0;
+            vx += (tx - x) * stiffness;
+            vy += (ty - y) * stiffness;
+            vx *= damping;
+            vy *= damping;
+            x += vx;
+            y += vy;
+            inner.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)';
+            var moving = Math.abs(tx - x) > 0.08 || Math.abs(ty - y) > 0.08
+              || Math.abs(vx) > 0.08 || Math.abs(vy) > 0.08;
+            if (moving) {
+              raf = requestAnimationFrame(tick);
+            } else {
+              settle();
+            }
+          }
+
+          function start() {
+            inner.style.willChange = 'transform';
+            if (!raf) raf = requestAnimationFrame(tick);
+          }
+
           el.addEventListener('pointermove', function (e) {
             var r = el.getBoundingClientRect();
-            var x = (e.clientX - r.left - r.width / 2) * strength;
-            var y = (e.clientY - r.top - r.height / 2) * strength;
-            inner.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)';
+            tx = (e.clientX - r.left - r.width / 2) * strength;
+            ty = (e.clientY - r.top - r.height / 2) * strength;
+            start();
           });
           el.addEventListener('pointerleave', function () {
-            inner.style.transform = '';
+            tx = 0;
+            ty = 0;
+            start();
           });
         });
 
