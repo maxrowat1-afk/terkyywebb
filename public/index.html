@@ -698,15 +698,6 @@
   .faq-icon { transition: transform .45s cubic-bezier(.22,1,.36,1), background-color .3s ease, border-color .3s ease, color .3s ease; }
   .faq-item.open .faq-icon { transform: rotate(45deg); background: #9b1d30; border-color: #9b1d30; color: #fff; }
 
-  /* ---------- reference ---------- */
-  .testi-slide {
-    grid-area: 1 / 1; opacity: 0; transform: translateY(16px); pointer-events: none;
-    transition: opacity .65s ease, transform .65s cubic-bezier(.22,1,.36,1);
-  }
-  .testi-slide.active { opacity: 1; transform: none; pointer-events: auto; }
-  .testi-dot { width: 8px; height: 8px; border-radius: 9999px; background: #d4d4d8; transition: all .35s ease; cursor: pointer; border: none; padding: 0; }
-  .testi-dot.active { background: #9b1d30; transform: scale(1.35); box-shadow: 0 0 0 4px rgba(155,29,48,.14); }
-
   /* ---------- mobilní CTA ---------- */
   #mobile-cta {
     position: fixed; bottom: 14px; left: 14px; right: 14px; z-index: 45;
@@ -1376,70 +1367,58 @@
           <p class="max-w-md text-sm leading-relaxed text-zinc-500 md:text-right">Jména zkrácená. Příběhy z posledních let spolupráce.</p>
         </div>
 
-        <div id="testi-wrap" class="assemble relative mt-12 overflow-hidden rounded-[2rem] border border-white/70 bg-white/50 px-7 py-10 shadow-card backdrop-blur-xl md:p-12" data-reveal="scale">
-          <span class="pointer-events-none absolute left-8 top-6 select-none font-serif text-[5rem] leading-none text-crimson-600/[0.08]">„</span>
-
-          <div class="relative grid">
-            <article class="testi-slide active" aria-hidden="false">
-              <blockquote class="mt-2 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Po třech měsících mě na jednáních začali brát vážně obchodní partneři. Ne proto, že bych se změnila — ale proto, že jsem přestala omlouvat to, kdo jsem.“</blockquote>
-              <div class="mt-8 flex items-center gap-4">
-                <span class="grid h-12 w-12 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">ML</span>
-                <div>
-                  <p class="text-sm font-semibold text-zinc-900">Markéta L., 38</p>
-                  <p class="mt-0.5 text-xs text-zinc-400">ředitelka, fintech · individuální program</p>
-                </div>
-              </div>
-            </article>
-
-            <article class="testi-slide" aria-hidden="true" inert>
-              <blockquote class="mt-2 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Terka vás nehladí po hlavě. Postaví vám zrcadlo a nedovolí vám od něj uhnout. Je to nepříjemné — a zároveň nejlepší, co jsem za posledních deset let pro sebe udělala.“</blockquote>
-              <div class="mt-8 flex items-center gap-4">
-                <span class="grid h-12 w-12 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">KS</span>
-                <div>
-                  <p class="text-sm font-semibold text-zinc-900">Klára S., 42</p>
-                  <p class="mt-0.5 text-xs text-zinc-400">partnerka, právní kancelář · dámská setkání</p>
-                </div>
-              </div>
-            </article>
-
-            <article class="testi-slide" aria-hidden="true" inert>
-              <blockquote class="mt-2 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Přišla jsem za sebevědomím, odešla jsem s&nbsp;plánem. Za rok jsem si zdvojnásobila sazby. Ten program sám o sobě stál za to.“</blockquote>
-              <div class="mt-8 flex items-center gap-4">
-                <span class="grid h-12 w-12 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">DV</span>
-                <div>
-                  <p class="text-sm font-semibold text-zinc-900">Dominika V., 35</p>
-                  <p class="mt-0.5 text-xs text-zinc-400">zakladatelka a kreativní ředitelka · individuální program</p>
-                </div>
-              </div>
-            </article>
-
-            <article class="testi-slide" aria-hidden="true" inert>
-              <blockquote class="mt-2 font-serif text-xl leading-snug text-zinc-800 md:text-2xl lg:text-[1.75rem]">„Myslela jsem, že koučink je luxus pro ztracené. Po jednom večeru s&nbsp;Terkou jsem zjistila, že je to nástroj pro ambiciózní. Za tři měsíce jsem našla víc než za pět let sebereflexe.“</blockquote>
-              <div class="mt-8 flex items-center gap-4">
-                <span class="grid h-12 w-12 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">RP</span>
-                <div>
-                  <p class="text-sm font-semibold text-zinc-900">Renata P., 47</p>
-                  <p class="mt-0.5 text-xs text-zinc-400">primářka · Koučink a prosecco večery</p>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="assemble-item relative mt-10 flex items-center justify-between border-t border-slate-200/70 pt-6">
-            <p class="font-mono text-xs tracking-[0.25em] text-zinc-500"><span id="testi-counter">01 / 04</span></p>
-            <div class="flex items-center gap-5">
-              <div class="flex items-center gap-2.5">
-                <button class="testi-dot active" aria-label="Reference 1"></button>
-                <button class="testi-dot" aria-label="Reference 2"></button>
-                <button class="testi-dot" aria-label="Reference 3"></button>
-                <button class="testi-dot" aria-label="Reference 4"></button>
-              </div>
-              <div class="flex items-center gap-3">
-                <button id="testi-prev" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.12" aria-label="Předchozí reference"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg></span></button>
-                <button id="testi-next" class="magnetic grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white/60 text-zinc-600 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.12" aria-label="Další reference"><span class="magnetic-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+        <div class="assemble mt-12 grid grid-cols-1 items-start gap-5 md:grid-cols-2" data-reveal>
+          <article class="assemble-item relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8">
+            <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
+            <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">individuální 1:1</p>
+            <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Po třech měsících mě na jednáních začali brát vážně obchodní partneři. Ne proto, že bych se změnila — ale proto, že jsem přestala omlouvat to, kdo jsem.“</blockquote>
+            <div class="relative mt-8 flex items-center gap-4">
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">ML</span>
+              <div>
+                <p class="text-sm font-semibold text-zinc-900">Markéta L., 38</p>
+                <p class="mt-0.5 text-xs text-zinc-400">ředitelka, fintech</p>
               </div>
             </div>
-          </div>
+          </article>
+
+          <article class="assemble-item relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8">
+            <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
+            <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">dámská setkání</p>
+            <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Terka vás nehladí po hlavě. Postaví vám zrcadlo a nedovolí vám od něj uhnout. Je to nepříjemné — a zároveň nejlepší, co jsem za posledních deset let pro sebe udělala.“</blockquote>
+            <div class="relative mt-8 flex items-center gap-4">
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">KS</span>
+              <div>
+                <p class="text-sm font-semibold text-zinc-900">Klára S., 42</p>
+                <p class="mt-0.5 text-xs text-zinc-400">partnerka, právní kancelář</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="assemble-item relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8">
+            <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
+            <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">individuální 1:1</p>
+            <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Přišla jsem za sebevědomím, odešla jsem s&nbsp;plánem. Za rok jsem si zdvojnásobila sazby. Ten program sám o sobě stál za to.“</blockquote>
+            <div class="relative mt-8 flex items-center gap-4">
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">DV</span>
+              <div>
+                <p class="text-sm font-semibold text-zinc-900">Dominika V., 35</p>
+                <p class="mt-0.5 text-xs text-zinc-400">zakladatelka a kreativní ředitelka</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="assemble-item relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8">
+            <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
+            <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">Koučink a prosecco večery</p>
+            <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Myslela jsem, že koučink je luxus pro ztracené. Po jednom večeru s&nbsp;Terkou jsem zjistila, že je to nástroj pro ambiciózní. Za tři měsíce jsem našla víc než za pět let sebereflexe.“</blockquote>
+            <div class="relative mt-8 flex items-center gap-4">
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-crimson-100 bg-crimson-50 font-serif text-lg text-crimson-700">RP</span>
+              <div>
+                <p class="text-sm font-semibold text-zinc-900">Renata P., 47</p>
+                <p class="mt-0.5 text-xs text-zinc-400">primářka</p>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1681,9 +1660,9 @@
       <div class="closer-title flex flex-col items-center text-center" data-closer>
         <p class="closer-kicker font-mono text-[11px] uppercase tracking-[0.3em] accent-on-dark">poslední krok</p>
         <span class="closer-line" aria-hidden="true"></span>
-        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl" aria-label="Zítra už stojíte jinak.">
-          <span class="closer-hit">Zítra</span><br>
-          <span class="closer-write"><span class="italic text-gradient-champagne pb-[0.08em]">už stojíte jinak.</span></span>
+        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl" aria-label="Začněte zítra jinak.">
+          <span class="closer-hit">Začněte</span><br>
+          <span class="closer-write"><span class="italic text-gradient-champagne pb-[0.08em]">zítra jinak.</span></span>
         </h2>
         <a href="#podani" class="closer-cta magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-crimson-lg transition-shadow hover:shadow-crimson-lg" data-magnetic="0.10">
           <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
@@ -2536,35 +2515,6 @@
         }
       }
 
-      /* ---------- reference: karusel (jen ruční přepínání) ---------- */
-      var slides = $$('.testi-slide');
-      var dots = $$('.testi-dot');
-      var counterEl = $('#testi-counter');
-      var tIdx = 0;
-
-      function pad(n) { return (n < 10 ? '0' : '') + n; }
-      function tGo(i) {
-        if (!slides.length) return;
-        tIdx = (i + slides.length) % slides.length;
-        slides.forEach(function (s, k) {
-          var on = k === tIdx;
-          s.classList.toggle('active', on);
-          s.setAttribute('aria-hidden', on ? 'false' : 'true');
-          if (on) { s.removeAttribute('inert'); }
-          else { s.setAttribute('inert', ''); }
-        });
-        dots.forEach(function (d, k) { d.classList.toggle('active', k === tIdx); });
-        if (counterEl) { counterEl.textContent = pad(tIdx + 1) + ' / ' + pad(slides.length); }
-      }
-      var tPrev = $('#testi-prev');
-      var tNext = $('#testi-next');
-      if (tPrev) { tPrev.addEventListener('click', function () { tGo(tIdx - 1); }); }
-      if (tNext) { tNext.addEventListener('click', function () { tGo(tIdx + 1); }); }
-      dots.forEach(function (d, k) {
-        d.addEventListener('click', function () { tGo(k); });
-      });
-      tGo(0);
-
       /* ---------- FAQ akordeon ---------- */
       $$('.faq-item').forEach(function (item) {
         var btn = $('.faq-toggle', item);
@@ -2801,7 +2751,7 @@
       "@id": "https://www.dneskoucuju.cz/#org",
       "name": "Dneskoučuju.cz",
       "alternateName": "Dneskoučuju",
-      "slogan": "Dneskoučuju. Zítra už to bude jinak.",
+      "slogan": "Dneskoučuju. Zítra už stojíš jinak.",
       "description": "Osobní koučování pro ženy: individuální programy 1:1, uzavřená dámská setkání, prosecco večery a energetický audit. Praha 2 a online, od roku 2018.",
       "url": "https://www.dneskoucuju.cz/",
       "email": "dneskoucuju@gmail.com",
