@@ -2513,15 +2513,14 @@
         }
       }
 
-      /* ---------- reference: karusel ---------- */
+      /* ---------- reference: karusel (jen ruční přepínání) ---------- */
       var slides = $$('.testi-slide');
       var dots = $$('.testi-dot');
       var counterEl = $('#testi-counter');
       var tIdx = 0;
-      var tTimer = null;
 
       function pad(n) { return (n < 10 ? '0' : '') + n; }
-      function tGo(i, user) {
+      function tGo(i) {
         if (!slides.length) return;
         tIdx = (i + slides.length) % slides.length;
         slides.forEach(function (s, k) {
@@ -2533,31 +2532,15 @@
         });
         dots.forEach(function (d, k) { d.classList.toggle('active', k === tIdx); });
         if (counterEl) { counterEl.textContent = pad(tIdx + 1) + ' / ' + pad(slides.length); }
-        if (user) { tRestart(); }
-      }
-      function tRestart() {
-        if (tTimer) { clearInterval(tTimer); }
-        if (reduced) return;
-        tTimer = setInterval(function () { tGo(tIdx + 1, false); }, 6500);
       }
       var tPrev = $('#testi-prev');
       var tNext = $('#testi-next');
-      if (tPrev) { tPrev.addEventListener('click', function () { tGo(tIdx - 1, true); }); }
-      if (tNext) { tNext.addEventListener('click', function () { tGo(tIdx + 1, true); }); }
+      if (tPrev) { tPrev.addEventListener('click', function () { tGo(tIdx - 1); }); }
+      if (tNext) { tNext.addEventListener('click', function () { tGo(tIdx + 1); }); }
       dots.forEach(function (d, k) {
-        d.addEventListener('click', function () { tGo(k, true); });
+        d.addEventListener('click', function () { tGo(k); });
       });
-      var tWrap = $('#testi-wrap');
-      if (tWrap) {
-        tWrap.addEventListener('pointerenter', function () { if (tTimer) { clearInterval(tTimer); } });
-        tWrap.addEventListener('pointerleave', tRestart);
-      }
-      doc.addEventListener('visibilitychange', function () {
-        if (doc.hidden) { if (tTimer) { clearInterval(tTimer); } }
-        else { tRestart(); }
-      });
-      tGo(0, false);
-      tRestart();
+      tGo(0);
 
       /* ---------- FAQ akordeon ---------- */
       $$('.faq-item').forEach(function (item) {
