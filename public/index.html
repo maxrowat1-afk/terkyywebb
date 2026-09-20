@@ -420,6 +420,23 @@
     transition: none;
   }
 
+  /* ---------- reference cards: zleva / zprava podle scrollu ---------- */
+  html.js-anim .ref-grid.is-scrub .ref-card[data-from="left"] {
+    --ref-x: -36vw;
+    --ref-y: 8px;
+    --ref-o: 0;
+  }
+  html.js-anim .ref-grid.is-scrub .ref-card[data-from="right"] {
+    --ref-x: 36vw;
+    --ref-y: 8px;
+    --ref-o: 0;
+  }
+  html.js-anim .ref-grid.is-scrub .ref-card {
+    opacity: var(--ref-o, 0);
+    transform: translate3d(var(--ref-x, 0px), var(--ref-y, 8px), 0);
+    will-change: transform, opacity;
+  }
+
   html.cheap-gpu.js-anim [data-reveal],
   html.cheap-gpu.js-anim .assemble .assemble-item,
   html.cheap-gpu.js-anim [data-reveal] .event-date,
@@ -450,6 +467,7 @@
   html.reveal-safe.js-anim .assemble .assemble-item,
   html.reveal-safe.js-anim [data-reveal] .event-date,
   html.reveal-safe.js-anim .event-row .event-piece,
+  html.reveal-safe.js-anim .ref-grid .ref-card,
   html.reveal-safe.js-anim .reveal-media,
   html.reveal-safe.js-anim .closer-kicker,
   html.reveal-safe.js-anim .closer-hit,
@@ -525,7 +543,8 @@
     border-top-color: rgba(226, 232, 240, 0.8);
   }
   html.mobile-lite.js-anim .event-row::before { content: none; }
-  html.mobile-lite.js-anim .event-row .event-piece {
+  html.mobile-lite.js-anim .event-row .event-piece,
+  html.mobile-lite.js-anim .ref-grid .ref-card {
     opacity: 1;
     transform: none;
     transition: none;
@@ -793,6 +812,7 @@
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
     html.js-anim .event-row .event-piece,
+    html.js-anim .ref-grid .ref-card,
     html.js-anim .reveal-media,
     html.js-anim .closer-kicker,
     html.js-anim .closer-hit,
@@ -864,6 +884,7 @@
     html.js-anim .assemble .assemble-item,
     html.js-anim [data-reveal] .event-date,
     html.js-anim .event-row .event-piece,
+    html.js-anim .ref-grid .ref-card,
     html.js-anim .reveal-media,
     html.js-anim .closer-kicker,
     html.js-anim .closer-hit,
@@ -1367,8 +1388,8 @@
           <p class="max-w-md text-sm leading-relaxed text-zinc-500 md:text-right">Jména zkrácená. Příběhy z posledních let spolupráce.</p>
         </div>
 
-        <div class="mt-12 grid grid-cols-1 items-start gap-5 md:grid-cols-2" data-reveal-pack>
-          <article class="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-reveal="left">
+        <div class="ref-grid mt-12 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
+          <article class="ref-card relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-from="left">
             <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
             <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">individuální 1:1</p>
             <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Po třech měsících mě na jednáních začali brát vážně. Ne proto, že bych se změnila — ale proto, že jsem přestala omlouvat, kdo jsem.“</blockquote>
@@ -1381,7 +1402,7 @@
             </div>
           </article>
 
-          <article class="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-reveal="right">
+          <article class="ref-card relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-from="right">
             <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
             <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">dámská setkání</p>
             <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Terka vás nehladí po hlavě. Postaví zrcadlo a nedovolí od něj uhnout. Nepříjemné — a to nejlepší, co jsem pro sebe udělala.“</blockquote>
@@ -1394,7 +1415,7 @@
             </div>
           </article>
 
-          <article class="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-reveal="left" style="--rd:120ms">
+          <article class="ref-card relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-from="left">
             <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
             <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">individuální 1:1</p>
             <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Přišla jsem za sebevědomím, odešla jsem s&nbsp;plánem. Za rok jsem si zdvojnásobila sazby. Ten program sám o sobě stál za to.“</blockquote>
@@ -1407,7 +1428,7 @@
             </div>
           </article>
 
-          <article class="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-reveal="right" style="--rd:160ms">
+          <article class="ref-card relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/60 p-7 shadow-card backdrop-blur-xl md:p-8" data-from="right">
             <span class="pointer-events-none absolute left-6 top-3 select-none font-serif text-[4.5rem] leading-none text-crimson-600/[0.08]">„</span>
             <p class="relative font-mono text-[11px] uppercase tracking-[0.22em] text-crimson-600">Koučink a prosecco večery</p>
             <blockquote class="relative mt-5 font-serif text-xl leading-snug text-zinc-800 md:text-[1.35rem]">„Myslela jsem, že koučink je luxus pro ztracené. Po večeru s&nbsp;Terkou vím, že je to nástroj pro ambiciózní. Za tři měsíce víc než za pět let sebereflexe.“</blockquote>
@@ -2000,6 +2021,55 @@
         }
       }
 
+      function easeOutQuart(t) {
+        var u = 1 - t;
+        return 1 - u * u * u * u;
+      }
+
+      /* ---------- reference cards: zleva / zprava, settle až v půlce sekce ---------- */
+      var refScrub = null;
+      if (!reduced && !mobileLite) {
+        var refGrid = $('.ref-grid');
+        if (refGrid) {
+          var refCards = $$(':scope > .ref-card', refGrid);
+          if (refCards.length) {
+            refGrid.classList.add('is-scrub');
+            refScrub = { el: refGrid, cards: refCards };
+            var bootTravel = Math.min(win.innerWidth * 0.36, 440);
+            var b;
+            for (b = 0; b < refCards.length; b++) {
+              var bootFrom = refCards[b].getAttribute('data-from') === 'right' ? 1 : -1;
+              refCards[b].style.setProperty('--ref-x', (bootFrom * bootTravel) + 'px');
+              refCards[b].style.setProperty('--ref-y', '8px');
+              refCards[b].style.setProperty('--ref-o', '0');
+            }
+          }
+        }
+      }
+
+      function updateRefCards() {
+        if (!refScrub) return;
+        var vh = win.innerHeight || 1;
+        var rect = refScrub.el.getBoundingClientRect();
+        var start = vh * 0.98;
+        var end = vh * 0.5 - rect.height * 0.48;
+        var span = start - end;
+        if (span < vh * 0.78) span = vh * 0.78;
+        var p = clamp01((start - rect.top) / span);
+        var travel = Math.min(win.innerWidth * 0.36, 440);
+        var i;
+        for (i = 0; i < refScrub.cards.length; i++) {
+          var row = i < 2 ? 0 : 1;
+          var t = clamp01((p - row * 0.2) / 0.8);
+          var e = t <= 0 ? 0 : t >= 1 ? 1 : easeOutQuart(t);
+          var from = refScrub.cards[i].getAttribute('data-from') === 'right' ? 1 : -1;
+          var dist = travel + row * 48;
+          refScrub.cards[i].style.setProperty('--ref-x', (from * dist * (1 - e)).toFixed(1) + 'px');
+          refScrub.cards[i].style.setProperty('--ref-y', (8 * (1 - e)).toFixed(1) + 'px');
+          refScrub.cards[i].style.setProperty('--ref-o', Math.min(1, t * 1.65).toFixed(3));
+        }
+      }
+
       function onScrollUI() {
         var y = getScrollY();
         var max = maxScrollY();
@@ -2008,6 +2078,7 @@
         if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', y > 24); }
         updatePenQuote();
         updateEventRows();
+        updateRefCards();
         updateNavSpy();
       }
 
