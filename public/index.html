@@ -418,6 +418,94 @@
   }
   @keyframes scrollLine { 0% { transform: translateY(-20px); } 70%, 100% { transform: translateY(72px); } }
 
+  /* ---------- pen quote: scroll-scrubbed handwriting ---------- */
+  .pen-quote {
+    margin: 3.5rem 0 0;
+    padding: 0;
+  }
+  @media (min-width: 1024px) {
+    .pen-quote { margin-top: 5.5rem; }
+  }
+  .pen-quote-track { position: relative; height: auto; }
+  html.js-anim .pen-quote-track { height: 145vh; }
+  @media (max-width: 767px) {
+    html.js-anim .pen-quote-track { height: 120vh; }
+  }
+  .pen-quote-sticky {
+    position: static;
+    padding: 0 1.5rem;
+  }
+  html.js-anim .pen-quote-sticky {
+    position: sticky;
+    top: max(6.5rem, 26vh);
+  }
+  @media (min-width: 1024px) {
+    .pen-quote-sticky { padding-left: 2.5rem; padding-right: 2.5rem; }
+  }
+  .pen-quote-text {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #18181b;
+    font-size: clamp(1.55rem, 4.6vw, 3.85rem);
+    line-height: 1.2;
+    letter-spacing: -0.021em;
+  }
+  .pq-line {
+    --write: 1;
+    display: block;
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+    padding-bottom: 0.42em;
+    white-space: nowrap;
+  }
+  .pq-line + .pq-line { margin-top: 0.08em; }
+  html.js-anim .pq-line { --write: 0; }
+  .pq-line-split { display: none; }
+  @media (max-width: 767px) {
+    .pq-line-wide { display: none; }
+    .pq-line-split { display: block; }
+    .pen-quote-sticky { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .pen-quote-text { font-size: clamp(1.3rem, 6.4vw, 2rem); }
+  }
+  .pq-ink {
+    display: block;
+    clip-path: inset(0 calc((1 - var(--write)) * 100%) 0 -0.12em);
+  }
+  .pq-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: 1px;
+    background: #9b1d30;
+    transform: scaleX(var(--write));
+    transform-origin: left center;
+    pointer-events: none;
+    opacity: 0.92;
+  }
+  .pq-nib {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 14px;
+    background: #9b1d30;
+    clip-path: polygon(46% 100%, 0 6%, 100% 0);
+    transform: translate3d(-24px, 0, 0) rotate(-18deg);
+    transform-origin: 50% 100%;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 1px 1px rgba(155, 29, 48, 0.28));
+  }
+  html.mobile-lite .pq-nib,
+  html.cheap-gpu .pq-nib {
+    display: none;
+  }
+
   :focus-visible:not(.field-input):not(.field-select) { outline: 2px solid rgba(155,29,48,.7); outline-offset: 3px; }
 
   h1, h2, h3 { text-wrap: balance; }
@@ -429,6 +517,11 @@
       transition-duration: .01ms !important; scroll-behavior: auto !important;
     }
     html.js-anim [data-reveal], html.js-anim .hero-word, html.js-anim .hero-fade { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .pen-quote-track { height: auto !important; }
+    html.js-anim .pen-quote-sticky { position: static; }
+    html.js-anim .pq-line { --write: 1; }
+    .pq-ink { clip-path: none; }
+    .pq-nib { display: none !important; }
   }
 
   /* Windows Chrome software-rasterizes backdrop-filter and stutters on scroll. */
@@ -780,7 +873,7 @@
           </div>
 
           <!-- text -->
-          <div class="lg:col-span-7" data-reveal="right" data-reveal-split=":scope > p, :scope > h2, :scope > .space-y-5 > p, :scope > .grid, :scope > blockquote">
+          <div class="lg:col-span-7" data-reveal="right" data-reveal-split=":scope > p, :scope > h2, :scope > .space-y-5 > p, :scope > .grid">
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">O mně</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Ahoj, jsem Terka.</h2>
 
@@ -814,13 +907,23 @@
                 <p class="mt-1 text-xs leading-relaxed text-zinc-400">a workshopů v Praze</p>
               </div>
             </div>
-
-            <blockquote class="mt-10 border-l-2 border-crimson-600 pl-6">
-              <p class="font-serif text-2xl italic leading-snug text-zinc-800 md:text-3xl">Sebevědomí není pocit. Je to dovednost, kterou trénujete.</p>
-            </blockquote>
           </div>
         </div>
       </div>
+
+      <figure class="pen-quote" aria-label="Sebevědomí není pocit. Je to dovednost, kterou trénujete.">
+        <div class="pen-quote-track">
+          <div class="pen-quote-sticky">
+            <p class="pen-quote-text" aria-hidden="true">
+              <span class="pq-line"><span class="pq-ink">Sebevědomí není pocit.</span></span>
+              <span class="pq-line pq-line-wide"><span class="pq-ink">Je to dovednost, kterou trénujete.</span></span>
+              <span class="pq-line pq-line-split"><span class="pq-ink">Je to dovednost,</span></span>
+              <span class="pq-line pq-line-split"><span class="pq-ink">kterou trénujete.</span></span>
+            </p>
+            <span class="pq-nib" aria-hidden="true"></span>
+          </div>
+        </div>
+      </figure>
     </section>
 
     <!-- ===================== WORKSHOPY ===================== -->
@@ -1467,12 +1570,105 @@
         return clampY(targetEl.getBoundingClientRect().top + getScrollY() - headerOffset());
       }
 
+      /* ---------- pen quote: scroll-scrubbed handwriting ---------- */
+      var penRoot = $('.pen-quote');
+      var penTrack = penRoot ? $('.pen-quote-track', penRoot) : null;
+      var penSticky = penRoot ? $('.pen-quote-sticky', penRoot) : null;
+      var penNib = penRoot ? $('.pq-nib', penRoot) : null;
+      var cheapGpu = doc.documentElement.classList.contains('cheap-gpu');
+      var penShowNib = !reduced && !mobileLite && !cheapGpu && !!penNib;
+      var penLineCache = [];
+      var penLineCacheW = -1;
+
+      function collectPenLines() {
+        if (!penRoot) return [];
+        if (penLineCacheW === win.innerWidth && penLineCache.length) return penLineCache;
+        penLineCacheW = win.innerWidth;
+        penLineCache = $$('.pq-line', penRoot).filter(function (el) {
+          return win.getComputedStyle(el).display !== 'none';
+        });
+        return penLineCache;
+      }
+
+      function mapPenProgress(progress, count) {
+        var writes = [];
+        var hold = 0.08;
+        var i;
+        if (count <= 0) return writes;
+        if (reduced || progress >= 1 - hold) {
+          for (i = 0; i < count; i++) writes.push(1);
+          return writes;
+        }
+        var writeWeight = 1;
+        var pauseWeight = 0.085;
+        var totalWeight = count * writeWeight + Math.max(0, count - 1) * pauseWeight;
+        var t = (Math.max(0, Math.min(1, progress)) / (1 - hold)) * totalWeight;
+        var cursor = 0;
+        for (i = 0; i < count; i++) {
+          if (t <= cursor) writes.push(0);
+          else if (t >= cursor + writeWeight) writes.push(1);
+          else writes.push((t - cursor) / writeWeight);
+          cursor += writeWeight;
+          if (i < count - 1) cursor += pauseWeight;
+        }
+        return writes;
+      }
+
+      function updatePenQuote() {
+        if (!penTrack || !penSticky) return;
+        var lines = collectPenLines();
+        var count = lines.length;
+        var writes;
+        var i;
+        if (reduced) {
+          writes = mapPenProgress(1, count);
+          for (i = 0; i < count; i++) {
+            lines[i].style.setProperty('--write', '1');
+          }
+          if (penNib) penNib.style.opacity = '0';
+          return;
+        }
+        var scrollable = penTrack.offsetHeight - penSticky.offsetHeight;
+        var progress = 1;
+        if (scrollable > 1) {
+          var pin = parseFloat(win.getComputedStyle(penSticky).top) || 0;
+          progress = (pin - penTrack.getBoundingClientRect().top) / scrollable;
+          progress = Math.max(0, Math.min(1, progress));
+        }
+        writes = mapPenProgress(progress, count);
+        for (i = 0; i < count; i++) {
+          lines[i].style.setProperty('--write', writes[i].toFixed(4));
+        }
+        if (!penShowNib || !penNib) {
+          if (penNib) penNib.style.opacity = '0';
+          return;
+        }
+        var active = 0;
+        for (i = 0; i < writes.length; i++) {
+          active = i;
+          if (writes[i] < 0.999) break;
+        }
+        var line = lines[active];
+        var ink = line && line.querySelector('.pq-ink');
+        if (!ink) {
+          penNib.style.opacity = '0';
+          return;
+        }
+        var inkR = ink.getBoundingClientRect();
+        var stickyR = penSticky.getBoundingClientRect();
+        var x = inkR.left + inkR.width * writes[active] - stickyR.left;
+        var y = inkR.bottom - stickyR.top - 5;
+        penNib.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) rotate(-18deg)';
+        penNib.style.opacity = (progress > 0.012 && progress < 0.94) ? '1' : '0';
+      }
+
       function onScrollUI() {
         var y = getScrollY();
         var max = maxScrollY();
         var p = max > 0 ? y / max : 0;
         if (progressBar) { progressBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
         if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', y > 24); }
+        updatePenQuote();
       }
 
       /* ---------- dva pocity scrollu: jemný wheel + gumový klik ---------- */
@@ -1637,6 +1833,8 @@
       win.addEventListener('resize', function () {
         currentY = clampY(getScrollY());
         targetY = clampY(targetY);
+        penLineCacheW = -1;
+        onScrollUI();
       });
 
       if (win.history && 'scrollRestoration' in history) {
@@ -1660,7 +1858,11 @@
       if (win.location.hash) { settleHash('instant'); }
       win.addEventListener('load', function () {
         if (win.location.hash) { settleHash('instant'); }
+        else { onScrollUI(); }
       });
+      if (doc.fonts && doc.fonts.ready) {
+        doc.fonts.ready.then(function () { onScrollUI(); });
+      }
 
       /* ---------- scroll reveal ---------- */
       $$('[data-reveal-split]').forEach(function (parent) {
