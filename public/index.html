@@ -915,9 +915,9 @@
           </span>
         </a>
         <nav class="hidden items-center gap-8 lg:flex" aria-label="Hlavní navigace">
-          <a href="#metodika" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Jak pracuji</a>
+          <a href="#jak-pracuji" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Jak pracuji</a>
           <a href="#o-mne" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">O mně</a>
-          <a href="#workshopy" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Akce</a>
+          <a href="#akce" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Akce</a>
           <a href="#reference" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Reference</a>
           <a href="#faq" class="nav-link text-[13px] font-medium text-zinc-500 transition-colors hover:text-zinc-900">Otázky</a>
         </nav>
@@ -938,7 +938,7 @@
   <div id="mobile-menu" class="fixed inset-0 z-40 overflow-y-auto bg-white/85 backdrop-blur-2xl lg:hidden" role="dialog" aria-modal="true" aria-label="Mobilní menu" aria-hidden="true">
     <div class="flex min-h-full flex-col justify-between px-7 pb-10 pt-20">
       <nav class="flex flex-col gap-7" aria-label="Mobilní navigace">
-        <a href="#metodika" class="mm-item group flex items-baseline gap-5">
+        <a href="#jak-pracuji" class="mm-item group flex items-baseline gap-5">
           <span class="font-mono text-xs text-crimson-600">01</span>
           <span class="font-serif text-4xl text-zinc-900 transition-colors group-hover:text-crimson-700">Jak pracuji</span>
         </a>
@@ -946,7 +946,7 @@
           <span class="font-mono text-xs text-crimson-600">02</span>
           <span class="font-serif text-4xl text-zinc-900 transition-colors group-hover:text-crimson-700">O mně</span>
         </a>
-        <a href="#workshopy" class="mm-item group flex items-baseline gap-5">
+        <a href="#akce" class="mm-item group flex items-baseline gap-5">
           <span class="font-mono text-xs text-crimson-600">03</span>
           <span class="font-serif text-4xl text-zinc-900 transition-colors group-hover:text-crimson-700">Akce</span>
         </a>
@@ -1011,7 +1011,7 @@
               <a href="#podani" class="magnetic btn-shine inline-flex items-center rounded-full bg-crimson-600 px-7 py-4 text-sm font-semibold text-white shadow-crimson transition-shadow duration-300 hover:bg-crimson-700 hover:shadow-crimson-lg focus-visible:shadow-crimson-lg" data-magnetic="0.10">
                 <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
               </a>
-              <a href="#metodika" class="magnetic group inline-flex items-center rounded-full border border-slate-300/90 bg-white/50 px-6 py-4 text-sm font-semibold text-zinc-700 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.08">
+              <a href="#jak-pracuji" class="magnetic group inline-flex items-center rounded-full border border-slate-300/90 bg-white/50 px-6 py-4 text-sm font-semibold text-zinc-700 backdrop-blur transition-colors hover:border-crimson-300 hover:text-crimson-700" data-magnetic="0.08">
                 <span class="magnetic-inner flex items-center gap-2.5">Jak to probíhá<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>
               </a>
             </div>
@@ -1072,8 +1072,9 @@
       </div>
     </section>
 
-    <!-- ===================== METODOLOGIE / BENTO ===================== -->
-    <section id="metodika" class="relative py-16 lg:py-24">
+    <!-- ===================== JAK PRACUJI / BENTO ===================== -->
+    <section id="jak-pracuji" class="relative py-12 lg:py-16">
+      <span id="metodika" hidden></span>
       <div class="aura h-[520px] w-[520px] text-crimson-400/20" style="top:4%; right:-16%;" aria-hidden="true"></div>
       <div class="aura h-[420px] w-[460px] text-crimson-400/20" style="bottom:8%; left:-14%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
@@ -1159,12 +1160,12 @@
     </section>
 
     <!-- ===================== O MNĚ ===================== -->
-    <section id="o-mne" class="relative py-16 lg:py-24">
+    <section id="o-mne" class="relative py-12 lg:py-16">
       <p class="absolute left-4 top-1/2 hidden -translate-y-1/2 rotate-90 font-mono text-[9px] uppercase tracking-[0.5em] text-zinc-300 xl:block" aria-hidden="true">Tereza Navrátilová · zakladatelka</p>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
-        <div class="mt-16 grid items-start gap-16 lg:grid-cols-12 lg:items-end lg:gap-14">
+        <div class="mt-10 grid items-start gap-16 lg:grid-cols-12 lg:items-end lg:gap-14">
           <!-- fotografie -->
           <div class="assemble relative lg:col-span-5" data-reveal="left">
             <div class="relative mx-auto max-w-md lg:max-w-none">
@@ -1233,13 +1234,14 @@
       </div>
     </section>
 
-    <!-- ===================== WORKSHOPY ===================== -->
-    <section id="workshopy" class="relative py-16 lg:py-24">
+    <!-- ===================== AKCE ===================== -->
+    <section id="akce" class="relative py-12 lg:py-16">
+      <span id="workshopy" hidden></span>
       <div class="aura h-[480px] w-[480px] text-crimson-400/20" style="bottom:-8%; left:-16%;" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
-        <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
+        <div class="mt-10 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Akce</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl lg:text-6xl">Večery, které mění <span class="italic text-crimson-700">směr.</span></h2>
@@ -1362,11 +1364,11 @@
     </section>
 
     <!-- ===================== REFERENCE ===================== -->
-    <section id="reference" class="relative py-16 lg:py-24">
+    <section id="reference" class="relative py-12 lg:py-16">
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
-        <div class="mt-14 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
+        <div class="mt-10 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
           <div>
             <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Reference</p>
             <h2 class="mt-4 font-serif text-4xl leading-tight text-zinc-900 md:text-5xl">Ženy, které už žijí jinak.</h2>
@@ -1585,11 +1587,11 @@
     </section>
 
     <!-- ===================== FAQ ===================== -->
-    <section id="faq" class="relative py-16 lg:py-24">
+    <section id="faq" class="relative py-12 lg:py-16">
       <div class="relative mx-auto max-w-[80rem] px-6 lg:px-10">
         <div class="h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent" data-reveal></div>
 
-        <div class="mt-16 grid gap-14 lg:grid-cols-12 lg:gap-20">
+        <div class="mt-10 grid gap-14 lg:grid-cols-12 lg:gap-20">
           <div class="lg:col-span-5">
             <div data-reveal="left">
               <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-600">Otázky</p>
@@ -1679,9 +1681,9 @@
       <div class="closer-title flex flex-col items-center text-center" data-closer>
         <p class="closer-kicker font-mono text-[11px] uppercase tracking-[0.3em] accent-on-dark">poslední krok</p>
         <span class="closer-line" aria-hidden="true"></span>
-        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl" aria-label="Zítra už stojíš jinak.">
+        <h2 class="mt-5 font-serif text-4xl leading-tight text-white md:text-6xl" aria-label="Zítra už stojíte jinak.">
           <span class="closer-hit">Zítra</span><br>
-          <span class="closer-write"><span class="italic text-gradient-champagne pb-[0.08em]">už stojíš jinak.</span></span>
+          <span class="closer-write"><span class="italic text-gradient-champagne pb-[0.08em]">už stojíte jinak.</span></span>
         </h2>
         <a href="#podani" class="closer-cta magnetic btn-shine mt-10 inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-crimson-700 shadow-crimson-lg transition-shadow hover:shadow-crimson-lg" data-magnetic="0.10">
           <span class="magnetic-inner flex items-center gap-2.5">Rezervovat konzultaci<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
@@ -1710,9 +1712,9 @@
         <div class="md:col-span-2">
           <p class="font-mono text-[13px] uppercase tracking-[0.12em] accent-on-dark">navigace</p>
           <ul class="mt-5 space-y-3 text-sm">
-            <li><a href="#metodika" class="accent-on-dark transition-colors">Jak pracuji</a></li>
+            <li><a href="#jak-pracuji" class="accent-on-dark transition-colors">Jak pracuji</a></li>
             <li><a href="#o-mne" class="accent-on-dark transition-colors">O mně</a></li>
-            <li><a href="#workshopy" class="accent-on-dark transition-colors">Akce</a></li>
+            <li><a href="#akce" class="accent-on-dark transition-colors">Akce</a></li>
             <li><a href="#reference" class="accent-on-dark transition-colors">Reference</a></li>
             <li><a href="#faq" class="accent-on-dark transition-colors">Otázky</a></li>
           </ul>
@@ -1859,9 +1861,16 @@
         if (!bar) return 76;
         return Math.round(bar.getBoundingClientRect().bottom + 12);
       }
+      var HASH_ALIAS = { workshopy: 'akce', metodika: 'jak-pracuji' };
+      function resolveHash(hash) {
+        if (!hash || hash === '#') return hash;
+        var id = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+        if (HASH_ALIAS[id]) id = HASH_ALIAS[id];
+        return '#' + id;
+      }
       function anchorY(hash) {
         if (!hash || hash === '#') return 0;
-        var id = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+        var id = resolveHash(hash).slice(1);
         if (!id || id === 'hero') return 0;
         var section = doc.getElementById(id);
         if (!section) return null;
@@ -2020,6 +2029,7 @@
         if (headerEl) { doc.documentElement.classList.toggle('nav-scrolled', y > 24); }
         updatePenQuote();
         updateEventRows();
+        updateNavSpy();
       }
 
       /* ---------- dva pocity scrollu: jemný wheel + gumový klik ---------- */
@@ -2405,21 +2415,33 @@
 
       /* ---------- aktivní sekce v navigaci ---------- */
       var navLinks = $$('.nav-link');
-      if ('IntersectionObserver' in win && navLinks.length) {
-        var spy = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            var id = '#' + en.target.id;
-            navLinks.forEach(function (l) {
-              l.classList.toggle('active', l.getAttribute('href') === id);
-            });
-          });
-        }, { rootMargin: '-42% 0px -52% 0px', threshold: 0 });
-        ['metodika', 'o-mne', 'workshopy', 'reference', 'podani', 'faq'].forEach(function (id) {
-          var s = doc.getElementById(id);
-          if (s) { spy.observe(s); }
+      var SPY_IDS = ['jak-pracuji', 'o-mne', 'akce', 'reference', 'faq'];
+      function updateNavSpy() {
+        if (!navLinks || !navLinks.length) return;
+        var line = headerOffset();
+        var first = doc.getElementById(SPY_IDS[0]);
+        var current = '';
+        if (first && first.getBoundingClientRect().top <= line + 24) {
+          var i;
+          for (i = 0; i < SPY_IDS.length; i++) {
+            var el = doc.getElementById(SPY_IDS[i]);
+            if (el && el.getBoundingClientRect().top <= line + 24) {
+              current = '#' + SPY_IDS[i];
+            }
+          }
+          var podani = doc.getElementById('podani');
+          var faq = doc.getElementById('faq');
+          if (podani && faq) {
+            var pt = podani.getBoundingClientRect().top;
+            var ft = faq.getBoundingClientRect().top;
+            if (pt <= line + 24 && ft > line + 24) current = '';
+          }
+        }
+        navLinks.forEach(function (l) {
+          l.classList.toggle('active', l.getAttribute('href') === current);
         });
       }
+      updateNavSpy();
 
       /* ---------- mobilní menu ---------- */
       var burger = $('#burger');
@@ -2449,6 +2471,7 @@
       }
 
       function goToHash(hash, fromMenu) {
+        hash = resolveHash(hash);
         if (anchorY(hash) == null) return false;
         if (fromMenu) { setMenu(false, { silent: true }); }
         function run() {
@@ -2923,7 +2946,7 @@
       "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
       "location": {
         "@type": "VirtualLocation",
-        "url": "https://www.dneskoucuju.cz/#workshopy"
+        "url": "https://www.dneskoucuju.cz/#akce"
       },
       "image": "https://www.dneskoucuju.cz/og-terka-1200.jpg",
       "organizer": { "@id": "https://www.dneskoucuju.cz/#org" },
